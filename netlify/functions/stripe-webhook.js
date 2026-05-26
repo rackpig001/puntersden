@@ -4,6 +4,14 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const { getStore } = require('@netlify/blobs');
 const crypto = require('crypto');
 
+function store(name) {
+  return getStore({
+    name,
+    siteID: process.env.NETLIFY_SITE_ID || process.env.SITE_ID,
+    token: process.env.NETLIFY_BLOBS_TOKEN || process.env.NETLIFY_API_TOKEN,
+  });
+}
+
 exports.handler = async (event) => {
   const sig = event.headers['stripe-signature'];
   let stripeEvent;
@@ -14,8 +22,8 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: `Webhook Error: ${err.message}` };
   }
 
-  const members = getStore('members');
-  const byCustomer = getStore('by-customer');
+  const members = store('members');
+  const byCustomer = store('by-customer');
 
   try {
     switch (stripeEvent.type) {
