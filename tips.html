@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Punters Den — Your Tips</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --black:#0a140f; --panel:#10201a; --panel-2:#13261d; --gold:#f5c542; --green:#2fd27a; --loss:#e6584e; --text:#f4f4f6; --muted:#9aa69c; --line:rgba(255,255,255,0.08); }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--black); color:var(--text); font-family:'Archivo',sans-serif; line-height:1.6; }
+  nav { border-bottom:1px solid var(--line); background:rgba(10,10,12,0.72); backdrop-filter:blur(14px); }
+  .nav-inner { display:flex; align-items:center; height:68px; max-width:760px; margin:0 auto; padding:0 22px; }
+  .logo { display:flex; align-items:center; gap:10px; font-family:'Anton'; font-size:20px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:inherit; }
+  .logo .paw { font-size:24px; }
+  .logo .den { color:var(--gold); }
+  .wrap { max-width:760px; margin:0 auto; padding:40px 22px 80px; }
+  .head { margin-bottom:28px; }
+  .kick { font-family:'Anton'; color:var(--gold); letter-spacing:1px; text-transform:uppercase; font-size:13px; }
+  h1 { font-family:'Anton'; font-size:38px; letter-spacing:1px; margin:6px 0; }
+  .tier-badge { display:inline-block; background:var(--panel); border:1px solid var(--line); border-radius:50px; padding:5px 14px; font-size:13px; color:var(--muted); }
+  .week { color:var(--muted); margin-top:8px; }
+  .tip { background:linear-gradient(165deg,var(--panel-2),var(--panel)); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:14px; position:relative; }
+  .tip::before { content:""; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),#ffe08a); border-radius:14px 14px 0 0; }
+  .tip .sport { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+  .tip .match { font-family:'Anton'; font-size:20px; margin:6px 0; }
+  .tip .sel { font-size:16px; }
+  .tip .sel b { color:var(--green); }
+  .tip .odds { font-family:'Anton'; color:var(--gold); font-size:20px; }
+  .tip .reason { color:var(--muted); font-size:14px; margin-top:8px; }
+  .legs { margin-top:10px; }
+  .leg { background:rgba(0,0,0,0.2); border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin-bottom:6px; font-size:14px; }
+  .leg .c { color:var(--green); margin-right:6px; }
+  .state { text-align:center; padding:60px 20px; }
+  .state .big { font-family:'Anton'; font-size:26px; margin-bottom:10px; }
+  .state p { color:var(--muted); }
+  .state a { color:var(--gold); }
+  .rg { text-align:center; color:var(--muted); font-size:12px; margin-top:30px; padding-top:20px; border-top:1px solid var(--line); }
+  .spinner { width:34px; height:34px; border:3px solid var(--line); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 16px; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  @media (max-width:540px){ h1{font-size:30px;} .logo{font-size:18px;} }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo"><span class="paw">🐕</span> The Punters <span class="den">Den</span></a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div id="content">
+    <div class="state">
+      <div class="spinner"></div>
+      <p>Loading your tips…</p>
+    </div>
+  </div>
+  <div class="rg">⚠️ Gamble responsibly. 18+ only. For entertainment purposes only. Gambling Help: 1800 858 858</div>
+</div>
+
+<script>
+(async function () {
+  const content = document.getElementById('content');
+  const params = new URLSearchParams(window.location.search);
+  const key = params.get('key');
+
+  function show(html) { content.innerHTML = html; }
+
+  if (!key) {
+    show(`<div class="state"><div class="big">No access key</div><p>Please use the personal link from your SMS. Need help? <a href="/">Back to site</a></p></div>`);
+    return;
+  }
+
+  try {
+    const res = await fetch('/.netlify/functions/get-tips?key=' + encodeURIComponent(key));
+    if (res.status === 403) {
+      show(`<div class="state"><div class="big">Link not active</div><p>This link isn't active — your subscription may have ended, or the link's expired. <a href="/#pricing">Re-join the den</a> to get back on the tips.</p></div>`);
+      return;
+    }
+    if (!res.ok) throw new Error('server');
+    const data = await res.json();
+
+    if (!data.tips || !data.tips.length) {
+      show(`<div class="state"><div class="big">No tips posted yet</div><p>This week's tips aren't up just yet — you'll get an SMS the moment they land. 🐕</p></div>`);
+      return;
+    }
+
+    const tierName = (data.tier || '').charAt(0).toUpperCase() + (data.tier || '').slice(1);
+    let html = `<div class="head"><div class="kick">Members Only</div><h1>Your Tips</h1>`
+      + `<span class="tier-badge">${tierName} member</span><div class="week">${data.week}</div></div>`;
+
+    data.tips.forEach(function (t) {
+      html += `<div class="tip">`;
+      html += `<div class="sport">🏉 ${t.code || ''} · ${t.type || ''}</div>`;
+      html += `<div class="match">${t.match || ''}</div>`;
+      if (t.legs && t.legs.length) {
+        html += `<div class="sel"><b>${t.sel || 'Same Game Multi'}</b> <span class="odds">$${t.odds}</span></div>`;
+        html += `<div class="legs">`;
+        t.legs.forEach(function (l) { html += `<div class="leg"><span class="c">✓</span>${l}</div>`; });
+        html += `</div>`;
+      } else {
+        html += `<div class="sel"><b>${t.sel || ''}</b> <span class="odds">$${t.odds}</span></div>`;
+      }
+      if (t.reason) html += `<div class="reason">${t.reason}</div>`;
+      if (t.bookie) html += `<div class="reason">Best bookie: ${t.bookie}</div>`;
+      html += `</div>`;
+    });
+
+    show(html);
+  } catch (err) {
+    show(`<div class="state"><div class="big">Something went wrong</div><p>Couldn't load your tips right now. Please try again shortly, or <a href="/">head back to the site</a>.</p></div>`);
+  }
+})();
+</script>
+
+</body>
+</html>

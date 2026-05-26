@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Punters Den — AI-Powered NRL & AFL Tips</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Stripe.js — powers embedded checkout (payment happens on this site) -->
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+  :root {
+    --black: #0a140f;
+    --panel: #10201a;
+    --panel-2: #13261d;
+    --red: #f0c14b;
+    --red-glow: rgba(240, 193, 75, 0.45);
+    --gold: #f5c542;
+    --green: #2fd27a;
+    --text: #f4f4f6;
+    --muted: #9a9aa6;
+    --line: rgba(255,255,255,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Archivo', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+  ::selection { background: var(--red); color: #fff; }
+
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+  h1, h2, h3, .display { font-family: 'Anton', sans-serif; font-weight: 400; letter-spacing: 0.5px; text-transform: uppercase; line-height: 0.98; }
+
+  /* ── grain + glow atmosphere ── */
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+    background-image: radial-gradient(circle at 20% 10%, rgba(240,193,75,0.10), transparent 40%),
+                      radial-gradient(circle at 85% 30%, rgba(60,110,255,0.08), transparent 45%);
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,12,0.72); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: 'Anton'; font-size: 22px; letter-spacing: 1px; text-transform: uppercase; }
+  .logo .paw { font-size: 26px; }
+  .logo .den { color: var(--red); }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.3px; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--red); color: #1a1400; border: none; cursor: pointer;
+    font-family: 'Archivo'; font-weight: 800; font-size: 14px; letter-spacing: 0.5px;
+    padding: 12px 22px; border-radius: 10px; text-decoration: none;
+    text-transform: uppercase; transition: transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 0 0 rgba(230,57,80,0);
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--red-glow); }
+  .btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--text); }
+  .btn-ghost { color: var(--text); }
+  .btn-ghost:hover { border-color: var(--red); box-shadow: none; }
+  .nav-cta { padding: 10px 18px; }
+  .burger { display: none; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+
+  /* ── HERO ── */
+  .hero { position: relative; z-index: 2; padding: 90px 0 70px; }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 50px; align-items: center; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--green); border: 1px solid rgba(47,210,122,0.35); border-radius: 100px;
+    padding: 6px 14px; margin-bottom: 26px;
+    background: rgba(47,210,122,0.08);
+  }
+  .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 1.8s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+  .hero h1 { font-size: clamp(42px, 6.5vw, 82px); margin-bottom: 24px; }
+  .hero h1 .red { color: var(--red); }
+  .hero h1 .out { -webkit-text-stroke: 1.5px var(--text); color: transparent; }
+  .hero p.lead { font-size: 18px; color: var(--muted); max-width: 520px; margin-bottom: 34px; line-height: 1.65; }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
+  .hero-btns .btn { padding: 15px 28px; font-size: 15px; }
+  .trust { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .trust b { color: var(--text); }
+
+  /* ── hero card (sample tip) ── */
+  .tip-card {
+    background: linear-gradient(160deg, var(--panel-2), var(--panel));
+    border: 1px solid var(--line); border-radius: 20px; padding: 24px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    transform: rotate(1.2deg);
+  }
+  .tip-card::before { content:""; position:absolute; top:0; left:0; right:0; height:3px; background: linear-gradient(90deg, var(--red), var(--gold)); }
+  .tip-card .tc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .tip-card .badge { font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--green); border: 1px solid rgba(47,210,122,0.3); background: rgba(47,210,122,0.08); padding: 4px 10px; border-radius: 6px; }
+  .tip-card .sport { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .tip-card .match { font-family: 'Anton'; font-size: 26px; margin-bottom: 4px; }
+  .tip-card .pick { font-size: 14px; color: var(--muted); margin-bottom: 18px; }
+  .tip-card .pick b { color: var(--text); }
+  .tc-row { display: flex; justify-content: space-between; padding: 12px 0; border-top: 1px solid var(--line); font-size: 14px; }
+  .tc-row .lbl { color: var(--muted); }
+  .tc-row .val { font-weight: 700; }
+  .stars { color: var(--gold); letter-spacing: 2px; }
+  .odds-pill { background: var(--red); color: #fff; font-weight: 800; padding: 2px 10px; border-radius: 6px; font-size: 13px; }
+  .blur-note { margin-top: 16px; font-size: 12px; color: var(--muted); text-align: center; }
+  .sample-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 900px; margin: 0 auto; }
+  .sample-grid .tip-card { transform: none; box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+  /* subtle per-card accent bars — stay on-brand, just vary the top stripe */
+  .sample-grid .tip-card.acc-gold::before  { background: linear-gradient(90deg, var(--gold), #ffe08a); }
+  .sample-grid .tip-card.acc-green::before { background: linear-gradient(90deg, var(--green), #7ef0b0); }
+  .sample-grid .tip-card.acc-teal::before  { background: linear-gradient(90deg, #2fd2c4, var(--gold)); }
+  .sample-grid .tip-card.acc-amber::before { background: linear-gradient(90deg, #f0934b, var(--gold)); }
+  .swipe-hint { display: none; }
+  @media (max-width: 720px) {
+    .sample-grid {
+      display: flex;
+      grid-template-columns: none;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 16px;
+      padding: 4px 20px 16px;
+      margin: 0 -20px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .sample-grid::-webkit-scrollbar { display: none; }
+    .sample-grid .tip-card {
+      flex: 0 0 85%;
+      scroll-snap-align: center;
+    }
+    .swipe-hint { display: block; text-align: center; font-size: 13px; color: var(--muted); margin-top: 14px; letter-spacing: 0.5px; }
+  }
+  .sgm-legs { display: flex; flex-direction: column; gap: 9px; margin: 4px 0 18px; }
+  .sgm-legs .leg { display: flex; align-items: center; gap: 10px; font-size: 14.5px; color: var(--text); padding: 9px 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 9px; }
+  .sgm-legs .lc { color: var(--green); font-weight: 800; font-size: 14px; flex-shrink: 0; }
+  .sgm-odds { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: rgba(240,193,75,0.08); border: 1px solid rgba(240,193,75,0.25); border-radius: 11px; }
+  .sgm-odds .lbl { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+  .sgm-odds .big-odds { font-family: 'Anton', sans-serif; font-size: 34px; color: var(--red); }
+
+  /* ── marquee strip ── */
+  .strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--panel); position: relative; z-index: 2; }
+  .strip-inner { display: flex; padding: 18px 0; overflow: hidden; white-space: nowrap; }
+  .strip-track { display: flex; gap: 60px; animation: scroll 28s linear infinite; flex-shrink: 0; }
+  .strip-group { display: flex; gap: 60px; flex-shrink: 0; padding-right: 60px; }
+  .strip span { font-family: 'Anton'; font-size: 18px; letter-spacing: 1px; color: var(--muted); display: inline-flex; align-items: center; gap: 12px; }
+  .strip span .x { color: var(--gold); }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── sections ── */
+  section { position: relative; z-index: 2; }
+  .sec { padding: 90px 0; }
+  .sec-head { text-align: center; max-width: 640px; margin: 0 auto 56px; }
+  .sec-head .kick { color: var(--red); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-size: 13px; margin-bottom: 14px; }
+  .sec-head h2 { font-size: clamp(32px, 4.5vw, 52px); margin-bottom: 16px; }
+  .sec-head p { color: var(--muted); font-size: 17px; }
+
+  /* ── problem ── */
+  .problem { background: var(--panel); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+  .problem h2 { font-size: clamp(30px, 4vw, 46px); margin-bottom: 22px; }
+  .problem h2 .red { color: var(--red); }
+  .problem p { color: var(--muted); font-size: 16px; margin-bottom: 16px; }
+  .problem p b { color: var(--text); }
+  .myth-list { display: flex; flex-direction: column; gap: 14px; }
+  .myth { display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; border-left: 3px solid var(--red); }
+  .myth .ic { font-size: 22px; }
+  .myth .mt { font-weight: 700; font-size: 15px; margin-bottom: 2px; }
+  .myth .md { font-size: 13px; color: var(--muted); }
+
+  /* ── how it works ── */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .step { background: linear-gradient(165deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: 16px; padding: 28px 22px; position: relative; transition: transform 0.25s, border-color 0.25s; }
+  .step:hover { transform: translateY(-6px); border-color: rgba(230,57,80,0.4); }
+  .step .num { font-family: 'Anton'; font-size: 13px; color: var(--red); letter-spacing: 1px; margin-bottom: 14px; }
+  .step .ic { font-size: 30px; position: absolute; top: 22px; right: 20px; line-height: 1; }
+  .step h3 { font-size: 20px; margin-bottom: 8px; }
+  .step p { font-size: 14px; color: var(--muted); }
+
+  /* ── why us ── */
+  .why { background: var(--panel); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .feat { display: flex; gap: 18px; padding: 26px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 16px; align-items: flex-start; }
+  .feat .fic { font-size: 30px; flex-shrink: 0; }
+  .feat h3 { font-size: 19px; margin-bottom: 6px; }
+  .feat p { font-size: 14px; color: var(--muted); }
+
+  /* ── pricing ── */
+  .price-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: stretch; }
+  .plan { background: linear-gradient(170deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: 18px; padding: 28px 22px; display: flex; flex-direction: column; position: relative; transition: transform 0.25s; }
+  .plan:hover { transform: translateY(-6px); }
+  .plan.pop { border-color: var(--red); box-shadow: 0 20px 60px rgba(230,57,80,0.18); }
+  .plan .poptag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--red); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; white-space: nowrap; }
+  .plan .pname { font-family: 'Anton'; font-size: 24px; margin-bottom: 6px; }
+  .plan.free .pname { color: var(--muted); }
+  .plan.bronze .pname { color: #cd7f4a; }
+  .plan.silver .pname { color: #c2c8d0; }
+  .plan.gold .pname { color: var(--gold); }
+  .plan .price { font-family: 'Anton'; font-size: 40px; margin-bottom: 2px; }
+  .plan .price span { font-size: 15px; color: var(--muted); font-family: 'Archivo'; font-weight: 600; }
+  .plan .pfeat { list-style: none; margin: 20px 0 24px; display: flex; flex-direction: column; gap: 11px; flex-grow: 1; }
+  .plan .pfeat li { font-size: 13.5px; color: var(--text); padding-left: 24px; position: relative; line-height: 1.45; }
+  .plan .pfeat li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 800; }
+  .plan .pfeat li.off { color: var(--muted); }
+  .plan .pfeat li.off::before { content: "—"; color: #444; }
+  .plan .btn { width: 100%; justify-content: center; }
+  .plan.free .btn { background: transparent; border: 1px solid var(--line); }
+  .plan.free .btn:hover { border-color: var(--muted); box-shadow: none; }
+  .plan.gold .btn { background: var(--gold); color: #1a1400; }
+  .plan.gold .btn:hover { box-shadow: 0 8px 30px rgba(245,197,66,0.4); }
+  .price-note { text-align: center; margin-top: 28px; font-size: 13px; color: var(--muted); }
+
+  /* ── results ── */
+  .results-box { background: linear-gradient(160deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: 22px; padding: 50px; text-align: center; position: relative; overflow: hidden; }
+  .results-box::before { content:""; position:absolute; inset:0; background: radial-gradient(circle at 50% 0%, rgba(240,193,75,0.12), transparent 60%); pointer-events:none; }
+  .results-box h2 { font-size: clamp(30px, 4vw, 46px); margin-bottom: 18px; position: relative; }
+  .results-box p { color: var(--muted); font-size: 16px; max-width: 560px; margin: 0 auto 28px; position: relative; }
+  .stat-row { display: flex; justify-content: center; gap: 50px; margin: 36px 0; flex-wrap: wrap; position: relative; }
+  .stat .sv { font-family: 'Anton'; font-size: 44px; color: var(--green); }
+  .stat .sl { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* ── FAQ ── */
+  .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+  .faq { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .faq summary { padding: 20px 24px; font-weight: 700; font-size: 16px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary .plus { color: var(--red); font-size: 22px; transition: transform 0.2s; }
+  .faq[open] summary .plus { transform: rotate(45deg); }
+  .faq .ans { padding: 0 24px 20px; color: var(--muted); font-size: 15px; }
+
+  /* ── final CTA ── */
+  .final { text-align: center; padding: 100px 0; }
+  .final h2 { font-size: clamp(36px, 5.5vw, 68px); margin-bottom: 18px; }
+  .final h2 .red { color: var(--red); }
+  .final p { color: var(--muted); font-size: 17px; margin-bottom: 30px; }
+  .final .btn { font-size: 17px; padding: 18px 40px; }
+  .rg { margin-top: 24px; font-size: 12px; color: var(--muted); }
+
+  /* ── sticky floating CTA ── */
+  .sticky-cta {
+    position: fixed; bottom: 22px; right: 22px; z-index: 200;
+    background: linear-gradient(135deg, var(--gold), #ffd96b);
+    color: #0a140f; font-family: 'Anton'; font-size: 16px; letter-spacing: 0.5px;
+    padding: 14px 26px; border-radius: 50px; text-decoration: none;
+    box-shadow: 0 8px 28px rgba(245,197,66,0.4); border: none; cursor: pointer;
+    opacity: 0; transform: translateY(20px); pointer-events: none;
+    transition: opacity 0.35s, transform 0.35s; text-transform: uppercase;
+  }
+  .sticky-cta.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .sticky-cta:hover { box-shadow: 0 10px 34px rgba(245,197,66,0.55); }
+  @media (max-width: 540px) {
+    .sticky-cta { bottom: 16px; right: 16px; left: 16px; text-align: center; font-size: 15px; padding: 15px 20px; }
+  }
+  footer { border-top: 1px solid var(--line); background: var(--panel); padding: 50px 0 36px; position: relative; z-index: 2; }
+  .foot-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; margin-bottom: 30px; }
+  .foot-links { display: flex; gap: 24px; flex-wrap: wrap; }
+  .foot-links a { color: var(--muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .foot-links a:hover { color: var(--text); }
+  .foot-rg { font-size: 12px; color: var(--muted); line-height: 1.7; border-top: 1px solid var(--line); padding-top: 24px; max-width: 820px; }
+  .foot-rg b { color: var(--text); }
+  .copy { margin-top: 18px; font-size: 12px; color: #555; }
+
+  /* ── reveal animation ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ── responsive ── */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .tip-card { transform: none; max-width: 420px; }
+    .problem-grid { grid-template-columns: 1fr; gap: 36px; }
+    .steps { grid-template-columns: repeat(2, 1fr); }
+    .price-grid { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .burger { display: block; }
+    .nav-links.open {
+      display: flex; flex-direction: column; gap: 0;
+      position: absolute; top: 68px; left: 0; right: 0;
+      background: rgba(10,20,15,0.98); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      padding: 8px 0; align-items: stretch;
+    }
+    .nav-links.open a {
+      padding: 15px 24px; font-size: 16px; border-bottom: 1px solid var(--line);
+    }
+    .nav-links.open a:last-child { border-bottom: none; }
+  }
+  @media (max-width: 540px) {
+    .nav-cta { display: none; }
+    .logo { font-size: 19px; }
+    .logo .paw { font-size: 23px; }
+    .why-grid { grid-template-columns: 1fr; }
+    .price-grid { grid-template-columns: 1fr; }
+    .steps {
+      display: flex;
+      grid-template-columns: none;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 16px;
+      padding: 4px 20px 16px;
+      margin: 0 -20px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .steps::-webkit-scrollbar { display: none; }
+    .steps .step { flex: 0 0 80%; scroll-snap-align: center; }
+    .stat-row { gap: 30px; }
+    .results-box { padding: 32px 22px; }
+    .sec { padding: 64px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap nav-inner">
+    <div class="logo"><span class="paw">🐕</span> The Punters <span class="den">Den</span></div>
+    <div class="nav-links" id="navLinks">
+      <a href="#how" onclick="document.getElementById('navLinks').classList.remove('open')">How It Works</a>
+      <a href="results.html">Results</a>
+      <a href="#pricing" onclick="document.getElementById('navLinks').classList.remove('open')">Pricing</a>
+      <a href="#faq" onclick="document.getElementById('navLinks').classList.remove('open')">FAQ</a>
+      <!-- Member area coming later (private-link access via SMS) — re-enable when built:
+      <a href="/tips">My Tips</a>
+      -->
+    </div>
+    <a href="#pricing" class="btn nav-cta">Join the Den</a>
+    <button class="burger" aria-label="Menu" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span> AI-Powered · NRL &amp; AFL</div>
+      <h1>Footy tips with an <span class="red">edge.</span><br><span class="out">Backed by AI.</span></h1>
+      <p class="lead">Every NRL and AFL game, run through our AI and weighed against four bookies. We only tip when there's a real edge — then track every result, win or lose. No spam. No guesswork. From $5 a week.</p>
+      <div class="hero-btns">
+        <a href="#" class="btn" data-plan="free">Get This Week's Free Tip</a>
+        <a href="#how" class="btn btn-ghost">See How It Works</a>
+      </div>
+      <div class="trust">🔍 Every tip tracked. <b>Win or lose.</b> Full transparency.</div>
+    </div>
+    <div>
+      <div class="tip-card">
+        <div class="tc-head">
+          <span class="sport">🏉 NRL · Same Game Multi</span>
+          <span class="badge">● Sample</span>
+        </div>
+        <div class="match">Storm v Eels</div>
+        <div class="pick">📌 <b>4-leg Same Game Multi</b> · 5★ confidence</div>
+        <div class="sgm-legs">
+          <div class="leg"><span class="lc">✓</span> Storm to Win</div>
+          <div class="leg"><span class="lc">✓</span> Cameron Munster — Anytime Try Scorer</div>
+          <div class="leg"><span class="lc">✓</span> Ryan Papenhuyzen — Anytime Try Scorer</div>
+          <div class="leg"><span class="lc">✓</span> Total Match Points Over 38.5</div>
+        </div>
+        <div class="sgm-odds">
+          <span class="lbl">Combined odds</span>
+          <span class="big-odds">$6.40</span>
+        </div>
+        <div class="blur-note">🔒 Full multi + reasoning unlocked for members</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-inner">
+    <div class="strip-track">
+      <div class="strip-group">
+        <span>AI-DRIVEN ANALYSIS <span class="x">✓</span></span>
+        <span>FULL TRANSPARENCY <span class="x">✓</span></span>
+        <span>QUALITY OVER VOLUME <span class="x">✓</span></span>
+        <span>4 BOOKMAKERS TRACKED <span class="x">✓</span></span>
+        <span>NRL &amp; AFL SPECIALISTS <span class="x">✓</span></span>
+      </div>
+      <div class="strip-group" aria-hidden="true">
+        <span>AI-DRIVEN ANALYSIS <span class="x">✓</span></span>
+        <span>FULL TRANSPARENCY <span class="x">✓</span></span>
+        <span>QUALITY OVER VOLUME <span class="x">✓</span></span>
+        <span>4 BOOKMAKERS TRACKED <span class="x">✓</span></span>
+        <span>NRL &amp; AFL SPECIALISTS <span class="x">✓</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="sec" id="how">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kick">The Process</div>
+      <h2>How the den finds the edge</h2>
+      <p>Four steps. One goal — only tip when the numbers say there's value.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="num">STEP 01</div><span class="ic">🔍</span><h3>Scout</h3><p>Our AI reads every NRL and AFL game — form, injuries, team lists, history — and pulls live odds from four bookies at once.</p></div>
+      <div class="step reveal"><div class="num">STEP 02</div><span class="ic">📊</span><h3>Analyse</h3><p>Every game scored against strict rules. No emotion, no favourite-team bias. Only genuine value makes the cut — most games don't.</p></div>
+      <div class="step reveal"><div class="num">STEP 03</div><span class="ic">✅</span><h3>Review</h3><p>The AI does in seconds what takes a tipster a week. Then a real punter verifies every pick. Machine precision, human judgement.</p></div>
+      <div class="step reveal"><div class="num">STEP 04</div><span class="ic">📈</span><h3>Track</h3><p>Win or lose, every tip lands on our public Scoreboard at the odds we tipped. No deleting losers. Judge us on the numbers.</p></div>
+    </div>
+    <div class="swipe-hint">← swipe to see all four →</div>
+  </div>
+</section>
+
+<!-- SAMPLE MULTI -->
+<section class="sec" id="sample-multi">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kick">A Closer Look</div>
+      <h2>The kind of tips the den finds</h2>
+      <p>A taste across both codes — solid singles and our safe-built multis. No silly margin legs, just genuine value. Full picks and reasoning unlock for members.</p>
+    </div>
+    <div class="sample-grid">
+
+      <!-- AFL SGM -->
+      <div class="tip-card acc-green reveal">
+        <div class="tc-head">
+          <span class="sport">🏉 AFL · Same Game Multi</span>
+          <span class="badge">● Sample</span>
+        </div>
+        <div class="match">Geelong v Western Bulldogs</div>
+        <div class="pick">📌 <b>4-leg Same Game Multi</b> · 4★ confidence</div>
+        <div class="sgm-legs">
+          <div class="leg"><span class="lc">✓</span> Geelong to Win</div>
+          <div class="leg"><span class="lc">✓</span> Jeremy Cameron — 2+ Goals</div>
+          <div class="leg"><span class="lc">✓</span> Bailey Smith — 25+ Disposals</div>
+          <div class="leg"><span class="lc">✓</span> Total Match Points Over 155.5</div>
+        </div>
+        <div class="sgm-odds">
+          <span class="lbl">Combined odds</span>
+          <span class="big-odds">$4.80</span>
+        </div>
+        <div class="blur-note">🔒 Full multi + reasoning unlocked for members</div>
+      </div>
+
+      <!-- NRL SGM (higher odds) -->
+      <div class="tip-card acc-gold reveal">
+        <div class="tc-head">
+          <span class="sport">🏉 NRL · Same Game Multi</span>
+          <span class="badge">● Sample</span>
+        </div>
+        <div class="match">Roosters v Knights</div>
+        <div class="pick">📌 <b>4-leg Same Game Multi</b> · 4★ confidence</div>
+        <div class="sgm-legs">
+          <div class="leg"><span class="lc">✓</span> Roosters to Win</div>
+          <div class="leg"><span class="lc">✓</span> Mark Nawaqanitawase — Anytime Try Scorer</div>
+          <div class="leg"><span class="lc">✓</span> Sam Walker — Anytime Try Scorer</div>
+          <div class="leg"><span class="lc">✓</span> Total Match Points Over 40.5</div>
+        </div>
+        <div class="sgm-odds">
+          <span class="lbl">Combined odds</span>
+          <span class="big-odds">$13.50</span>
+        </div>
+        <div class="blur-note">🔒 Full multi + reasoning unlocked for members</div>
+      </div>
+
+      <!-- NRL H2H value single -->
+      <div class="tip-card acc-teal reveal">
+        <div class="tc-head">
+          <span class="sport">🏉 NRL · Head to Head</span>
+          <span class="badge">● Sample</span>
+        </div>
+        <div class="match">Titans v Raiders</div>
+        <div class="pick">📌 <b>Match Result</b> · value play</div>
+        <div class="sgm-legs">
+          <div class="leg"><span class="lc">✓</span> Raiders to Win</div>
+          <div class="leg" style="border-style:dashed; opacity:0.85;"><span class="lc" style="color:var(--gold);">★</span> Backed on a 11-2 head-to-head record</div>
+        </div>
+        <div class="sgm-odds">
+          <span class="lbl">Our odds</span>
+          <span class="big-odds">$2.00</span>
+        </div>
+        <div class="blur-note">🔒 Full reasoning + best bookie unlocked for members</div>
+      </div>
+
+      <!-- AFL H2H value single -->
+      <div class="tip-card acc-amber reveal">
+        <div class="tc-head">
+          <span class="sport">🏉 AFL · Head to Head</span>
+          <span class="badge">● Sample</span>
+        </div>
+        <div class="match">Geelong v Sydney</div>
+        <div class="pick">📌 <b>Match Result</b> · value play</div>
+        <div class="sgm-legs">
+          <div class="leg"><span class="lc">✓</span> Geelong to Win</div>
+          <div class="leg" style="border-style:dashed; opacity:0.85;"><span class="lc" style="color:var(--gold);">★</span> Underrated at home — strong value at the price</div>
+        </div>
+        <div class="sgm-odds">
+          <span class="lbl">Our odds</span>
+          <span class="big-odds">$2.44</span>
+        </div>
+        <div class="blur-note">🔒 Full reasoning + best bookie unlocked for members</div>
+      </div>
+
+    </div>
+    <div class="swipe-hint">← swipe to see more →</div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kick">The Difference</div>
+      <h2>Why punters back the den</h2>
+    </div>
+    <div class="why-grid">
+      <div class="feat reveal"><span class="fic">🤖</span><div><h3>A real AI edge</h3><p>No gut feel, no backing your own team. Our AI weighs every game against four bookmakers and flags value the human eye skims straight past.</p></div></div>
+      <div class="feat reveal"><span class="fic">🔍</span><div><h3>Nothing hidden</h3><p>Every tip lands on a public Scoreboard — the losers too. Most services quietly delete the ones that didn't land. We log the lot, at the odds we called.</p></div></div>
+      <div class="feat reveal"><span class="fic">💎</span><div><h3>Value, not volume</h3><p>We don't pad the card to look busy. Some weeks it's a big slate, quiet weeks it's tight — because we only tip when the numbers say there's genuine value.</p></div></div>
+      <div class="feat reveal"><span class="fic">🇦🇺</span><div><h3>Pure Aussie footy</h3><p>NRL and AFL, nothing else. Two codes done properly — all times AEST, every tip built for the way Aussies actually bet.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="sec" id="results">
+  <div class="wrap">
+    <div class="results-box reveal">
+      <h2>We show you everything</h2>
+      <p>Anyone can post a winning slip. The real test is the losers — and that's what most services hide. We don't. Every tip is graded after the round and lands on our public Scoreboard at the odds we tipped, win or lose. Judge us on the numbers, not the hype.</p>
+      <div class="stat-row">
+        <div class="stat"><div class="sv">87%*</div><div class="sl">Win rate · H2H tips</div></div>
+        <div class="stat"><div class="sv">100%*</div><div class="sl">NRL · H2H</div></div>
+        <div class="stat"><div class="sv">75%*</div><div class="sl">AFL · H2H</div></div>
+      </div>
+      <p style="font-size:12.5px; color:var(--muted); margin-top:-6px; line-height:1.6;">*Pre-launch backtest figures, head-to-head picks only (62 verified selections). Backtested results are simulated, not live bets, and past performance does not guarantee future results. Same Game Multis and live tips carry different risk and are not included in these figures. Full breakdown — every win and loss — on the Scoreboard.</p>
+      <a href="results.html" class="btn">View Our Track Record</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem sec">
+  <div class="wrap problem-grid">
+    <div class="reveal">
+      <h2>Tired of tips that <span class="red">don't stack up?</span></h2>
+      <p>Everyone's got a tip. The mate at the pub. The bloke on Instagram with the flashy slips he only posts when they win. The "free" previews that are really just the bookies trying to get you to bet more.</p>
+      <p><b>The problem?</b> You never see the losses. You never know if any of it actually works over time.</p>
+      <p>That's the whole reason the den exists. Our AI analyses every game across four major bookmakers, scores the genuine value, and we only tip when the numbers say there's an edge. Then we track every single tip — <b>win or lose</b> — out in the open.</p>
+    </div>
+    <div class="myth-list reveal">
+      <div class="myth"><span class="ic">🍺</span><div><div class="mt">The pub mate</div><div class="md">Loud about wins, silent about losses.</div></div></div>
+      <div class="myth"><span class="ic">📸</span><div><div class="mt">The Insta tipster</div><div class="md">Only posts the slips that came in.</div></div></div>
+      <div class="myth"><span class="ic">🎰</span><div><div class="mt">The bookies' "free" tips</div><div class="md">Designed to get you betting more.</div></div></div>
+      <div class="myth"><span class="ic">🐕</span><div><div class="mt">The Punters Den</div><div class="md">Every tip tracked. The data does the talking.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="sec" id="pricing">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kick">Membership</div>
+      <h2>Pick your tier</h2>
+      <p>Cancel anytime. Less than the cost of a beer.</p>
+    </div>
+    <div class="price-grid">
+      <div class="plan free reveal">
+        <div class="pname">Free</div>
+        <div class="price">$0<span></span></div>
+        <ul class="pfeat">
+          <li>2 free tips each week</li>
+          <li>Full analysis on every pick</li>
+          <li>See our results first</li>
+          <li class="off">No multis or props</li>
+        </ul>
+        <a href="#" class="btn" data-plan="free">Start Free</a>
+      </div>
+      <div class="plan bronze reveal">
+        <div class="pname">Bronze</div>
+        <div class="price">$5<span>/week</span></div>
+        <ul class="pfeat">
+          <li>Up to 5 tips a week</li>
+          <li>3 standard tips + 1 Same Game Multi</li>
+          <li>Full analysis on every pick</li>
+          <li>NRL + AFL combined</li>
+          <li>📲 Tips texted to your phone</li>
+        </ul>
+        <a href="#" class="btn" data-plan="bronze">Join Bronze</a>
+      </div>
+      <div class="plan silver pop reveal">
+        <div class="poptag">Most Popular</div>
+        <div class="pname">Silver</div>
+        <div class="price">$10<span>/week</span></div>
+        <ul class="pfeat">
+          <li>Up to 6 tips a week</li>
+          <li>1 AFL SGM + 1 NRL SGM</li>
+          <li>High-confidence picks only (85%+)</li>
+          <li>Deeper analysis on every pick</li>
+          <li>📲 Tips texted to your phone</li>
+        </ul>
+        <a href="#" class="btn" data-plan="silver">Join Silver</a>
+      </div>
+      <div class="plan gold reveal">
+        <div class="pname">Gold</div>
+        <div class="price">$20<span>/week</span></div>
+        <ul class="pfeat">
+          <li>Up to 8-10 tips a week</li>
+          <li>2 AFL + 2 NRL Same Game Multis</li>
+          <li>Cross-sport multi</li>
+          <li>Best bookmaker value alerts</li>
+          <li>Weekly AI analysis report</li>
+          <li>📲 Tips texted to your phone</li>
+        </ul>
+        <a href="#" class="btn" data-plan="gold">Go Gold</a>
+      </div>
+    </div>
+    <p class="price-note">💡 Our multis are 4-leg Same Game Multis — most bookies refund your stake if just one leg misses. Better value, built-in safety net.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kick">FAQ</div>
+      <h2>Questions, answered</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq reveal"><summary>How does the AI actually work? <span class="plus">+</span></summary><div class="ans">Our AI pipeline pulls in every NRL and AFL game — form, injuries, team news and live odds from four major bookmakers. It scores each game against our tipping rules to find genuine value, then a real punter reviews every tip before it's published.</div></details>
+      <details class="faq reveal"><summary>When do tips get posted? <span class="plus">+</span></summary><div class="ans">Tips go out midweek, before the first games of the round kick off, so you've got time to get set. All paying members get them by SMS — straight to your phone, no app to download.</div></details>
+      <details class="faq reveal"><summary>What happens when a tip loses? <span class="plus">+</span></summary><div class="ans">It goes on the record, same as the wins. No tipping service wins every bet — anyone who claims otherwise is lying. We aim for a strong strike rate over time and we're upfront about every result.</div></details>
+      <details class="faq reveal"><summary>How do I get the tips? <span class="plus">+</span></summary><div class="ans">Straight to your phone by SMS — no app to download, no account to set up. You pay, you pop in your mobile number, and the tips land as a text each round. Simple as that.</div></details>
+      <details class="faq reveal"><summary>Can I cancel anytime? <span class="plus">+</span></summary><div class="ans">Absolutely. No lock-in contracts. Cancel whenever you like.</div></details>
+      <details class="faq reveal"><summary>Is this legal? <span class="plus">+</span></summary><div class="ans">Yes. We provide tips and analysis for entertainment and information only — we're not a bookmaker and we don't take bets. You do your own betting through your own licensed bookmaker.</div></details>
+      <details class="faq reveal"><summary>Do you guarantee I'll win money? <span class="plus">+</span></summary><div class="ans">No, and be wary of anyone who does. We provide a statistical edge based on data and analysis. Betting always carries risk. Never bet more than you can afford to lose.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final">
+  <div class="wrap reveal">
+    <h2>Ready to back yourself<br>with <span class="red">data?</span></h2>
+    <p>Start with this week's free tip. No card, no catch.</p>
+    <a href="#pricing" class="btn">Join the Den — From $5/week</a>
+    <div class="rg">⚠️ Gamble responsibly. 18+ only. For entertainment purposes only. Gambling Help: 1800 858 858</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="logo"><span class="paw">🐕</span> The Punters <span class="den">Den</span></div>
+      <div class="foot-links">
+        <a href="#how">How It Works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="results.html">Results</a>
+        <a href="#faq">FAQ</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="responsible-gambling.html">Responsible Gambling</a>
+      </div>
+    </div>
+    <div class="foot-rg">
+      <b>The den finds the edge.</b> This service provides tips and analysis for information and entertainment purposes only. We are not a bookmaker. 18+ only. Gambling involves risk — never bet more than you can afford to lose. For free, confidential support call Gambling Help on <b>1800 858 858</b> or visit gamblinghelponline.org.au
+      <div class="copy">© 2026 The Punters Den. All rights reserved.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i % 4 * 0.08) + 's';
+    obs.observe(el);
+  });
+
+  // ── Stripe EMBEDDED checkout — payment happens ON this site (needs the backend function live) ──
+  // Your Stripe publishable key (safe to expose; starts with pk_live_ or pk_test_).
+  const STRIPE_PUBLISHABLE_KEY = 'pk_live_REPLACE_WITH_YOUR_PUBLISHABLE_KEY';
+
+  // Fallback Payment Links — used if the backend isn't live yet (so the site always works)
+  const STRIPE_LINKS = {
+    bronze: 'https://buy.stripe.com/dRmaEX4ML7IEgEt1Pc6oo02',
+    silver: 'https://buy.stripe.com/6oU8wPa75e7273TalI6oo01',
+    gold:   'https://buy.stripe.com/dRm7sLcfd8MI9c1dxU6oo00'
+  };
+
+  let stripe = null;
+  if (window.Stripe && !STRIPE_PUBLISHABLE_KEY.includes('REPLACE')) {
+    stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+  }
+
+  async function openEmbeddedCheckout(tier) {
+    // overlay + box
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(5,8,10,0.88);backdrop-filter:blur(6px);display:flex;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;';
+    const box = document.createElement('div');
+    box.style.cssText = 'position:relative;width:100%;max-width:480px;margin:auto;background:#fff;border-radius:16px;overflow:hidden;min-height:200px;';
+    const close = document.createElement('button');
+    close.innerHTML = '✕';
+    close.style.cssText = 'position:absolute;top:10px;right:12px;z-index:2;background:rgba(0,0,0,0.5);border:none;border-radius:50%;width:32px;height:32px;color:#fff;font-size:18px;cursor:pointer;';
+    close.onclick = () => { overlay.remove(); };
+    const mount = document.createElement('div');
+    mount.id = 'checkout-mount';
+    box.appendChild(close); box.appendChild(mount); overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    try {
+      const res = await fetch('/.netlify/functions/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier })
+      });
+      const { clientSecret } = await res.json();
+      const checkout = await stripe.initEmbeddedCheckout({ clientSecret });
+      checkout.mount('#checkout-mount');
+    } catch (err) {
+      overlay.remove();
+      window.location.href = STRIPE_LINKS[tier];  // fallback to hosted link
+    }
+  }
+
+  document.querySelectorAll('[data-plan]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const plan = btn.getAttribute('data-plan');
+      e.preventDefault();
+      if (plan === 'free') { window.location.href = '#pricing'; return; }
+      if (stripe) {
+        openEmbeddedCheckout(plan);            // on-site embedded checkout
+      } else {
+        window.location.href = STRIPE_LINKS[plan];  // fallback until backend + key are live
+      }
+    });
+  });
+
+  // ── sticky floating CTA: show after scrolling past the hero ──
+  (function() {
+    const cta = document.getElementById('stickyCta');
+    if (!cta) return;
+    function toggle() {
+      if (window.scrollY > 600) cta.classList.add('show');
+      else cta.classList.remove('show');
+    }
+    window.addEventListener('scroll', toggle, { passive: true });
+    toggle();
+  })();
+</script>
+
+<a href="#pricing" class="sticky-cta" id="stickyCta">Join the Den 🐕</a>
+
+</body>
+</html>
