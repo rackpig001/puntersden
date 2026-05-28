@@ -194,7 +194,7 @@
   .feat p { font-size: 14px; color: var(--muted); }
 
   /* ── pricing ── */
-  .price-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: stretch; }
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: stretch; max-width: 980px; margin: 0 auto; }
   .plan { background: linear-gradient(170deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: 18px; padding: 28px 22px; display: flex; flex-direction: column; position: relative; transition: transform 0.25s; }
   .plan:hover { transform: translateY(-6px); }
   .plan.pop { border-color: var(--red); box-shadow: 0 20px 60px rgba(230,57,80,0.18); }
@@ -346,7 +346,7 @@
       <h1>Footy tips with an <span class="red">edge.</span><br><span class="out">Backed by AI.</span></h1>
       <p class="lead">Every NRL and AFL game, run through our AI and weighed against four bookies. We only tip when there's a real edge — then track every result, win or lose. No spam. No guesswork. From $5 a week.</p>
       <div class="hero-btns">
-        <a href="#" class="btn" data-plan="free">Get This Week's Free Tip</a>
+        <a href="#pricing" class="btn">Start Your Free Week</a>
         <a href="#how" class="btn btn-ghost">See How It Works</a>
       </div>
       <div class="trust">🔍 Every tip tracked. <b>Win or lose.</b> Full transparency.</div>
@@ -570,46 +570,38 @@
       <p>Cancel anytime. Less than the cost of a beer.</p>
     </div>
     <div class="price-grid">
-      <div class="plan free reveal">
-        <div class="pname">Free</div>
-        <div class="price">$0<span></span></div>
-        <ul class="pfeat">
-          <li>2 free tips each week</li>
-          <li>Full analysis on every pick</li>
-          <li>See our results first</li>
-          <li class="off">No multis or props</li>
-        </ul>
-        <a href="#" class="btn" data-plan="free">Start Free</a>
-      </div>
       <div class="plan bronze reveal">
         <div class="pname">Bronze</div>
         <div class="price">$5<span>/week</span></div>
         <ul class="pfeat">
+          <li>🎁 First week free</li>
           <li>Up to 5 tips a week</li>
           <li>3 standard tips + 1 Same Game Multi</li>
           <li>Full analysis on every pick</li>
           <li>NRL + AFL combined</li>
           <li>📲 Tips texted to your phone</li>
         </ul>
-        <a href="#" class="btn" data-plan="bronze">Join Bronze</a>
+        <a href="#" class="btn" data-plan="bronze">Start Bronze — Free Week</a>
       </div>
       <div class="plan silver pop reveal">
         <div class="poptag">Most Popular</div>
         <div class="pname">Silver</div>
         <div class="price">$10<span>/week</span></div>
         <ul class="pfeat">
+          <li>🎁 First week free</li>
           <li>Up to 6 tips a week</li>
           <li>1 AFL SGM + 1 NRL SGM</li>
           <li>High-confidence picks only (85%+)</li>
           <li>Deeper analysis on every pick</li>
           <li>📲 Tips texted to your phone</li>
         </ul>
-        <a href="#" class="btn" data-plan="silver">Join Silver</a>
+        <a href="#" class="btn" data-plan="silver">Start Silver — Free Week</a>
       </div>
       <div class="plan gold reveal">
         <div class="pname">Gold</div>
         <div class="price">$20<span>/week</span></div>
         <ul class="pfeat">
+          <li>🎁 First week free</li>
           <li>Up to 8-10 tips a week</li>
           <li>2 AFL + 2 NRL Same Game Multis</li>
           <li>Cross-sport multi</li>
@@ -617,10 +609,10 @@
           <li>Weekly AI analysis report</li>
           <li>📲 Tips texted to your phone</li>
         </ul>
-        <a href="#" class="btn" data-plan="gold">Go Gold</a>
+        <a href="#" class="btn" data-plan="gold">Start Gold — Free Week</a>
       </div>
     </div>
-    <p class="price-note">💡 Our multis are 4-leg Same Game Multis — most bookies refund your stake if just one leg misses. Better value, built-in safety net.</p>
+    <p class="price-note">💡 Free trial — cancel anytime in the first 7 days, no charge. Our multis are 4-leg Same Game Multis — most bookies refund your stake if just one leg misses.</p>
   </div>
 </section>
 
@@ -647,8 +639,8 @@
 <section class="final">
   <div class="wrap reveal">
     <h2>Ready to back yourself<br>with <span class="red">data?</span></h2>
-    <p>Start with this week's free tip. No card, no catch.</p>
-    <a href="#pricing" class="btn">Join the Den — From $5/week</a>
+    <p>Try the den free for 7 days. Cancel anytime in the first week, no charge.</p>
+    <a href="#pricing" class="btn">Start Your Free Week</a>
     <div class="rg">⚠️ Gamble responsibly. 18+ only. For entertainment purposes only. Gambling Help: 1800 858 858</div>
   </div>
 </section>
