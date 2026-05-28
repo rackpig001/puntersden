@@ -33,7 +33,10 @@ exports.handler = async (event) => {
       phone_number_collection: { enabled: true },
       // Store the tier on the session so the webhook knows what they bought
       metadata: { tier },
-      subscription_data: { metadata: { tier } },
+      subscription_data: {
+        metadata: { tier },
+        trial_period_days: 7,
+      },
       success_url: `${siteUrl}/checkout-complete?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/#pricing`,
     });
