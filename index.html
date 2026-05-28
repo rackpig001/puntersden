@@ -7,8 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<!-- Stripe.js — powers embedded checkout (payment happens on this site) -->
-<script src="https://js.stripe.com/v3/"></script>
 <style>
   :root {
     --black: #0a140f;
@@ -687,51 +685,11 @@
     obs.observe(el);
   });
 
-  // ── Stripe EMBEDDED checkout — payment happens ON this site (needs the backend function live) ──
-  // Your Stripe publishable key (safe to expose; starts with pk_live_ or pk_test_).
-  const STRIPE_PUBLISHABLE_KEY = 'pk_live_51TbE9tFKQ33ezAaYljc5knufL8PaISfzg7TJ3rMmSu9EQsz1vGB6Nia3ZzQUpGwPYgVTgCtstXUkBhknEjCtWfv200LXajM1yX';
-
-  // Removed silent Payment Link fallback — better to surface real errors than mask them.
-
-  let stripe = null;
-  if (window.Stripe && STRIPE_PUBLISHABLE_KEY && !STRIPE_PUBLISHABLE_KEY.includes('REPLACE')) {
-    stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
-  }
-
-  let activeCheckout = null;
-
-  function showCheckoutError(box, message) {
-    box.innerHTML = '<div style="padding:40px 24px;text-align:center;font-family:Archivo,sans-serif;color:#0a140f;"><div style="font-family:Anton,sans-serif;font-size:22px;margin-bottom:10px;">Hmm — something went wrong</div><p style="color:#555;margin-bottom:18px;">' + message + '</p><button onclick="document.getElementById(\'checkout-overlay\').remove()" style="background:#10201a;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-family:Anton,sans-serif;cursor:pointer;">Close</button></div>';
-  }
-
-  async function openEmbeddedCheckout(tier) {
-    if (activeCheckout) { try { activeCheckout.destroy(); } catch (e) {} activeCheckout = null; }
-    const existing = document.getElementById('checkout-overlay');
-    if (existing) existing.remove();
-
-    const overlay = document.createElement('div');
-    overlay.id = 'checkout-overlay';
-    overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(5,8,10,0.88);backdrop-filter:blur(6px);display:flex;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;';
-    const box = document.createElement('div');
-    box.style.cssText = 'position:relative;width:100%;max-width:480px;margin:auto;background:#fff;border-radius:16px;overflow:hidden;min-height:200px;';
-    const close = document.createElement('button');
-    close.innerHTML = '✕';
-    close.style.cssText = 'position:absolute;top:10px;right:12px;z-index:2;background:rgba(0,0,0,0.5);border:none;border-radius:50%;width:32px;height:32px;color:#fff;font-size:18px;cursor:pointer;';
-    close.onclick = () => {
-      if (activeCheckout) { try { activeCheckout.destroy(); } catch (e) {} activeCheckout = null; }
-      overlay.remove();
-    };
-    const mount = document.createElement('div');
-    mount.id = 'checkout-mount';
-    mount.innerHTML = '<div style="padding:60px 20px;text-align:center;color:#555;font-family:Archivo,sans-serif;">Loading checkout…</div>';
-    box.appendChild(close); box.appendChild(mount); overlay.appendChild(box);
-    document.body.appendChild(overlay);
-
-    if (!stripe) {
-      showCheckoutError(box, "Couldn't start Stripe. Refresh the page and try again — if it keeps happening, let us know.");
-      console.error('[checkout] Stripe not initialised. key:', STRIPE_PUBLISHABLE_KEY ? STRIPE_PUBLISHABLE_KEY.slice(0,8) + '…' : 'missing');
-      return;
-    }
+  // ── Stripe HOSTED checkout — redirects to Stripe's mobile-friendly checkout page ──
+  // Apple Pay / Google Pay one-tap; trusted UX; no embed gotchas.
+  async function startCheckout(tier, btn) {
+    const originalLabel = btn ? btn.innerText : '';
+    if (btn) { btn.innerText = 'Loading…'; btn.style.opacity = '0.7'; btn.style.pointerEvents = 'none'; }
 
     try {
       const res = await fetch('/.netlify/functions/create-checkout-session', {
@@ -742,17 +700,17 @@
       const data = await res.json();
       console.log('[checkout] response status:', res.status, 'data:', data);
 
-      if (!res.ok || !data.clientSecret) {
-        showCheckoutError(box, "Checkout couldn't start. (" + (data.error || ('HTTP ' + res.status)) + ") Try again in a moment.");
+      if (!res.ok || !data.url) {
+        alert("Couldn't start checkout (" + (data.error || ('HTTP ' + res.status)) + "). Please try again in a moment.");
+        if (btn) { btn.innerText = originalLabel; btn.style.opacity = ''; btn.style.pointerEvents = ''; }
         return;
       }
 
-      activeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret });
-      activeCheckout.mount('#checkout-mount');
+      window.location.href = data.url;   // off to Stripe's hosted checkout
     } catch (err) {
       console.error('[checkout] error:', err);
-      if (activeCheckout) { try { activeCheckout.destroy(); } catch (e) {} activeCheckout = null; }
-      showCheckoutError(box, "Something went wrong starting checkout. Please try again, or reload the page.");
+      alert("Something went wrong starting checkout. Please try again, or reload the page.");
+      if (btn) { btn.innerText = originalLabel; btn.style.opacity = ''; btn.style.pointerEvents = ''; }
     }
   }
 
@@ -761,7 +719,7 @@
       const plan = btn.getAttribute('data-plan');
       e.preventDefault();
       if (plan === 'free') { window.location.href = '#pricing'; return; }
-      openEmbeddedCheckout(plan);
+      startCheckout(plan, btn);
     });
   });
 
