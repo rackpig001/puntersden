@@ -45,14 +45,18 @@ exports.handler = async (event) => {
       return { statusCode: 403, body: JSON.stringify({ error: 'invalid_or_expired' }) };
     }
 
-    // Confirm with Stripe that this customer still has an active subscription
+    // Confirm with Stripe that this customer still has an active (or trialing) subscription.
+    // Trialing = free-week trial member, also valid. Cancelled/past_due = invalid.
     const subs = await stripe.subscriptions.list({
       customer: record.customerId,
-      status: 'active',
-      limit: 1,
+      status: 'all',
+      limit: 10,
     });
 
-    if (!subs.data.length) {
+    const validStatuses = ['active', 'trialing'];
+    const valid = subs.data.find(s => validStatuses.includes(s.status));
+
+    if (!valid) {
       return { statusCode: 403, body: JSON.stringify({ error: 'subscription_inactive' }) };
     }
 
