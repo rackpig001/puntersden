@@ -1,0 +1,72 @@
+{
+  "week": "Round 13",
+  "bronze": [
+    {
+      "code": "NRL",
+      "type": "H2H",
+      "match": "Panthers v Eels",
+      "sel": "Panthers to win",
+      "odds": 1.55,
+      "stars": 3,
+      "reason": "Penrith's defence has conceded the fewest points at home this season and the Eels are missing two starting forwards.",
+      "bookie": "Sportsbet"
+    },
+    {
+      "code": "AFL",
+      "type": "H2H",
+      "match": "Geelong v North Melbourne",
+      "sel": "Geelong to win",
+      "odds": 1.40,
+      "stars": 3,
+      "reason": "Geelong at home against a bottom-four side; line and head-to-head both point the same way.",
+      "bookie": "TAB"
+    },
+    {
+      "code": "NRL",
+      "type": "SGM",
+      "match": "Storm v Dragons",
+      "sel": "Same Game Multi",
+      "odds": 4.20,
+      "stars": 3,
+      "legs": [
+        "Storm to win",
+        "Ryan Papenhuyzen anytime try",
+        "Storm 1-12 winning margin",
+        "Over 38.5 total points"
+      ],
+      "bookie": "Ladbrokes"
+    }
+  ],
+  "silver": [
+    {
+      "code": "AFL",
+      "type": "SGM",
+      "match": "Collingwood v Carlton",
+      "sel": "Same Game Multi",
+      "odds": 5.50,
+      "stars": 4,
+      "legs": [
+        "Collingwood to win",
+        "Nick Daicos 25+ disposals",
+        "Over 160.5 total points"
+      ],
+      "bookie": "Sportsbet"
+    }
+  ],
+  "gold": [
+    {
+      "code": "CROSS",
+      "type": "Cross-sport multi",
+      "match": "Weekend Special",
+      "sel": "Cross-Sport Multi",
+      "odds": 4.80,
+      "stars": 4,
+      "legs": [
+        "Panthers to win (NRL)",
+        "Geelong to win (AFL)",
+        "Storm to win (NRL)"
+      ],
+      "bookie": "TAB"
+    }
+  ]
+}
