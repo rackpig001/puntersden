@@ -72,8 +72,11 @@ exports.handler = async (event) => {
     let tips = [];
     if (current) {
       for (let i = 0; i <= allowedIdx; i++) {
-        const t = current[tierOrder[i]];
-        if (Array.isArray(t)) tips = tips.concat(t);
+        const arr = current[tierOrder[i]];
+        if (Array.isArray(arr)) {
+          // tag each tip with the tier it came from, so the page can badge it
+          tips = tips.concat(arr.map(t => ({ ...t, tier: tierOrder[i] })));
+        }
       }
     }
 
