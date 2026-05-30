@@ -19,6 +19,12 @@
   to = "/tips.html"
   status = 200
 
+# Pretty URL for the post-payment welcome page: /checkout-complete → checkout-complete.html
+[[redirects]]
+  from = "/checkout-complete"
+  to = "/checkout-complete.html"
+  status = 200
+
 # Function endpoints (called by the site + Stripe). These are automatic,
 # but listed here for clarity:
 #   /.netlify/functions/create-checkout-session   → starts embedded checkout
