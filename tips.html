@@ -49,6 +49,7 @@
   .tip.sgm::before, .tip.special::before { background:linear-gradient(90deg,#2fd2c4,var(--gold)); }
   .sgm-tag { font-family:'Anton'; font-size:12px; letter-spacing:1px; color:#2fd2c4; text-transform:uppercase; }
   .specials-head { font-family:'Anton'; font-size:15px; letter-spacing:1px; text-transform:uppercase; color:#2fd2c4; margin:34px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--line); }
+  .code-head { font-family:'Archivo'; font-weight:800; font-size:13px; letter-spacing:0.5px; text-transform:uppercase; color:var(--muted); margin:16px 0 10px; }
   @media (max-width:540px){ h1{font-size:30px;} .logo{font-size:18px;} }
 </style>
 </head>
@@ -133,22 +134,37 @@
     const specials = data.tips.filter(function (t) { return t.special; });
     const dated = data.tips.filter(function (t) { return !t.special; });
 
+    const CODE_ORDER = ['NRL','AFL'];
+    const CODE_LABEL = { NRL:'🏉 NRL', AFL:'🏈 AFL' };
+
+    // Render a day's tips split by code (NRL then AFL then anything else),
+    // standard tips before multis within each code.
+    function renderDay(dayTips) {
+      const codes = CODE_ORDER.slice();
+      dayTips.forEach(function (t) { if (codes.indexOf(t.code) === -1) codes.push(t.code); });
+      codes.forEach(function (code) {
+        const codeTips = dayTips.filter(function (t) { return t.code === code; });
+        if (!codeTips.length) return;
+        codeTips.sort(function (a, b) {
+          return ((a.legs && a.legs.length) ? 1 : 0) - ((b.legs && b.legs.length) ? 1 : 0);
+        });
+        html += `<div class="code-head">${CODE_LABEL[code] || code}</div>`;
+        codeTips.forEach(function (t) { html += renderTip(t); });
+      });
+    }
+
     DAY_ORDER.forEach(function (day) {
       const dayTips = dated.filter(function (t) { return t.day === day; });
       if (!dayTips.length) return;
-      // standard tips first, multis after, within each day
-      dayTips.sort(function (a, b) {
-        return ((a.legs && a.legs.length) ? 1 : 0) - ((b.legs && b.legs.length) ? 1 : 0);
-      });
       html += `<div class="day-head">🗓 ${DAY_LABEL[day]}</div>`;
-      dayTips.forEach(function (t) { html += renderTip(t); });
+      renderDay(dayTips);
     });
 
     // Safety net: any tip with a missing/unknown day still shows, in a trailing group.
     const undated = dated.filter(function (t) { return DAY_ORDER.indexOf(t.day) === -1; });
     if (undated.length) {
       html += `<div class="day-head">🗓 This week</div>`;
-      undated.forEach(function (t) { html += renderTip(t); });
+      renderDay(undated);
     }
 
     if (specials.length) {
