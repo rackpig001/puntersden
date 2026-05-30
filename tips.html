@@ -40,6 +40,15 @@
   .rg { text-align:center; color:var(--muted); font-size:12px; margin-top:30px; padding-top:20px; border-top:1px solid var(--line); }
   .spinner { width:34px; height:34px; border:3px solid var(--line); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 16px; }
   @keyframes spin { to { transform:rotate(360deg); } }
+  .day-head { font-family:'Anton'; font-size:15px; letter-spacing:1px; text-transform:uppercase; color:var(--gold); margin:30px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--line); }
+  .day-head:first-of-type { margin-top:0; }
+  .tier-tag { display:inline-block; font-size:11px; font-weight:700; letter-spacing:0.4px; padding:2px 9px; border-radius:50px; margin-left:6px; vertical-align:middle; }
+  .tier-tag.bronze { background:rgba(205,127,74,0.16); color:#e0a06a; border:1px solid rgba(205,127,74,0.45); }
+  .tier-tag.silver { background:rgba(194,200,208,0.16); color:#c2c8d0; border:1px solid rgba(194,200,208,0.45); }
+  .tier-tag.gold   { background:rgba(245,197,66,0.16); color:var(--gold); border:1px solid rgba(245,197,66,0.45); }
+  .tip.sgm::before, .tip.special::before { background:linear-gradient(90deg,#2fd2c4,var(--gold)); }
+  .sgm-tag { font-family:'Anton'; font-size:12px; letter-spacing:1px; color:#2fd2c4; text-transform:uppercase; }
+  .specials-head { font-family:'Anton'; font-size:15px; letter-spacing:1px; text-transform:uppercase; color:#2fd2c4; margin:34px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--line); }
   @media (max-width:540px){ h1{font-size:30px;} .logo{font-size:18px;} }
 </style>
 </head>
@@ -92,22 +101,60 @@
     let html = `<div class="head"><div class="kick">Members Only</div><h1>Your Tips</h1>`
       + `<span class="tier-badge">${tierName} member</span><div class="week">${data.week}</div></div>`;
 
-    data.tips.forEach(function (t) {
-      html += `<div class="tip">`;
-      html += `<div class="sport">🏉 ${t.code || ''} · ${t.type || ''}</div>`;
-      html += `<div class="match">${t.match || ''}</div>`;
-      if (t.legs && t.legs.length) {
-        html += `<div class="sel"><b>${t.sel || 'Same Game Multi'}</b> <span class="odds">$${t.odds}</span></div>`;
-        html += `<div class="legs">`;
-        t.legs.forEach(function (l) { html += `<div class="leg"><span class="c">✓</span>${l}</div>`; });
-        html += `</div>`;
+    const DAY_ORDER = ['Thu','Fri','Sat','Sun'];
+    const DAY_LABEL = { Thu:'Thursday', Fri:'Friday', Sat:'Saturday', Sun:'Sunday' };
+    const tierLabel = { bronze:'🥉 Bronze', silver:'🥈 Silver', gold:'🥇 Gold' };
+    function sportIcon(code) { return code === 'NRL' ? '🏉' : code === 'AFL' ? '🏈' : '🔀'; }
+
+    function renderTip(t) {
+      const isMulti = t.legs && t.legs.length;
+      const cls = 'tip' + (t.special ? ' special' : (isMulti ? ' sgm' : ''));
+      let h = `<div class="${cls}">`;
+      let line = `${sportIcon(t.code)} ${t.code || ''} · ${t.type || ''}`;
+      if (t.tier && tierLabel[t.tier]) line += `<span class="tier-tag ${t.tier}">${tierLabel[t.tier]}</span>`;
+      h += `<div class="sport">${line}</div>`;
+      h += `<div class="match">${t.match || ''}</div>`;
+      if (isMulti) {
+        h += `<div class="sel"><span class="sgm-tag">🎯 Same Game Multi</span></div>`;
+        h += `<div class="sel"><b>${t.sel || ''}</b> <span class="odds">$${t.odds}</span></div>`;
+        h += `<div class="legs">`;
+        t.legs.forEach(function (l) { h += `<div class="leg"><span class="c">✓</span>${l}</div>`; });
+        h += `</div>`;
       } else {
-        html += `<div class="sel"><b>${t.sel || ''}</b> <span class="odds">$${t.odds}</span></div>`;
+        h += `<div class="sel"><b>${t.sel || ''}</b> <span class="odds">$${t.odds}</span></div>`;
       }
-      if (t.reason) html += `<div class="reason">${t.reason}</div>`;
-      if (t.bookie) html += `<div class="reason">Best bookie: ${t.bookie}</div>`;
-      html += `</div>`;
+      if (t.reason) h += `<div class="reason">${t.reason}</div>`;
+      if (t.bookie) h += `<div class="reason">Best bookie: ${t.bookie}</div>`;
+      h += `</div>`;
+      return h;
+    }
+
+    // Multi-day "specials" (e.g. cross-sport multi) sit in their own block; everything else groups by day.
+    const specials = data.tips.filter(function (t) { return t.special; });
+    const dated = data.tips.filter(function (t) { return !t.special; });
+
+    DAY_ORDER.forEach(function (day) {
+      const dayTips = dated.filter(function (t) { return t.day === day; });
+      if (!dayTips.length) return;
+      // standard tips first, multis after, within each day
+      dayTips.sort(function (a, b) {
+        return ((a.legs && a.legs.length) ? 1 : 0) - ((b.legs && b.legs.length) ? 1 : 0);
+      });
+      html += `<div class="day-head">🗓 ${DAY_LABEL[day]}</div>`;
+      dayTips.forEach(function (t) { html += renderTip(t); });
     });
+
+    // Safety net: any tip with a missing/unknown day still shows, in a trailing group.
+    const undated = dated.filter(function (t) { return DAY_ORDER.indexOf(t.day) === -1; });
+    if (undated.length) {
+      html += `<div class="day-head">🗓 This week</div>`;
+      undated.forEach(function (t) { html += renderTip(t); });
+    }
+
+    if (specials.length) {
+      html += `<div class="specials-head">⭐ Specials</div>`;
+      specials.forEach(function (t) { html += renderTip(t); });
+    }
 
     show(html);
   } catch (err) {
