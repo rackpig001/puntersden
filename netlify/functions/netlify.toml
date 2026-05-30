@@ -1,0 +1,32 @@
+# Netlify configuration for The Punters Den
+# Functions live in netlify/functions and run server-side (Stripe + member access).
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# Make sure tips.json is bundled with the get-tips function (and the webhook, just in case).
+# Without this, the function can't read the file at runtime.
+[functions]
+  included_files = ["netlify/functions/tips.json"]
+
+[functions."get-tips"]
+  included_files = ["netlify/functions/tips.json"]
+
+# Pretty URL for the members tips page: /tips → tips.html
+[[redirects]]
+  from = "/tips"
+  to = "/tips.html"
+  status = 200
+
+# Pretty URL for the post-payment welcome page: /checkout-complete → checkout-complete.html
+[[redirects]]
+  from = "/checkout-complete"
+  to = "/checkout-complete.html"
+  status = 200
+
+# Function endpoints (called by the site + Stripe). These are automatic,
+# but listed here for clarity:
+#   /.netlify/functions/create-checkout-session   → starts embedded checkout
+#   /.netlify/functions/stripe-webhook            → Stripe calls this on payment/cancel
+#   /.netlify/functions/get-tips                  → members page fetches their tips
