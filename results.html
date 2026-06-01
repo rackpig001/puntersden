@@ -178,7 +178,7 @@
       <a href="results.html" class="active">The Scoreboard</a>
       <a href="#how-scoreboard" onclick="document.getElementById('navLinks').classList.remove('open')">How It Works</a>
       <!-- Member area coming later — re-enable when built:
-      <a href="https://whop.com/the-punters-den/" target="_blank" rel="noopener">Member Login</a>
+      <a href="/find">My Tips</a>
       -->
     </div>
     <a href="index.html#pricing" class="btn nav-cta">Join the Den</a>
@@ -295,6 +295,7 @@
   </div>
 </footer>
 
+<script src="track-record.js"></script>
 <script>
   // ════════════════════════════════════════════════════════════════
   //  EDIT YOUR RESULTS HERE — add each tip as you grade it every week.
@@ -306,12 +307,8 @@
   //  a loss is -1 unit, a push is 0. The stats + graph auto-calculate.
   //  Add newest at the TOP. Keep it REAL — only enter tips that actually ran.
   // ════════════════════════════════════════════════════════════════
-  const TIPS = [
-    // ── LIVE RECORD — add newest tips at the TOP. One object per tip:
-    // { rd: "R14 · Jun 6", code: "NRL", match: "Storm v Knights", type: "H2H", sel: "Storm", odds: 1.70, result: "win" },
-    // result: "win" | "loss" | "push"   ·   type: "H2H" | "Line" | "SGM" | "Prop"
-    // (cleared for a fresh, verified live record — Jun 2026)
-  ];
+  // Record comes from the shared track-record.js (single source of truth, shared with the landing page).
+  const TIPS = (window.TRACK_RECORD || []);
 
   // ── staking: flat 1 unit per tip; 1 unit = $10 ──
   const UNIT = 10;

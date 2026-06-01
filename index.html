@@ -51,6 +51,7 @@
   .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
   .logo { display: flex; align-items: center; gap: 10px; font-family: 'Anton'; font-size: 22px; letter-spacing: 1px; text-transform: uppercase; }
   .logo .paw { font-size: 26px; }
+  .logo img.paw{height:30px;width:auto;vertical-align:middle;}
   .logo .den { color: var(--red); }
   .nav-links { display: flex; gap: 32px; align-items: center; }
   .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.3px; transition: color 0.2s; }
@@ -329,9 +330,7 @@
       <a href="results.html">Results</a>
       <a href="#pricing" onclick="document.getElementById('navLinks').classList.remove('open')">Pricing</a>
       <a href="#faq" onclick="document.getElementById('navLinks').classList.remove('open')">FAQ</a>
-      <!-- Member area coming later (private-link access via SMS) — re-enable when built:
-      <a href="/tips">My Tips</a>
-      -->
+      <a href="/find">My Tips</a>
     </div>
     <a href="#pricing" class="btn nav-cta">Join the Den</a>
     <button class="burger" aria-label="Menu" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
@@ -532,12 +531,13 @@
     <div class="results-box reveal">
       <h2>We show you everything</h2>
       <p>Anyone can post a winning slip. The real test is the losers — and that's what most services hide. We don't. Every tip is graded after the round and lands on our public Scoreboard at the odds we tipped, win or lose. Judge us on the numbers, not the hype.</p>
-      <div class="stat-row">
-        <div class="stat"><div class="sv">87%*</div><div class="sl">Win rate · H2H tips</div></div>
-        <div class="stat"><div class="sv">100%*</div><div class="sl">NRL · H2H</div></div>
-        <div class="stat"><div class="sv">75%*</div><div class="sl">AFL · H2H</div></div>
+      <div class="stat-row" id="lpStats" style="display:none;">
+        <div class="stat"><div class="sv" id="lp-overall">—</div><div class="sl">Win rate · H2H tips</div></div>
+        <div class="stat"><div class="sv" id="lp-nrl">—</div><div class="sl">NRL · H2H</div></div>
+        <div class="stat"><div class="sv" id="lp-afl">—</div><div class="sl">AFL · H2H</div></div>
       </div>
-      <p style="font-size:12.5px; color:var(--muted); margin-top:-6px; line-height:1.6;">*Pre-launch backtest figures, head-to-head picks only (62 verified selections). Backtested results are simulated, not live bets, and past performance does not guarantee future results. Same Game Multis and live tips carry different risk and are not included in these figures. Full breakdown — every win and loss — on the Scoreboard.</p>
+      <p id="lpBuilding" style="font-size:14px; color:var(--muted); line-height:1.7;">🔧 We're building our track record in the lead-up to launch — every tip we run lands on the Scoreboard, win or lose. Strike rates show here once we've logged enough for the numbers to mean something.</p>
+      <p id="lpFootnote" style="font-size:12.5px; color:var(--muted); margin-top:-6px; line-height:1.6; display:none;">Live head-to-head record, updated after every round. Same Game Multis and player props carry different risk and are tracked separately on the Scoreboard.</p>
       <a href="results.html" class="btn">View Our Track Record</a>
     </div>
   </div>
@@ -729,6 +729,45 @@
 </script>
 
 <a href="#pricing" class="sticky-cta" id="stickyCta">Join the Den 🐕</a>
+
+<!-- Live track record — reads the same data file as the Scoreboard, so the landing stats stay in sync -->
+<script src="track-record.js"></script>
+<script>
+  (function () {
+    var data = window.TRACK_RECORD || [];
+    var MIN_TOTAL = 20;   // hide headline H2H win rate until at least this many H2H results
+    var MIN_SPORT = 8;    // hide a per-sport number until that sport has a fair sample
+
+    function decided(arr) { return arr.filter(function (t) { return t.result === 'win' || t.result === 'loss'; }); }
+    function rate(arr) {
+      var d = decided(arr); if (!d.length) return null;
+      var w = d.filter(function (t) { return t.result === 'win'; }).length;
+      return Math.round(w / d.length * 100);
+    }
+    function show(arr, min) {
+      var d = decided(arr); var r = rate(arr);
+      return (r !== null && d.length >= min) ? r + '%' : '—';
+    }
+
+    var h2h = data.filter(function (t) { return t.type === 'H2H'; });
+    var nrl = h2h.filter(function (t) { return t.code === 'NRL'; });
+    var afl = h2h.filter(function (t) { return t.code === 'AFL'; });
+
+    var statsEl = document.getElementById('lpStats');
+    var buildEl = document.getElementById('lpBuilding');
+    var footEl  = document.getElementById('lpFootnote');
+
+    if (decided(h2h).length >= MIN_TOTAL) {
+      document.getElementById('lp-overall').textContent = show(h2h, MIN_TOTAL);
+      document.getElementById('lp-nrl').textContent     = show(nrl, MIN_SPORT);
+      document.getElementById('lp-afl').textContent     = show(afl, MIN_SPORT);
+      if (statsEl) statsEl.style.display = 'flex';
+      if (footEl)  footEl.style.display = 'block';
+      if (buildEl) buildEl.style.display = 'none';
+    }
+    // else: leave the "building our record" message showing (the honest default)
+  })();
+</script>
 
 </body>
 </html>
