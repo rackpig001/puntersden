@@ -38,36 +38,40 @@ exports.handler = async (event) => {
   try {
     const members = store('members');
 
-    // Find the member whose stored phone matches. (Fine at small scale — if the
-    // member list ever gets very large, swap this for a by-phone index written by
-    // the webhook.)
+    // Find the member(s) whose stored phone matches. A person may have MORE THAN ONE
+    // record (repeat sign-ups / earlier test purchases), so collect them all, newest
+    // first, and return whichever one still has an active/trialing subscription.
     const { blobs } = await members.list();
-    let match = null;
+    const matches = [];
     for (const b of blobs) {
       const rec = await members.get(b.key, { type: 'json' });
-      if (rec && normPhone(rec.phone) === target) { match = { token: b.key, rec }; break; }
+      if (rec && normPhone(rec.phone) === target) matches.push({ token: b.key, rec });
     }
 
-    if (!match) {
+    if (!matches.length) {
       return { statusCode: 404, body: JSON.stringify({ error: 'not_found' }) };
     }
 
-    // Confirm the subscription is still active/trialing (cancelled members get nothing).
-    const subs = await stripe.subscriptions.list({
-      customer: match.rec.customerId,
-      status: 'all',
-      limit: 10,
-    });
-    const valid = subs.data.find(s => ['active', 'trialing'].includes(s.status));
-    if (!valid) {
-      return { statusCode: 403, body: JSON.stringify({ error: 'inactive' }) };
+    matches.sort((a, b) => new Date(b.rec.createdAt || 0) - new Date(a.rec.createdAt || 0));
+
+    for (const m of matches) {
+      const subs = await stripe.subscriptions.list({
+        customer: m.rec.customerId,
+        status: 'all',
+        limit: 10,
+      });
+      const valid = subs.data.find(s => ['active', 'trialing'].includes(s.status));
+      if (valid) {
+        return {
+          statusCode: 200,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ok: true, token: m.token }),
+        };
+      }
     }
 
-    return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ok: true, token: match.token }),
-    };
+    // matched the number, but none of those records has a live subscription
+    return { statusCode: 403, body: JSON.stringify({ error: 'inactive' }) };
   } catch (err) {
     console.error('find-link error:', err);
     return { statusCode: 500, body: JSON.stringify({ error: 'server_error' }) };
