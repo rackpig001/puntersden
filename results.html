@@ -203,6 +203,10 @@
     <div class="stat"><div class="sv green" id="s-roi">—</div><div class="sl">Return on Investment</div></div>
   </div>
 
+  <div class="note" id="statsNote" style="border-left-color: var(--gold); margin-bottom: 20px;">
+    📊 <b>Strike rate &amp; ROI go live once we've logged enough tips</b> for the numbers to mean something. Until then, every individual result is shown below — nothing hidden.
+  </div>
+
   <!-- CHART -->
   <div class="chart-card" id="chartCard" style="display:none;">
     <div class="chart-head">
@@ -233,7 +237,7 @@
   <div id="tips"></div>
 
   <div class="note" style="border-left-color: var(--gold); margin-top: 30px;">
-    <b>📋 Pre-launch backtest:</b> The results above are from <b>backtesting</b> — we ran our algorithm across past NRL and AFL rounds using only the information available before each game, then checked every pick against the real result. These are <b>simulated tips, not live bets</b>, shown to demonstrate how our selection logic performs. Our live record begins at launch. Verified head-to-head picks only. <b>A note on the numbers:</b> this sample caught a stretch of form-driven rounds — we don't expect a strike rate this high to hold long term, and we'll publish every live result, wins and losses, exactly as they land.
+    <b>🔧 Building our track record.</b> We're in the lead-up to launch and logging every tip here as it runs — real selections, real results, win or lose. This is a live work-in-progress, not a finished record, so the sample's still small. Full launch and weekly tips for members are coming soon. Nothing here is hidden: every pick we make shows up, exactly as it lands.
   </div>
 </div>
 
@@ -303,77 +307,16 @@
   //  Add newest at the TOP. Keep it REAL — only enter tips that actually ran.
   // ════════════════════════════════════════════════════════════════
   const TIPS = [
-    // PRE-LAUNCH BACKTEST — verified H2H results only (NRL R7-12, AFL R6-11, 2026).
-    // These are simulated tips checked against real results. Replace/add live tips at launch.
-    { rd: "R12 · May 24", code: "NRL", match: "Cowboys v Rabbitohs",  type: "H2H", sel: "Cowboys",    odds: 1.56, result: "win" },
-    { rd: "R12 · May 21", code: "NRL", match: "Raiders v Dolphins",   type: "H2H", sel: "Dolphins",   odds: 1.80, result: "win" },
-    { rd: "R11 · May 17", code: "NRL", match: "Warriors v Broncos",   type: "H2H", sel: "Warriors",   odds: 1.80, result: "win" },
-    { rd: "R11 · May 17", code: "NRL", match: "Titans v Knights",     type: "H2H", sel: "Knights",    odds: 1.60, result: "win" },
-    { rd: "R11 · May 16", code: "NRL", match: "Eels v Storm",         type: "H2H", sel: "Storm",      odds: 1.90, result: "win" },
-    { rd: "R11 · May 16", code: "NRL", match: "Tigers v Sea Eagles",  type: "H2H", sel: "Sea Eagles", odds: 1.68, result: "win" },
-    { rd: "R11 · May 15", code: "NRL", match: "Sharks v Bulldogs",    type: "H2H", sel: "Sharks",     odds: 1.65, result: "win" },
-    { rd: "R10 · May 10", code: "NRL", match: "Raiders v Panthers",   type: "H2H", sel: "Panthers",   odds: 1.65, result: "win" },
-    { rd: "R10 · May 9",  code: "NRL", match: "Storm v Tigers",       type: "H2H", sel: "Storm",      odds: 1.70, result: "win" },
-    { rd: "R10 · May 9",  code: "NRL", match: "Sea Eagles v Broncos", type: "H2H", sel: "Sea Eagles", odds: 1.75, result: "win" },
-    { rd: "R10 · May 9",  code: "NRL", match: "Rabbitohs v Sharks",   type: "H2H", sel: "Rabbitohs",  odds: 1.65, result: "win" },
-    { rd: "R10 · May 9",  code: "NRL", match: "Knights v Dragons",    type: "H2H", sel: "Knights",    odds: 1.55, result: "win" },
-    { rd: "R10 · May 8",  code: "NRL", match: "Roosters v Titans",    type: "H2H", sel: "Roosters",   odds: 1.50, result: "win" },
-    // ─── NRL Rounds 7-9, 2026 — H2H only (backtest batch 2) ───
-    { rd: "R7 · Apr 16",  code: "NRL", match: "Cowboys v Sea Eagles", type: "H2H", sel: "Sea Eagles", odds: 2.00, result: "win" },
-    { rd: "R7 · Apr 17",  code: "NRL", match: "Dolphins v Panthers",  type: "H2H", sel: "Panthers",   odds: 1.55, result: "win" },
-    { rd: "R7 · Apr 18",  code: "NRL", match: "Warriors v Titans",    type: "H2H", sel: "Warriors",   odds: 1.55, result: "win" },
-    { rd: "R7 · Apr 18",  code: "NRL", match: "Rabbitohs v Dragons",  type: "H2H", sel: "Rabbitohs",  odds: 1.50, result: "win" },
-    { rd: "R7 · Apr 19",  code: "NRL", match: "Roosters v Knights",   type: "H2H", sel: "Roosters",   odds: 1.65, result: "win" },
-    { rd: "R8 · Apr 23",  code: "NRL", match: "Tigers v Raiders",     type: "H2H", sel: "Wests Tigers", odds: 1.60, result: "win" },
-    { rd: "R8 · Apr 24",  code: "NRL", match: "Broncos v Bulldogs",   type: "H2H", sel: "Broncos",    odds: 1.75, result: "win" },
-    { rd: "R8 · Apr 25",  code: "NRL", match: "Dragons v Roosters",   type: "H2H", sel: "Roosters",   odds: 1.30, result: "win" },
-    { rd: "R8 · Apr 25",  code: "NRL", match: "Warriors v Dolphins",  type: "H2H", sel: "Warriors",   odds: 1.55, result: "win" },
-    { rd: "R8 · Apr 25",  code: "NRL", match: "Storm v Rabbitohs",    type: "H2H", sel: "Rabbitohs",  odds: 1.70, result: "win" },
-    { rd: "R8 · Apr 26",  code: "NRL", match: "Panthers v Knights",   type: "H2H", sel: "Panthers",   odds: 1.30, result: "win" },
-    { rd: "R9 · May 1",   code: "NRL", match: "Bulldogs v Cowboys",   type: "H2H", sel: "Cowboys",    odds: 1.80, result: "win" },
-    { rd: "R9 · May 1",   code: "NRL", match: "Dolphins v Storm",     type: "H2H", sel: "Dolphins",   odds: 1.65, result: "win" },
-    { rd: "R9 · May 2",   code: "NRL", match: "Titans v Raiders",     type: "H2H", sel: "Raiders",    odds: 2.00, result: "win" },
-    { rd: "R9 · May 2",   code: "NRL", match: "Eels v Warriors",      type: "H2H", sel: "Warriors",   odds: 1.65, result: "win" },
-    { rd: "R9 · May 2",   code: "NRL", match: "Roosters v Broncos",   type: "H2H", sel: "Roosters",   odds: 1.65, result: "win" },
-    { rd: "R9 · May 3",   code: "NRL", match: "Panthers v Sea Eagles", type: "H2H", sel: "Panthers",  odds: 1.50, result: "win" },
-    // ─── AFL (Rounds 9-11, 2026) — H2H only ───
-    { rd: "R11 · May 24", code: "AFL", match: "GWS v Brisbane",        type: "H2H", sel: "Brisbane",     odds: 1.90, result: "loss" },
-    { rd: "R11 · May 23", code: "AFL", match: "North Melb v Gold Coast", type: "H2H", sel: "Gold Coast", odds: 1.90, result: "loss" },
-    { rd: "R11 · May 23", code: "AFL", match: "Port Adelaide v Carlton", type: "H2H", sel: "Port Adelaide", odds: 1.85, result: "loss" },
-    { rd: "R11 · May 23", code: "AFL", match: "Geelong v Sydney",      type: "H2H", sel: "Geelong",      odds: 2.44, result: "win"  },
-    { rd: "R11 · May 22", code: "AFL", match: "Fremantle v St Kilda",  type: "H2H", sel: "Fremantle",    odds: 1.55, result: "win"  },
-    { rd: "R11 · May 21", code: "AFL", match: "Hawthorn v Adelaide",   type: "H2H", sel: "Hawthorn",     odds: 1.70, result: "win"  },
-    { rd: "R10 · May 16", code: "AFL", match: "Adelaide v North Melb", type: "H2H", sel: "Adelaide",     odds: 1.75, result: "win"  },
-    { rd: "R10 · May 17", code: "AFL", match: "GWS v West Coast",      type: "H2H", sel: "GWS",          odds: 1.70, result: "loss" },
-    { rd: "R10 · May 16", code: "AFL", match: "Melbourne v Hawthorn",  type: "H2H", sel: "Melbourne",    odds: 2.10, result: "win"  },
-    { rd: "R9 · May 10",  code: "AFL", match: "Adelaide v Richmond",   type: "H2H", sel: "Adelaide",     odds: 1.55, result: "win"  },
-    { rd: "R9 · May 9",   code: "AFL", match: "Geelong v Collingwood", type: "H2H", sel: "Geelong",      odds: 1.85, result: "win"  },
-    { rd: "R9 · May 8",   code: "AFL", match: "Brisbane v Carlton",    type: "H2H", sel: "Brisbane",     odds: 1.55, result: "win"  },
-    { rd: "R9 · May 7",   code: "AFL", match: "Fremantle v Hawthorn",  type: "H2H", sel: "Fremantle",    odds: 1.80, result: "win"  },
-    // ─── AFL Rounds 6-8, 2026 — H2H only (backtest batch 2) ───
-    { rd: "R6 · Apr 16",  code: "AFL", match: "Carlton v Collingwood", type: "H2H", sel: "Collingwood",  odds: 1.65, result: "win"  },
-    { rd: "R6 · Apr 17",  code: "AFL", match: "Geelong v W Bulldogs",  type: "H2H", sel: "Geelong",      odds: 1.65, result: "win"  },
-    { rd: "R6 · Apr 18",  code: "AFL", match: "Hawthorn v Port Adel",  type: "H2H", sel: "Hawthorn",     odds: 1.75, result: "win"  },
-    { rd: "R6 · Apr 19",  code: "AFL", match: "Brisbane v Melbourne",  type: "H2H", sel: "Brisbane",     odds: 1.52, result: "loss" },
-    { rd: "R6 · Apr 19",  code: "AFL", match: "North Melb v Richmond", type: "H2H", sel: "North Melb",   odds: 1.60, result: "win"  },
-    { rd: "R6 · Apr 18",  code: "AFL", match: "Adelaide v St Kilda",   type: "H2H", sel: "Adelaide",     odds: 1.55, result: "win"  },
-    { rd: "R7 · Apr 23",  code: "AFL", match: "W Bulldogs v Sydney",   type: "H2H", sel: "Sydney",       odds: 1.55, result: "win"  },
-    { rd: "R7 · Apr 25",  code: "AFL", match: "Hawthorn v Gold Coast", type: "H2H", sel: "Hawthorn",     odds: 1.60, result: "win"  },
-    { rd: "R7 · Apr 25",  code: "AFL", match: "Essendon v Collingwood", type: "H2H", sel: "Collingwood", odds: 1.58, result: "win"  },
-    { rd: "R7 · Apr 25",  code: "AFL", match: "Port Adel v Geelong",   type: "H2H", sel: "Geelong",      odds: 1.52, result: "loss" },
-    { rd: "R7 · Apr 26",  code: "AFL", match: "Brisbane v Adelaide",   type: "H2H", sel: "Brisbane",     odds: 1.65, result: "win"  },
-    { rd: "R7 · Apr 26",  code: "AFL", match: "St Kilda v West Coast", type: "H2H", sel: "St Kilda",     odds: 1.65, result: "win"  },
-    { rd: "R8 · Apr 30",  code: "AFL", match: "Collingwood v Hawthorn", type: "H2H", sel: "Hawthorn",    odds: 1.70, result: "loss" },
-    { rd: "R8 · May 2",   code: "AFL", match: "West Coast v Richmond", type: "H2H", sel: "West Coast",   odds: 1.75, result: "loss" },
-    { rd: "R8 · May 2",   code: "AFL", match: "Carlton v St Kilda",    type: "H2H", sel: "St Kilda",     odds: 1.70, result: "win"  },
-    { rd: "R8 · May 2",   code: "AFL", match: "Fremantle v W Bulldogs", type: "H2H", sel: "Fremantle",   odds: 1.55, result: "win"  },
-    { rd: "R8 · May 3",   code: "AFL", match: "Sydney v Melbourne",    type: "H2H", sel: "Sydney",       odds: 1.50, result: "win"  },
-    { rd: "R8 · May 1",   code: "AFL", match: "Adelaide v Port Adel",  type: "H2H", sel: "Adelaide",     odds: 1.80, result: "win"  },
-    { rd: "R8 · May 3",   code: "AFL", match: "Gold Coast v GWS",      type: "H2H", sel: "Gold Coast",   odds: 1.55, result: "win"  },
+    // ── LIVE RECORD — add newest tips at the TOP. One object per tip:
+    // { rd: "R14 · Jun 6", code: "NRL", match: "Storm v Knights", type: "H2H", sel: "Storm", odds: 1.70, result: "win" },
+    // result: "win" | "loss" | "push"   ·   type: "H2H" | "Line" | "SGM" | "Prop"
+    // (cleared for a fresh, verified live record — Jun 2026)
   ];
 
   // ── staking: flat 1 unit per tip; 1 unit = $10 ──
   const UNIT = 10;
+  // Hide headline win-rate / ROI / chart until the sample is fair.
+  const STATS_MIN = 20;
 
   // ── compute P&L per tip (in units) ──
   function unitPL(t) {
@@ -412,20 +355,33 @@
       else if (t.result === 'loss') { decided++; }
       else { ret += 1; } // push refunds the unit
     });
+    const avg = set.length ? (oddsSum / set.length) : 0;
+    document.getElementById('s-total').textContent = set.length;
+    document.getElementById('s-avg').textContent   = '$' + avg.toFixed(2);
+
+    const ready = decided >= STATS_MIN;
+    const noteEl = document.getElementById('statsNote');
+    if (noteEl) noteEl.style.display = ready ? 'none' : 'block';
+
+    const wrEl  = document.getElementById('s-winrate');
+    const roiEl = document.getElementById('s-roi');
+    const ptEl  = document.getElementById('profitTotal');
+    if (!ready) {
+      // small sample — don't publish a misleading headline yet
+      wrEl.textContent = '—';
+      roiEl.textContent = '—';
+      roiEl.style.color = 'var(--muted)';
+      if (ptEl) ptEl.textContent = '';
+      return;
+    }
     const wr  = decided ? Math.round(wins / decided * 100) : 0;
     const roi = staked ? Math.round((ret - staked) / staked * 100) : 0;
-    const avg = set.length ? (oddsSum / set.length) : 0;
-    document.getElementById('s-winrate').textContent = wr + '%';
-    document.getElementById('s-total').textContent   = set.length;
-    document.getElementById('s-avg').textContent     = '$' + avg.toFixed(2);
-    const roiEl = document.getElementById('s-roi');
+    wrEl.textContent = wr + '%';
     roiEl.textContent = (roi >= 0 ? '+' : '') + roi + '%';
     roiEl.classList.toggle('green', roi >= 0);
     roiEl.style.color = roi < 0 ? 'var(--loss)' : 'var(--green)';
-    // profit total in units + dollars
     const profitUnits = ret - staked;
     const profitDollars = profitUnits * UNIT;
-    const ptEl = document.getElementById('profitTotal');
     if (ptEl) {
       ptEl.textContent = (profitUnits >= 0 ? '+' : '') + profitUnits.toFixed(2) + ' units  (' + (profitDollars >= 0 ? '+$' : '-$') + Math.abs(profitDollars).toFixed(0) + ')';
       ptEl.style.color = profitUnits < 0 ? 'var(--loss)' : 'var(--green)';
@@ -459,7 +415,7 @@
 
   function drawChart() {
     const set = sportSet();
-    if (set.length < 2) { chartCard.style.display = 'none'; return; }
+    if (set.length < STATS_MIN) { chartCard.style.display = 'none'; return; }
     chartCard.style.display = 'block';
     const canvas = document.getElementById('pnlChart');
     const dpr = window.devicePixelRatio || 1;
