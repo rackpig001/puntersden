@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get My Tips — The Punters Den</title>
+<link rel="icon" type="image/png" href="/Cap.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --black:#0a140f; --panel:#10201a; --panel-2:#13261d; --gold:#f5c542; --green:#2fd27a; --loss:#e6584e; --text:#f4f4f6; --muted:#9aa69c; --line:rgba(255,255,255,0.08); }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--black); color:var(--text); font-family:'Archivo',sans-serif; line-height:1.6; }
+  nav { border-bottom:1px solid var(--line); background:rgba(10,10,12,0.72); backdrop-filter:blur(14px); }
+  .nav-inner { display:flex; align-items:center; height:68px; max-width:760px; margin:0 auto; padding:0 22px; }
+  .logo { display:flex; align-items:center; gap:10px; font-family:'Anton'; font-size:20px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:inherit; }
+  .logo img.paw { height:30px; width:auto; vertical-align:middle; }
+  .logo .den { color:var(--gold); }
+  .wrap { max-width:520px; margin:0 auto; padding:50px 22px 80px; }
+  .kick { font-family:'Anton'; color:var(--gold); letter-spacing:1px; text-transform:uppercase; font-size:13px; }
+  h1 { font-family:'Anton'; font-size:34px; letter-spacing:1px; margin:6px 0 10px; }
+  .lead { color:var(--muted); margin-bottom:26px; }
+  .card { background:linear-gradient(165deg,var(--panel-2),var(--panel)); border:1px solid var(--line); border-radius:14px; padding:24px; }
+  label { display:block; font-size:13px; color:var(--muted); margin-bottom:8px; }
+  input { width:100%; background:#0d0d0d; border:1px solid #333; border-radius:10px; padding:15px; color:var(--text); font-size:17px; font-family:'Archivo',sans-serif; outline:none; box-sizing:border-box; }
+  input:focus { border-color:var(--gold); }
+  button { width:100%; margin-top:14px; background:linear-gradient(135deg,var(--green),#27b369); color:#06281a; border:none; border-radius:10px; padding:15px; font-size:16px; font-weight:800; cursor:pointer; font-family:'Archivo',sans-serif; }
+  button:disabled { opacity:0.55; cursor:default; }
+  .msg { margin-top:16px; font-size:14px; padding:14px; border-radius:10px; display:none; }
+  .msg.error { display:block; background:rgba(230,88,78,0.12); border:1px solid rgba(230,88,78,0.4); color:#ff9a92; }
+  .msg.ok { display:block; background:rgba(47,210,122,0.12); border:1px solid rgba(47,210,122,0.4); color:var(--green); }
+  .hint { margin-top:16px; font-size:12px; color:var(--muted); }
+  .hint a { color:var(--gold); }
+  .rg { text-align:center; color:var(--muted); font-size:12px; margin-top:30px; padding-top:20px; border-top:1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo"><img src="/Cap.png" alt="Punter the Dingo" class="paw"> The Punters <span class="den">Den</span></a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="kick">Members</div>
+  <h1>Get My Tips</h1>
+  <p class="lead">Already a member but lost your link? Pop in the mobile number you signed up with and we'll take you straight to your tips. 🐕</p>
+
+  <div class="card">
+    <label for="phone">Mobile number</label>
+    <input id="phone" type="tel" inputmode="tel" placeholder="04XX XXX XXX" autocomplete="tel">
+    <button id="go" onclick="findTips()">Take me to my tips →</button>
+    <div class="msg" id="msg"></div>
+    <div class="hint">Use the same number you entered at sign-up. Not a member yet? <a href="/#pricing">Join the den</a>.</div>
+  </div>
+
+  <div class="rg">⚠️ Gamble responsibly. 18+ only. For entertainment purposes only. Gambling Help: 1800 858 858</div>
+</div>
+
+<script>
+  const btn = document.getElementById('go');
+  const msgEl = document.getElementById('msg');
+  const phoneEl = document.getElementById('phone');
+
+  function show(type, text) { msgEl.className = 'msg ' + type; msgEl.textContent = text; }
+
+  phoneEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') findTips(); });
+
+  async function findTips() {
+    const phone = phoneEl.value.trim();
+    if (phone.replace(/\D/g, '').length < 9) { show('error', "That doesn't look like a full mobile number — give it another go."); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Checking...';
+    msgEl.className = 'msg';
+
+    try {
+      const res = await fetch('/.netlify/functions/find-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        show('ok', "Found you — loading your tips...");
+        window.location.href = '/tips?key=' + encodeURIComponent(data.token);
+        return;
+      }
+
+      if (res.status === 404) {
+        show('error', "We couldn't find a member with that number. Double-check it's the mobile you signed up with — or join below.");
+      } else if (res.status === 403) {
+        show('error', "That number's on file, but the subscription isn't active right now. Re-join the den to get back on the tips.");
+      } else {
+        show('error', "Hmm, something went wrong. Please try again in a moment.");
+      }
+    } catch (err) {
+      show('error', "Couldn't reach our system. Please try again shortly.");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Take me to my tips →';
+    }
+  }
+</script>
+
+</body>
+</html>

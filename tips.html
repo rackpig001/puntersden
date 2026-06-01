@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="/Cap.png">
 <style>
   :root { --black:#0a140f; --panel:#10201a; --panel-2:#13261d; --gold:#f5c542; --green:#2fd27a; --loss:#e6584e; --text:#f4f4f6; --muted:#9aa69c; --line:rgba(255,255,255,0.08); }
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -15,6 +16,7 @@
   .nav-inner { display:flex; align-items:center; height:68px; max-width:760px; margin:0 auto; padding:0 22px; }
   .logo { display:flex; align-items:center; gap:10px; font-family:'Anton'; font-size:20px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:inherit; }
   .logo .paw { font-size:24px; }
+  .logo img.paw{height:30px;width:auto;vertical-align:middle;}
   .logo .den { color:var(--gold); }
   .wrap { max-width:760px; margin:0 auto; padding:40px 22px 80px; }
   .head { margin-bottom:28px; }
@@ -57,7 +59,7 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="/" class="logo"><span class="paw">🐕</span> The Punters <span class="den">Den</span></a>
+    <a href="/" class="logo"><img src="/Cap.png" alt="Punter the Dingo" class="paw"> The Punters <span class="den">Den</span></a>
   </div>
 </nav>
 
@@ -80,7 +82,7 @@
   function show(html) { content.innerHTML = html; }
 
   if (!key) {
-    show(`<div class="state"><div class="big">No access key</div><p>Please use the personal link from your SMS. Need help? <a href="/">Back to site</a></p></div>`);
+    show(`<div class="state"><div class="big">No access key</div><p>Please use your personal link. Lost it? <a href="/find">Get your tips with your phone number</a>. Not a member? <a href="/">Back to site</a></p></div>`);
     return;
   }
 
