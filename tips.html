@@ -95,7 +95,7 @@
     const data = await res.json();
 
     if (!data.tips || !data.tips.length) {
-      show(`<div class="state"><div class="big">No tips posted yet</div><p>This week's tips aren't up just yet — you'll get an SMS the moment they land. 🐕</p></div>`);
+      show(`<div class="state"><div class="big">No tips posted yet</div><p>This week's tips aren't up just yet — check back here soon, they'll appear the moment they're posted. 🐕</p></div>`);
       return;
     }
 
