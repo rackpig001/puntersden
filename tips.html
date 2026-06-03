@@ -117,7 +117,7 @@
       h += `<div class="sport">${line}</div>`;
       h += `<div class="match">${t.match || ''}</div>`;
       if (isMulti) {
-        h += `<div class="sel"><span class="sgm-tag">🎯 Same Game Multi</span></div>`;
+        h += `<div class="sel"><span class="sgm-tag">🎯 ${t.type || 'Same Game Multi'}</span></div>`;
         h += `<div class="sel"><b>${t.sel || ''}</b> <span class="odds">$${t.odds}</span></div>`;
         h += `<div class="legs">`;
         t.legs.forEach(function (l) { h += `<div class="leg"><span class="c">✓</span>${l}</div>`; });
