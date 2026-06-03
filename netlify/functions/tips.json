@@ -1,6 +1,159 @@
 {
-  "week": "Between rounds",
-  "bronze": [],
-  "silver": [],
-  "gold": []
+  "week": "Round 14 NRL / Round 13 AFL",
+  "bronze": [
+    {
+      "day": "Thu",
+      "code": "AFL",
+      "type": "Head to Head",
+      "match": "Adelaide Crows vs Geelong Cats",
+      "sel": "Geelong Cats",
+      "odds": "1.60",
+      "bookie": "Ladbrokes",
+      "reason": "Tip of the round. Adelaide are without both Riley Thilthorpe (suspended) and Izak Rankine (calf) — losing their two most dangerous forwards is a big blow. Geelong (4th, 8-4) come off the bye sharp and stung by their Round 12 loss to Carlton, with Mannagh and Ollie Henry both in red-hot goalkicking form. Five rules fired. Worth locking the H2H early before the line shortens."
+    },
+    {
+      "day": "Thu",
+      "code": "NRL",
+      "type": "Head to Head",
+      "match": "Manly Sea Eagles vs South Sydney Rabbitohs",
+      "sel": "Manly Sea Eagles",
+      "odds": "1.60",
+      "bookie": "Ladbrokes",
+      "reason": "Brookvale is a genuine fortress and Manly have their best side available, with Olakau'atu back in the run-on side and Koula cleared post-Origin. Reuben Garrick has 3 tries in his last 2 against Souths. Both sides are 7-5, but Manly's superior points differential (+107 v +70) edges a tight one at home."
+    },
+    {
+      "day": "Fri",
+      "code": "NRL",
+      "type": "Head to Head",
+      "match": "Canberra Raiders vs Sydney Roosters",
+      "sel": "Sydney Roosters",
+      "odds": "1.65",
+      "bookie": "TAB",
+      "reason": "The Roosters (3rd, 8-3) are coming off a loss to the Storm, and top sides tend to respond hard the week after a defeat. The Raiders (12th) are missing established centre Sebastian Kris from a reshuffled side, and with the top-four race tight the Roosters' motivation is real. Note: this leans on James Tedesco playing — if he's a late out, treat it as monitor-only."
+    },
+    {
+      "day": "Fri",
+      "code": "AFL",
+      "type": "Head to Head",
+      "match": "Hawthorn Hawks vs Western Bulldogs",
+      "sel": "Hawthorn Hawks",
+      "odds": "1.54",
+      "bookie": "Ladbrokes",
+      "reason": "Hawthorn (3rd, 8-4) are near their peak — Gunston 5 goals last week, Sicily 33 disposals and 13 intercepts, Newcombe 25+ in three straight against the Dogs — and they're strong at the MCG against this opponent. We're at 4 stars not 5 because the Bulldogs get Tim English back (6-1 with him in 2026), which is a genuine counter."
+    }
+  ],
+  "silver": [
+    {
+      "day": "Sat",
+      "code": "AFL",
+      "type": "Head to Head",
+      "match": "Gold Coast Suns vs Brisbane Lions (QClash)",
+      "sel": "Gold Coast Suns",
+      "odds": "1.74",
+      "bookie": "Ladbrokes",
+      "reason": "Brisbane arrive on a two-game skid and short-handed, without Keidean Coleman (hamstring, ~6 weeks) and Ryan Lester. Gold Coast (5th, 8-4) are pushing hard for a top-four spot, with recruits Christian Petracca and Jamarra Ugle-Hagan firing, and the QClash crowd at their home deck is a real edge the market underrates."
+    },
+    {
+      "day": "Thu",
+      "code": "NRL",
+      "type": "Anytime Try Scorer",
+      "match": "Manly Sea Eagles vs South Sydney Rabbitohs",
+      "sel": "Reuben Garrick — Anytime Try",
+      "odds": "2.20",
+      "bookie": "Ladbrokes",
+      "reason": "Standout prop of the round. Garrick has 3 tries in his last 2 against Souths, plays at home at Brookvale where he sees his best ball, and all five of our prop rules fire. At $2.20 the market looks to be underrating the matchup."
+    },
+    {
+      "day": "Thu",
+      "code": "NRL",
+      "type": "Same Game Multi",
+      "match": "Manly Sea Eagles vs South Sydney Rabbitohs",
+      "sel": "4-Leg Multi",
+      "odds": "5.50",
+      "legs": [
+        "Manly Sea Eagles to Win ($1.60)",
+        "Reuben Garrick Anytime Try ($2.20)",
+        "Alex Johnston Anytime Try ($1.70)",
+        "Total Points Over 43.5 ($1.91)"
+      ],
+      "reason": "Manly win anchor (four rules plus the Brookvale fortress), Garrick the sharpest player leg in the round, and Alex Johnston a 58.8% anytime tryscorer who finds the line regardless of scoreline. The Over leans into a returning-stars, free-flowing contest."
+    },
+    {
+      "day": "Thu",
+      "code": "AFL",
+      "type": "Same Game Multi",
+      "match": "Adelaide Crows vs Geelong Cats",
+      "sel": "4-Leg Multi",
+      "odds": "4.80",
+      "legs": [
+        "Geelong Cats to Win ($1.58)",
+        "Shaun Mannagh Anytime Goal ($1.60)",
+        "Ollie Henry Anytime Goal ($1.75)",
+        "Total Points Over 161.5 ($1.91)"
+      ],
+      "reason": "Built off the strongest H2H of the round (see the Geelong tip). Mannagh and Henry both feast on the gaps left by Thilthorpe's and Rankine's absences, and Geelong's attacking output backs the Over."
+    }
+  ],
+  "gold": [
+    {
+      "day": "Sun",
+      "code": "NRL",
+      "type": "Same Game Multi",
+      "match": "Wests Tigers vs Penrith Panthers",
+      "sel": "3-Leg Multi",
+      "odds": "4.50",
+      "legs": [
+        "Penrith Panthers to Win ($1.18)",
+        "Brian To'o Anytime Try ($1.80)",
+        "Blaize Talagi Anytime Try ($2.20)"
+      ],
+      "reason": "Gold exclusive. Penrith are a near-lock but $1.18 is too short to back alone — the SGM is where the value sits. Cleary, Yeo and To'o return from Origin against a Tigers side missing key forwards, and To'o is a classic fresh-legs-in-a-blowout tryscorer. Talagi adds a distinct second wing option."
+    },
+    {
+      "day": "Sun",
+      "code": "AFL",
+      "type": "Same Game Multi",
+      "match": "Essendon vs Carlton",
+      "sel": "3-Leg Multi",
+      "odds": "3.80",
+      "legs": [
+        "Carlton Blues to Win ($1.22)",
+        "Patrick Cripps Anytime Goal ($2.20)",
+        "Sam Walsh Anytime Goal ($2.50)"
+      ],
+      "reason": "Gold exclusive, 5-star confidence. Carlton are dominant here but $1.22 is well below our standalone threshold, so the SGM is the way to extract value. Cripps is driving Carlton's three-game winning streak and should own the stoppages, with Walsh a strong second scorer. Both are locked-in starters."
+    },
+    {
+      "special": true,
+      "code": "MULTI",
+      "type": "Cross-Sport Multi",
+      "match": "NRL + AFL · 4 legs",
+      "sel": "4-Leg Cross-Sport Multi",
+      "odds": "6.40",
+      "legs": [
+        "NRL · Sydney Roosters to Win ($1.64)",
+        "NRL · Manly Sea Eagles to Win ($1.60)",
+        "AFL · Geelong Cats to Win ($1.58)",
+        "AFL · Hawthorn Hawks to Win ($1.53)"
+      ],
+      "reason": "Gold exclusive. The four cleanest win plays across both codes this week, grounded in the best tips of the round rather than manufactured odds. Note: the Roosters leg depends on Tedesco playing, and check your bookie allows NRL + AFL legs in one multi."
+    },
+    {
+      "special": true,
+      "code": "MULTI",
+      "type": "Hero Multi",
+      "match": "NRL + AFL · the weekly long-shot",
+      "sel": "6-Leg Hero Multi 🚀",
+      "odds": "67.50",
+      "legs": [
+        "NRL · Reuben Garrick Anytime Try (Manly v Souths)",
+        "NRL · Brian To'o Anytime Try (Panthers v Tigers)",
+        "NRL · Jamayne Isaako Anytime Try (Dolphins v Cowboys)",
+        "AFL · Jack Gunston 2+ Goals (Hawthorn v Bulldogs)",
+        "AFL · Shaun Mannagh Anytime Goal (Geelong v Adelaide)",
+        "AFL · Jai Newcombe 25+ Disposals (Hawthorn v Bulldogs)"
+      ],
+      "reason": "Small stake, big dream. This is the weekly long-shot — clearly not a likely winner, just a bit of fun, so keep your stake small. Six genuine chances across both codes; you need all six to land. Gamble responsibly."
+    }
+  ]
 }
