@@ -34,6 +34,12 @@
   .tip .play-tag { font-size:10px; font-weight:800; letter-spacing:.5px; padding:2px 7px; border-radius:5px; vertical-align:middle; }
   .tip .play-tag.strong { background:#0d2a14; color:#4ade80; border:1px solid #2d5a2d; }
   .tip .play-tag.value { background:#2a1f00; color:#f0c14b; border:1px solid #6b5418; }
+  .day-filter { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:0 0 22px; padding:12px; background:var(--panel); border:1px solid var(--line); border-radius:14px; position:sticky; top:10px; z-index:5; }
+  .day-btn { font-size:15px; font-weight:700; font-family:'Archivo',sans-serif; padding:11px 17px; border-radius:999px; border:1.5px solid var(--line); background:var(--panel-2); color:var(--muted); cursor:pointer; transition:all .15s; min-height:46px; }
+  .day-btn:hover { border-color:var(--gold); color:var(--text); }
+  .day-btn.active { background:var(--gold); color:#0a140f; border-color:var(--gold); }
+  .day-btn .cnt { opacity:.6; margin-left:5px; font-weight:600; }
+  .day-btn.active .cnt { opacity:.85; }
   .tip .reason { color:var(--muted); font-size:14px; margin-top:8px; }
   .legs { margin-top:10px; }
   .leg { background:rgba(0,0,0,0.2); border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin-bottom:6px; font-size:14px; }
@@ -107,7 +113,7 @@
     const tierName = (data.tier || '').charAt(0).toUpperCase() + (data.tier || '').slice(1);
     let html = `<div class="head"><div class="kick">Members Only</div><h1>Your Tips</h1>`
       + `<span class="tier-badge">${tierName} member</span><div class="week">${data.week}</div></div>`;
-    html += `<div style="text-align:center;font-size:13px;color:var(--muted);margin:0 0 18px;line-height:1.5;">💡 Odds shown are indicative — always confirm the exact price in your own account before betting.</div>`;
+    html += `<div style="text-align:center;font-size:13px;color:var(--muted);margin:0 0 18px;line-height:1.5;">💡 Odds shown are a guide — always confirm the exact price in your own account before betting.</div>`;
 
     const DAY_ORDER = ['Thu','Fri','Sat','Sun','Mon'];
     const DAY_LABEL = { Thu:'Thursday', Fri:'Friday', Sat:'Saturday', Sun:'Sunday', Mon:'Monday' };
@@ -125,7 +131,7 @@
       const priced = t.range ? `~$${t.range}` : (t.odds ? `~$${t.odds}` : '');
       if (isMulti) {
         const isSGM = (t.type || '').indexOf('Same Game') !== -1;
-        const note = isSGM ? 'indicative — confirm in your builder' : 'indicative — cross-game multi';
+        const note = isSGM ? 'confirm in your builder' : 'cross-game multi';
         h += `<div class="sel"><span class="sgm-tag">🎯 ${t.type || 'Same Game Multi'}</span></div>`;
         h += `<div class="sel"><b>${t.sel || ''}</b> <span class="odds">${priced}</span></div>`;
         if (priced) h += `<div class="odds-note">${note}</div>`;
@@ -134,11 +140,9 @@
         h += `</div>`;
       } else {
         const head = t.avg ? `~$${t.avg}` : priced;
-        const note = t.avg ? 'avg · indicative' : 'indicative';
+        const note = t.avg ? 'avg' : '';
         const badge = t.tag ? `<span class="play-tag ${String(t.tag).toLowerCase()}">${t.tag}</span>` : '';
-        h += `<div class="sel"><b>${t.sel || ''}</b> ${badge} <span class="odds">${head}</span> <span class="odds-note">${note}</span></div>`;
-        if (t.avg && t.odds && t.bookie) h += `<div class="reason">Best: $${t.odds} @ ${t.bookie}</div>`;
-        else if (t.bookie) h += `<div class="reason">Best bookie: ${t.bookie}</div>`;
+        h += `<div class="sel"><b>${t.sel || ''}</b> ${badge} <span class="odds">${head}</span>${note ? ` <span class="odds-note">${note}</span>` : ''}</div>`;
       }
       if (t.reason) h += `<div class="reason">${t.reason}</div>`;
       h += `</div>`;
@@ -168,26 +172,62 @@
       });
     }
 
+    // Build the day-filter bar (only if there's more than one group to switch between)
+    const undated = dated.filter(function (t) { return DAY_ORDER.indexOf(t.day) === -1; });
+    const presentDays = DAY_ORDER.filter(function (day) { return dated.some(function (t) { return t.day === day; }); });
+    const groupCount = presentDays.length + (undated.length ? 1 : 0) + (specials.length ? 1 : 0);
+    if (groupCount > 1) {
+      let fb = '<div class="day-filter"><button class="day-btn active" data-filter="all">All</button>';
+      presentDays.forEach(function (day) {
+        const n = dated.filter(function (t) { return t.day === day; }).length;
+        fb += '<button class="day-btn" data-filter="' + day + '">' + day + '<span class="cnt">' + n + '</span></button>';
+      });
+      if (undated.length) fb += '<button class="day-btn" data-filter="__week">This week<span class="cnt">' + undated.length + '</span></button>';
+      if (specials.length) fb += '<button class="day-btn" data-filter="__specials">⭐ Specials<span class="cnt">' + specials.length + '</span></button>';
+      fb += '</div>';
+      html += fb;
+    }
+
     DAY_ORDER.forEach(function (day) {
       const dayTips = dated.filter(function (t) { return t.day === day; });
       if (!dayTips.length) return;
+      html += '<div class="day-group" data-day="' + day + '">';
       html += `<div class="day-head">🗓 ${DAY_LABEL[day]}</div>`;
       renderDay(dayTips);
+      html += '</div>';
     });
 
     // Safety net: any tip with a missing/unknown day still shows, in a trailing group.
-    const undated = dated.filter(function (t) { return DAY_ORDER.indexOf(t.day) === -1; });
     if (undated.length) {
+      html += '<div class="day-group" data-day="__week">';
       html += `<div class="day-head">🗓 This week</div>`;
       renderDay(undated);
+      html += '</div>';
     }
 
     if (specials.length) {
+      html += '<div class="day-group" data-day="__specials">';
       html += `<div class="specials-head">⭐ Specials</div>`;
       specials.forEach(function (t) { html += renderTip(t); });
+      html += '</div>';
     }
 
     show(html);
+
+    // Wire the day filter: tap a day to show only those tips, "All" shows everything
+    (function () {
+      const bar = document.querySelector('.day-filter');
+      if (!bar) return;
+      bar.addEventListener('click', function (e) {
+        const btn = e.target.closest('.day-btn');
+        if (!btn) return;
+        const f = btn.getAttribute('data-filter');
+        bar.querySelectorAll('.day-btn').forEach(function (b) { b.classList.toggle('active', b === btn); });
+        document.querySelectorAll('.day-group').forEach(function (g) {
+          g.style.display = (f === 'all' || g.getAttribute('data-day') === f) ? '' : 'none';
+        });
+      });
+    })();
   } catch (err) {
     show(`<div class="state"><div class="big">Something went wrong</div><p>Couldn't load your tips right now. Please try again shortly, or <a href="/">head back to the site</a>.</p></div>`);
   }
