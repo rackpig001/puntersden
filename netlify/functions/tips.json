@@ -69,7 +69,7 @@
       "type": "Same Game Multi",
       "match": "Manly Sea Eagles vs South Sydney Rabbitohs",
       "sel": "4-Leg Multi",
-      "odds": "5.50",
+      "range": "5–6.50",
       "legs": [
         "Manly Sea Eagles to Win ($1.60)",
         "Reuben Garrick Anytime Try ($2.20)",
@@ -84,7 +84,7 @@
       "type": "Same Game Multi",
       "match": "Adelaide Crows vs Geelong Cats",
       "sel": "4-Leg Multi",
-      "odds": "4.80",
+      "range": "4.20–5.50",
       "legs": [
         "Geelong Cats to Win ($1.58)",
         "Shaun Mannagh Anytime Goal ($1.60)",
@@ -101,7 +101,7 @@
       "type": "Same Game Multi",
       "match": "Wests Tigers vs Penrith Panthers",
       "sel": "3-Leg Multi",
-      "odds": "4.50",
+      "range": "4–5.50",
       "legs": [
         "Penrith Panthers to Win ($1.18)",
         "Brian To'o Anytime Try ($1.80)",
@@ -115,7 +115,7 @@
       "type": "Same Game Multi",
       "match": "Essendon vs Carlton",
       "sel": "3-Leg Multi",
-      "odds": "3.80",
+      "range": "3.40–4.50",
       "legs": [
         "Carlton Blues to Win ($1.22)",
         "Patrick Cripps Anytime Goal ($2.20)",
@@ -144,7 +144,7 @@
       "type": "Hero Multi",
       "match": "NRL + AFL · the weekly long-shot",
       "sel": "6-Leg Hero Multi 🚀",
-      "odds": "67.50",
+      "range": "18–21",
       "legs": [
         "NRL · Reuben Garrick Anytime Try (Manly v Souths)",
         "NRL · Brian To'o Anytime Try (Panthers v Tigers)",
