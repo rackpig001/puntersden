@@ -49,6 +49,15 @@
   .statbar .sv { font-family: 'Anton'; font-size: 46px; line-height: 1; color: var(--text); }
   .statbar .sv.green { color: var(--green); }
   .statbar .sl { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 10px; }
+  .breakdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0 0 22px; }
+  .bd-card { background: linear-gradient(165deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+  .bd-card.hero { border-color: rgba(240,193,75,0.28); }
+  .bd-title { font-size: 13px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: var(--text); margin-bottom: 10px; }
+  .bd-fun { font-size: 10px; font-weight: 700; color: var(--gold); background: rgba(240,193,75,0.12); border: 1px solid rgba(240,193,75,0.3); padding: 2px 6px; border-radius: 5px; margin-left: 6px; letter-spacing: .3px; }
+  .bd-row { font-family: 'Anton'; font-size: 26px; color: var(--text); line-height: 1.1; }
+  .bd-row .sr { color: var(--green); }
+  .bd-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  @media (max-width: 680px) { .breakdown { grid-template-columns: 1fr; } }
 
   /* P&L CHART */
   .chart-card { background: linear-gradient(165deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: 18px; padding: 26px 26px 16px; margin-bottom: 30px; }
@@ -89,6 +98,7 @@
   .res-pill.win { background: rgba(47,210,122,0.15); color: var(--green); border: 1px solid rgba(47,210,122,0.3); }
   .res-pill.loss { background: rgba(230,88,78,0.12); color: var(--loss); border: 1px solid rgba(230,88,78,0.3); }
   .res-pill.push { background: rgba(255,255,255,0.07); color: var(--muted); border: 1px solid var(--line); }
+  .res-pill.void { background: rgba(255,255,255,0.07); color: var(--muted); border: 1px solid var(--line); }
   .tip .pl { font-weight: 800; text-align: right; }
   .pl.pos { color: var(--green); }
   .pl.neg { color: var(--loss); }
@@ -207,6 +217,25 @@
     📊 <b>Strike rate &amp; ROI go live once we've logged enough tips</b> for the numbers to mean something. Until then, every individual result is shown below — nothing hidden.
   </div>
 
+  <!-- BREAKDOWN: Singles / Multis / Hero -->
+  <div class="breakdown" id="breakdown" style="display:none;">
+    <div class="bd-card">
+      <div class="bd-title">🎯 Singles</div>
+      <div class="bd-row" id="bd-singles-main">—</div>
+      <div class="bd-sub" id="bd-singles-sub">—</div>
+    </div>
+    <div class="bd-card">
+      <div class="bd-title">🔗 Multis</div>
+      <div class="bd-row" id="bd-multis-main">—</div>
+      <div class="bd-sub" id="bd-multis-sub">—</div>
+    </div>
+    <div class="bd-card hero">
+      <div class="bd-title">🚀 Hero <span class="bd-fun">just for fun</span></div>
+      <div class="bd-row" id="bd-hero-main">—</div>
+      <div class="bd-sub" id="bd-hero-sub">small stake · not in ROI</div>
+    </div>
+  </div>
+
   <!-- CHART -->
   <div class="chart-card" id="chartCard" style="display:none;">
     <div class="chart-head">
@@ -314,6 +343,8 @@
   const UNIT = 10;
   // Hide headline win-rate / ROI / chart until the sample is fair.
   const STATS_MIN = 20;
+  // Each breakdown bucket shows its own strike-rate only once it has a fair sample of its own.
+  const BUCKET_MIN = 10;
 
   // ── compute P&L per tip (in units) ──
   function unitPL(t) {
@@ -383,6 +414,41 @@
       ptEl.textContent = (profitUnits >= 0 ? '+' : '') + profitUnits.toFixed(2) + ' units  (' + (profitDollars >= 0 ? '+$' : '-$') + Math.abs(profitDollars).toFixed(0) + ')';
       ptEl.style.color = profitUnits < 0 ? 'var(--loss)' : 'var(--green)';
     }
+  }
+
+  function renderBreakdown() {
+    const set = sportSet();
+    const SINGLE_TYPES = ['H2H', 'Line', 'Prop'];
+    const singles = set.filter(t => SINGLE_TYPES.indexOf(t.type) !== -1);
+    const multis  = set.filter(t => t.type === 'SGM');   // includes the cross-sport multi (code CROSS)
+    const hero    = (window.HERO_RECORD || []);
+
+    function stats(arr) {
+      let wins = 0, losses = 0, oddsSum = 0, n = 0;
+      arr.forEach(t => { n++; oddsSum += t.odds; if (t.result === 'win') wins++; else if (t.result === 'loss') losses++; });
+      return { n: n, wins: wins, losses: losses, decided: wins + losses, avg: n ? oddsSum / n : 0 };
+    }
+
+    function fill(prefix, s, isHero) {
+      const main = document.getElementById('bd-' + prefix + '-main');
+      const sub  = document.getElementById('bd-' + prefix + '-sub');
+      if (!main || !sub) return;
+      if (s.n === 0) { main.textContent = '—'; sub.textContent = isHero ? 'none run yet' : 'no results yet'; return; }
+      // W-L always shown; strike-rate % only once the bucket has a fair sample of its own
+      const wl = s.wins + '-' + s.losses;
+      main.innerHTML = wl + (s.decided >= BUCKET_MIN ? ' <span class="sr">' + Math.round(s.wins / s.decided * 100) + '%</span>' : '');
+      if (isHero) {
+        sub.textContent = s.n + ' run · small stake · not in ROI';
+      } else if (s.decided >= BUCKET_MIN) {
+        sub.textContent = 'strike rate · avg $' + s.avg.toFixed(2);
+      } else {
+        sub.textContent = 'building (' + s.decided + '/' + BUCKET_MIN + ') · avg $' + s.avg.toFixed(2);
+      }
+    }
+
+    fill('singles', stats(singles), false);
+    fill('multis',  stats(multis),  false);
+    fill('hero',    stats(hero),    true);
   }
 
   function renderTips() {
@@ -472,21 +538,26 @@
         state[key] = chip.dataset.val;
         renderTips();
         // stats + chart follow the sport filter — refresh them when sport changes
-        if (key === 'code') { renderStats(); drawChart(); }
+        if (key === 'code') { renderStats(); renderBreakdown(); drawChart(); }
       });
     });
   });
 
   // ── init ──
-  if (TIPS.length === 0) {
+  const hasHero = (window.HERO_RECORD || []).length > 0;
+  if (TIPS.length === 0 && !hasHero) {
     tipsEl.innerHTML = '<div class="empty"><div class="big">Results drop soon 🐕</div>Our first week\'s tips will appear here, graded win or lose. Check back Monday after the round.</div>';
   } else {
-    filtersEl.style.display = 'flex';
-    showingEl.style.display = 'block';
-    renderStats();
-    renderTips();
-    drawChart();
-    window.addEventListener('resize', drawChart);
+    document.getElementById('breakdown').style.display = 'grid';
+    renderBreakdown();
+    if (TIPS.length) {
+      filtersEl.style.display = 'flex';
+      showingEl.style.display = 'block';
+      renderStats();
+      renderTips();
+      drawChart();
+      window.addEventListener('resize', drawChart);
+    }
   }
 </script>
 
