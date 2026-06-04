@@ -9,8 +9,6 @@
       "sel": "Geelong Cats to Win",
       "tag": "STRONG",
       "avg": "1.54",
-      "odds": "1.58",
-      "bookie": "Bet365",
       "reason": "Geelong have won 9 of their last 10 against Adelaide, and the Crows are without Rankine (calf) and Thilthorpe (suspended) — both key forwards out at once. All five of our rules fire; the strongest single of the round. ⚠️ TONIGHT 7:30pm AEST — get set early and check it hasn't started. Line has crept from -8.5 toward -9.5 as money comes for the Cats."
     },
     {
@@ -21,8 +19,6 @@
       "sel": "Dolphins to Win",
       "tag": "STRONG",
       "avg": "1.56",
-      "odds": "1.57",
-      "bookie": "Bet365",
       "reason": "The Dolphins get a swag of key players back in one hit — Tabuai-Fidow, Farnworth and Nikorima all return, several off Origin duty — at full strength for the first time in weeks against a largely unchanged Cowboys side. Saturday 5:30pm AEST in Townsville."
     },
     {
@@ -33,8 +29,6 @@
       "sel": "Gold Coast Suns to Win",
       "tag": "STRONG",
       "avg": "1.54",
-      "odds": "1.55",
-      "bookie": "Sportsbet",
       "reason": "QClash at home against a Brisbane side missing Coleman (~6 weeks) and Lester. Gold Coast sit 5th with top-four ambitions; home ground plus a depleted Brisbane backline is the case. Saturday 5:15pm AEST."
     }
   ],
@@ -103,14 +97,14 @@
       "type": "Cross-Sport Multi",
       "match": "NRL + AFL · 4 legs",
       "sel": "4-Leg Cross-Sport Multi",
-      "odds": "3.55",
       "legs": [
         "NRL · Dolphins to Win ($1.56)",
         "AFL · Gold Coast Suns to Win ($1.54)",
         "AFL · Fremantle Dockers to Win ($1.23)",
         "AFL · Carlton Blues to Win ($1.20)"
       ],
-      "reason": "Gold exclusive. Four of the round's cleanest win plays across both codes, all different games on Sat/Sun — no correlation. Fremantle and Carlton are short anchors; the Dolphins and Suns add the meat. A quality multi, not a long-shot."
+      "reason": "Gold exclusive. Four of the round's cleanest win plays across both codes, all different games on Sat/Sun — no correlation. Fremantle and Carlton are short anchors; the Dolphins and Suns add the meat. A quality multi, not a long-shot.",
+      "odds": "3.55"
     },
     {
       "special": true,
