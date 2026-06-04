@@ -56,8 +56,29 @@
   .bd-fun { font-size: 10px; font-weight: 700; color: var(--gold); background: rgba(240,193,75,0.12); border: 1px solid rgba(240,193,75,0.3); padding: 2px 6px; border-radius: 5px; margin-left: 6px; letter-spacing: .3px; }
   .bd-row { font-family: 'Anton'; font-size: 26px; color: var(--text); line-height: 1.1; }
   .bd-row .sr { color: var(--green); }
+  .bd-row .w { color: var(--green); }
+  .bd-row .l { color: var(--loss); }
+  .bd-card[data-bucket] { cursor: pointer; transition: border-color .15s, transform .1s; }
+  .bd-card[data-bucket]:hover { border-color: var(--gold); }
+  .bd-card[data-bucket]:active { transform: translateY(1px); }
+  .hero-log { margin-top: 34px; }
+  .hero-log-head h3 { font-size: 20px; margin-bottom: 4px; }
+  .hero-log-head p { font-size: 13px; color: var(--muted); margin-bottom: 14px; max-width: 720px; }
+  .hlog-row { display: grid; grid-template-columns: 110px 1fr 70px 72px 78px; align-items: center; gap: 10px; padding: 13px 18px; border: 1px solid var(--line); border-left: 3px solid rgba(240,193,75,0.4); border-radius: 12px; margin-bottom: 9px; background: var(--panel-2); font-size: 14px; }
+  .hlog-row .hl-rd { color: var(--muted); font-size: 13px; }
+  .hlog-row .hl-sel { font-weight: 600; }
+  .hlog-row .hl-odds { font-weight: 700; color: var(--gold); }
+  .hlog-row .hl-pl.pos { color: var(--green); }
+  .hlog-row .hl-pl.neg { color: var(--loss); }
+  .hlog-row .hl-pl.zero { color: var(--muted); }
+  @media (max-width: 680px) {
+    .hlog-row { grid-template-columns: 1fr auto; grid-template-areas: "rd odds" "sel res" "pl pl"; gap: 6px 10px; }
+    .hlog-row .hl-rd { grid-area: rd; } .hlog-row .hl-sel { grid-area: sel; } .hlog-row .hl-odds { grid-area: odds; text-align: right; }
+    .hlog-row .hl-res { grid-area: res; text-align: right; } .hlog-row .hl-pl { grid-area: pl; }
+  }
   .bd-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
   @media (max-width: 680px) { .breakdown { grid-template-columns: 1fr; } }
+  .demo-banner { background: rgba(230,88,78,0.12); border: 1px solid rgba(230,88,78,0.45); color: #ffb4ac; border-radius: 12px; padding: 14px 20px; margin: 24px 0 4px; font-size: 14px; font-weight: 600; text-align: center; letter-spacing: .2px; }
 
   /* P&L CHART */
   .chart-card { background: linear-gradient(165deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: 18px; padding: 26px 26px 16px; margin-bottom: 30px; }
@@ -74,6 +95,7 @@
   .chip:hover { color: var(--text); border-color: var(--red); }
   .chip.active { background: var(--red); color: #06150d; border-color: var(--red); }
   .filter-label { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+  .fg-label { align-self: center; font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--muted); margin-right: 2px; }
   .showing { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
   .showing b { color: var(--text); }
 
@@ -205,6 +227,7 @@
 </header>
 
 <div class="wrap">
+  <div class="demo-banner" id="demoBanner" style="display:none;">👁 PREVIEW MODE — the results below are SAMPLE data for layout testing only. These are NOT real tips or results. Remove before launch.</div>
   <!-- STATS -->
   <div class="statbar">
     <div class="stat"><div class="sv green" id="s-winrate">—</div><div class="sl">Win Rate</div></div>
@@ -217,19 +240,19 @@
     📊 <b>Strike rate &amp; ROI go live once we've logged enough tips</b> for the numbers to mean something. Until then, every individual result is shown below — nothing hidden.
   </div>
 
-  <!-- BREAKDOWN: Singles / Multis / Hero -->
+  <!-- BREAKDOWN: Singles / Multis / Hero (tap to jump) -->
   <div class="breakdown" id="breakdown" style="display:none;">
-    <div class="bd-card">
+    <div class="bd-card" data-bucket="singles" role="button" tabindex="0">
       <div class="bd-title">🎯 Singles</div>
       <div class="bd-row" id="bd-singles-main">—</div>
       <div class="bd-sub" id="bd-singles-sub">—</div>
     </div>
-    <div class="bd-card">
+    <div class="bd-card" data-bucket="multis" role="button" tabindex="0">
       <div class="bd-title">🔗 Multis</div>
       <div class="bd-row" id="bd-multis-main">—</div>
       <div class="bd-sub" id="bd-multis-sub">—</div>
     </div>
-    <div class="bd-card hero">
+    <div class="bd-card hero" data-bucket="hero" role="button" tabindex="0">
       <div class="bd-title">🚀 Hero <span class="bd-fun">just for fun</span></div>
       <div class="bd-row" id="bd-hero-main">—</div>
       <div class="bd-sub" id="bd-hero-sub">small stake · not in ROI</div>
@@ -250,11 +273,22 @@
   <div class="filters" id="filters" style="display:none;">
     <span class="filter-label">⚙ Filter Record</span>
     <div class="filter-group" data-filter="code">
+      <span class="fg-label">Sport</span>
       <button class="chip active" data-val="all">All</button>
       <button class="chip" data-val="NRL">NRL</button>
       <button class="chip" data-val="AFL">AFL</button>
     </div>
+    <div class="filter-group" data-filter="type">
+      <span class="fg-label">Type</span>
+      <button class="chip active" data-val="all">All</button>
+      <button class="chip" data-val="singles">Singles</button>
+      <button class="chip" data-val="H2H">H2H</button>
+      <button class="chip" data-val="Prop">Prop</button>
+      <button class="chip" data-val="SGM">SGM</button>
+      <button class="chip" data-val="Line">Line</button>
+    </div>
     <div class="filter-group" data-filter="result">
+      <span class="fg-label">Result</span>
       <button class="chip active" data-val="all">All</button>
       <button class="chip" data-val="win">Win</button>
       <button class="chip" data-val="loss">Loss</button>
@@ -264,6 +298,15 @@
 
   <!-- TIP LIST -->
   <div id="tips"></div>
+
+  <!-- HERO LOG — every Hero Multi, win or lose; segregated, not in ROI -->
+  <div class="hero-log" id="heroLog" style="display:none;">
+    <div class="hero-log-head">
+      <h3>🚀 Hero Multi log</h3>
+      <p>Every long-shot we've run — win or lose. Small stakes, just for fun. <b>Not counted</b> in our official win-rate or ROI.</p>
+    </div>
+    <div id="heroLogList"></div>
+  </div>
 
   <div class="note" style="border-left-color: var(--gold); margin-top: 30px;">
     <b>🔧 Building our track record.</b> We're in the lead-up to launch and logging every tip here as it runs — real selections, real results, win or lose. This is a live work-in-progress, not a finished record, so the sample's still small. Full launch and weekly tips for members are coming soon. Nothing here is hidden: every pick we make shows up, exactly as it lands.
@@ -345,6 +388,8 @@
   const STATS_MIN = 20;
   // Each breakdown bucket shows its own strike-rate only once it has a fair sample of its own.
   const BUCKET_MIN = 10;
+  // The P&L chart is raw running data (not an extrapolated %), so it can show on a smaller/filtered sample.
+  const CHART_MIN = 3;
 
   // ── compute P&L per tip (in units) ──
   function unitPL(t) {
@@ -360,9 +405,14 @@
 
   const state = { code: 'all', type: 'all', result: 'all' };
 
+  function typeMatch(t) {
+    if (state.type === 'all') return true;
+    if (state.type === 'singles') return ['H2H', 'Line', 'Prop'].indexOf(t.type) !== -1;
+    return t.type === state.type;
+  }
   function passes(t) {
     return (state.code === 'all'   || t.code === state.code) &&
-           (state.type === 'all'   || t.type === state.type) &&
+           typeMatch(t) &&
            (state.result === 'all' || t.result === state.result);
   }
 
@@ -394,12 +444,20 @@
     const wrEl  = document.getElementById('s-winrate');
     const roiEl = document.getElementById('s-roi');
     const ptEl  = document.getElementById('profitTotal');
+
+    // Running P&L reflects the current filter — it's a raw tally shown with the chart, so always set it.
+    const profitUnits = ret - staked;
+    const profitDollars = profitUnits * UNIT;
+    if (ptEl) {
+      ptEl.textContent = (profitUnits >= 0 ? '+' : '') + profitUnits.toFixed(2) + ' units  (' + (profitDollars >= 0 ? '+$' : '-$') + Math.abs(profitDollars).toFixed(0) + ')';
+      ptEl.style.color = profitUnits < 0 ? 'var(--loss)' : 'var(--green)';
+    }
+
     if (!ready) {
-      // small sample — don't publish a misleading headline yet
+      // small sample — don't publish a misleading headline win-rate / ROI yet (chart still shows the raw curve)
       wrEl.textContent = '—';
       roiEl.textContent = '—';
       roiEl.style.color = 'var(--muted)';
-      if (ptEl) ptEl.textContent = '';
       return;
     }
     const wr  = decided ? Math.round(wins / decided * 100) : 0;
@@ -408,12 +466,6 @@
     roiEl.textContent = (roi >= 0 ? '+' : '') + roi + '%';
     roiEl.classList.toggle('green', roi >= 0);
     roiEl.style.color = roi < 0 ? 'var(--loss)' : 'var(--green)';
-    const profitUnits = ret - staked;
-    const profitDollars = profitUnits * UNIT;
-    if (ptEl) {
-      ptEl.textContent = (profitUnits >= 0 ? '+' : '') + profitUnits.toFixed(2) + ' units  (' + (profitDollars >= 0 ? '+$' : '-$') + Math.abs(profitDollars).toFixed(0) + ')';
-      ptEl.style.color = profitUnits < 0 ? 'var(--loss)' : 'var(--green)';
-    }
   }
 
   function renderBreakdown() {
@@ -434,13 +486,12 @@
       const sub  = document.getElementById('bd-' + prefix + '-sub');
       if (!main || !sub) return;
       if (s.n === 0) { main.textContent = '—'; sub.textContent = isHero ? 'none run yet' : 'no results yet'; return; }
-      // W-L always shown; strike-rate % only once the bucket has a fair sample of its own
-      const wl = s.wins + '-' + s.losses;
-      main.innerHTML = wl + (s.decided >= BUCKET_MIN ? ' <span class="sr">' + Math.round(s.wins / s.decided * 100) + '%</span>' : '');
+      // W in green, L in red; strike rate + avg odds on the sub line
+      main.innerHTML = '<span class="w">' + s.wins + 'W</span> / <span class="l">' + s.losses + 'L</span>';
       if (isHero) {
         sub.textContent = s.n + ' run · small stake · not in ROI';
       } else if (s.decided >= BUCKET_MIN) {
-        sub.textContent = 'strike rate · avg $' + s.avg.toFixed(2);
+        sub.textContent = Math.round(s.wins / s.decided * 100) + '% strike rate · avg $' + s.avg.toFixed(2);
       } else {
         sub.textContent = 'building (' + s.decided + '/' + BUCKET_MIN + ') · avg $' + s.avg.toFixed(2);
       }
@@ -449,6 +500,28 @@
     fill('singles', stats(singles), false);
     fill('multis',  stats(multis),  false);
     fill('hero',    stats(hero),    true);
+  }
+
+  function renderHeroLog() {
+    const hero = (window.HERO_RECORD || []);
+    const wrap = document.getElementById('heroLog');
+    const list = document.getElementById('heroLogList');
+    if (!wrap || !list) return;
+    if (!hero.length) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'block';
+    list.innerHTML = hero.map(function (h) {
+      const pl = h.result === 'win' ? +(h.odds - 1).toFixed(2) : (h.result === 'loss' ? -1 : 0);
+      const plClass = pl > 0 ? 'pos' : (pl < 0 ? 'neg' : 'zero');
+      const dollars = pl * UNIT;
+      const plTxt = (pl > 0 ? '+' : '') + (dollars >= 0 ? '$' + dollars.toFixed(0) : '-$' + Math.abs(dollars).toFixed(0));
+      return '<div class="hlog-row">'
+        + '<span class="hl-rd">' + h.rd + '</span>'
+        + '<span class="hl-sel">' + (h.sel || 'Hero Multi') + '</span>'
+        + '<span class="hl-odds">$' + h.odds.toFixed(2) + '</span>'
+        + '<span class="hl-res"><span class="res-pill ' + h.result + '">' + h.result + '</span></span>'
+        + '<span class="hl-pl ' + plClass + '">' + plTxt + '</span>'
+        + '</div>';
+    }).join('');
   }
 
   function renderTips() {
@@ -478,7 +551,7 @@
 
   function drawChart() {
     const set = sportSet();
-    if (set.length < STATS_MIN) { chartCard.style.display = 'none'; return; }
+    if (set.length < CHART_MIN) { chartCard.style.display = 'none'; return; }
     chartCard.style.display = 'block';
     const canvas = document.getElementById('pnlChart');
     const dpr = window.devicePixelRatio || 1;
@@ -543,13 +616,41 @@
     });
   });
 
+  // ── breakdown cards: tap to jump to that slice of the record ──
+  function activateTypeChip(val) {
+    const grp = document.querySelector('.filter-group[data-filter="type"]');
+    if (!grp) return;
+    let matched = false;
+    grp.querySelectorAll('.chip').forEach(c => { const on = c.dataset.val === val; c.classList.toggle('active', on); if (on) matched = true; });
+    state.type = matched ? val : 'all';
+    if (!matched) grp.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.val === 'all'));
+    renderTips();
+  }
+  document.querySelectorAll('.bd-card[data-bucket]').forEach(card => {
+    const go = () => {
+      const b = card.dataset.bucket;
+      if (b === 'hero') {
+        const hl = document.getElementById('heroLog');
+        if (hl && hl.style.display !== 'none') hl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+      activateTypeChip(b === 'singles' ? 'singles' : 'SGM');
+      const anchor = document.getElementById('filters');
+      if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    card.addEventListener('click', go);
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+  });
+
   // ── init ──
+  if (window.DEMO_DATA) { const db = document.getElementById('demoBanner'); if (db) db.style.display = 'block'; }
   const hasHero = (window.HERO_RECORD || []).length > 0;
   if (TIPS.length === 0 && !hasHero) {
     tipsEl.innerHTML = '<div class="empty"><div class="big">Results drop soon 🐕</div>Our first week\'s tips will appear here, graded win or lose. Check back Monday after the round.</div>';
   } else {
     document.getElementById('breakdown').style.display = 'grid';
     renderBreakdown();
+    renderHeroLog();
     if (TIPS.length) {
       filtersEl.style.display = 'flex';
       showingEl.style.display = 'block';
