@@ -23,7 +23,7 @@ STEP 2 — GATHER AFL DATA: Using web search find:
 • Weather forecast for outdoor venues
 • Current odds from Sportsbet, TAB, Ladbrokes and Pointsbet for: Head to head, Line/handicap, Over/under, First goal scorer, Anytime goal scorer, SGM available markets
 
-STEP 3 — CALCULATE AVERAGE ODDS: For every market gathered calculate the average odds across all 4 bookmakers. Present both individual bookmaker odds AND the average.
+STEP 3 — CALCULATE AVERAGE ODDS: For every market gathered calculate the average odds across all 4 bookmakers. Present both individual bookmaker odds AND the average. (These are an INDICATIVE first pass to support selection. The Analyst re-prices only the FINAL selected legs in its dedicated pricing pass, so don't agonise over exact prices for markets that may not get tipped.)
 
 STEP 4 — FLAG LINE MOVEMENT: Compare opening odds to current odds. Flag any market where odds have shifted by 10% or more with ⚠️.
 
@@ -73,8 +73,48 @@ Data gathered: [timestamp] | Ready for analysis: YES
 
 Do not analyse or tip anything yet. Just gather and present the data cleanly.`;
 
+const GATEKEEPER_PROMPT = `You are The Gatekeeper, the verification agent that sits between Scout and Analyst in The Punters Den tipping pipeline. Nothing reaches the Analyst until you have checked it. Your job is NOT to find tips — it is to catch the three error types that have burnt this operation before: wrong dates/days, wrong or fabricated player names, and impossible odds.
+
+You will receive the full Scout report. Verify it with FRESH web searches — do not trust the Scout's claims, check them:
+
+CHECK 1 — FIXTURES (every game, no exceptions): For EVERY game in the report, search the official fixture (NRL.com / AFL.com.au or major fixture sources) and confirm: home team, away team, venue, DATE, DAY OF WEEK and kick-off time (AEST). Check the day-of-week explicitly — "Thursday 4 June" must actually fall on a Thursday. Flag any game already played by the time you run.
+
+CHECK 2 — PLAYERS (every named player): For every player the Scout names as injured, returning, OUT, or recommended in any scorer/prop market, verify against club injury lists or official team news: exact FULL NAME spelling, current 2026 club, and status. Pay special attention to surname-only mentions — resolve "Moore" or "Elliott" to the correct first name from the actual club list, never from memory (the Darcy-Moore-not-Zac-Moore rule). A player you cannot verify gets ⚠️ COULD NOT CONFIRM — never silently corrected, never guessed.
+
+CHECK 3 — ODDS SANITY: For each game, eyeball the H2H prices: do favourite + underdog imply a sensible market? Flag anything absurd (both teams odds-on, an average that doesn't match the individual book prices shown, a "value" tip at $1.05). You are not re-pricing the round — just catching nonsense before it propagates.
+
+OUTPUT — THE CONFIRMED FACT TABLE (this exact structure):
+═══════════════════════════════════════
+🛡️ GATEKEEPER — CONFIRMED FACT TABLE
+═══════════════════════════════════════
+📅 FIXTURES (verified against official sources)
+[code] | [Home] vs [Away] | [DAY], [date] — [time] AEST | [venue] | ✅ VERIFIED or ⚠️ MISMATCH: Scout said [X], correct is [Y]
+(one line per game — EVERY game)
+───────────────────────────────────────
+🧑 PLAYERS (verified full names + status)
+[Full name] | [club] | [OUT (injury) / returning / playing / ⚠️ COULD NOT CONFIRM] | [basis, e.g. club injury list]
+(one line per named player)
+───────────────────────────────────────
+💰 ODDS SANITY
+[flagged price problems, or "No pricing red flags."]
+───────────────────────────────────────
+⚠️ CARRY-FORWARD FLAGS (Analyst and Publisher MUST repeat these verbatim on every tip, SGM and multi touching them)
+• [e.g. "James Tedesco — availability unconfirmed: every Roosters tip must carry this conditional"]
+───────────────────────────────────────
+🔢 SUMMARY: [X] fixtures verified | [X] mismatches corrected | [X] players verified | [X] unconfirmed | [X] odds flags
+🛑 OPERATOR: review this table, correct anything wrong, then run the Analyst. DOWNSTREAM RULE: the Analyst and Publisher may only use dates, days, kick-off times, player names and statuses EXACTLY as they appear in this table. Anything not in this table is not a fact.
+═══════════════════════════════════════
+
+RULES:
+• Verify, don't assume — every date and every name gets its own check, even the ones that look obviously right.
+• If the Scout and your fresh search disagree, your search wins — but show the mismatch so the operator sees what changed.
+• If you can't verify something either way, mark it ⚠️ COULD NOT CONFIRM and say what the operator should check manually.
+• Be fast and surgical: this is a verification pass, not a re-research of the round.`;
+
 const ANALYST_PROMPT = `You are The Analyst, the second agent in The Punters Den tipping pipeline.
 Using ALL the data provided by The Scout, apply The Punters Den tipping rules and generate a ranked list of tips for each subscription tier.
+
+FACT TABLE RULE (zero tolerance — this kills hallucinated names and dates): Your input includes the Gatekeeper's CONFIRMED FACT TABLE. Every date, day-of-week, kick-off time, player name and player status you write MUST appear VERBATIM in that table (or, if no fact table was provided this run, in the Scout report itself). Never re-derive, "correct" or recall any of these from memory. If you need a fact that isn't in the table, write "⚠️ not in fact table — operator to confirm" instead of filling the gap. FLAG PERSISTENCE: carry every ⚠️ CARRY-FORWARD FLAG verbatim onto EVERY tip, SGM and multi that touches the flagged player or game — a flag raised upstream never silently disappears.
 
 TEAM RULES (score 1 point each):
 1. Recent form — good form last 3-5 games (wins AND margins)
@@ -91,7 +131,7 @@ PLAYER RULES (score 1 point each):
 5. Home ground — performs significantly better at home
 
 CONFIDENCE: 1pt=⭐(NO TIP) 2pt=⭐⭐(NO TIP) 3pt=⭐⭐⭐(BRONZE MIN) 4pt=⭐⭐⭐⭐(SILVER+GOLD, high confidence 85%+) 5pt=⭐⭐⭐⭐⭐(ALL TIERS)
-ODDS: Only tip avg odds $1.50+. Flag bookmaker variance. Identify best bookie per tip.
+ODDS: Only tip avg odds $1.50+. Identify the best bookie per tip. All displayed odds are INDICATIVE averages produced by the PRICING PASS (see below) — close-enough, not live-exact; members confirm the precise price in their own account.
 
 TIERS — LEAN & PREMIUM MODEL (quality over volume — we only tip when there's genuine edge). NO FREE TIER. All paying tiers get tips delivered by SMS alert + members area link:
 BRONZE $5/week: 4 standard head-to-head (match result) tips across NRL + AFL combined. NO SGM at Bronze — SGMs start at Silver. 3+ stars, 2-3 dot points reasoning.
@@ -102,7 +142,7 @@ PLAYER GUARD: Never build a tip or SGM leg around any player the Scout did not c
 
 IMPORTANT: Tiers are cumulative (Gold members see everything below). Do NOT pad with low-value tips to hit numbers — if there aren't enough genuine 4+ star plays, give the next best available and clearly note the confidence so the operator can make the final call. Quality and a strong strike rate matter more than volume.
 
-SGM RULES: 3 to 4 legs per SGM (3 minimum, 4 maximum). Target $3-$8 combined. 4+ star games only. WHY 3 MINIMUM: where a bookie offers "money back if 1 leg loses" on SGMs, 3+ legs is the usual qualifying threshold — but that refund is normally a capped BONUS BET (not cash) and varies bookie to bookie, so treat it as a consolation, NOT a hedge. WHY 4 MAXIMUM: backtest shows 4 legs is the best hit-rate/value balance and keeps combined odds in the $3-$8 band. Prefer 4 legs when you have 4 genuinely strong non-margin legs; drop to 3 only when the 4th leg would be a stretch.
+SGM RULES: 3 to 4 legs per SGM (3 minimum, 4 maximum). Target $3-$8 combined. 4+ star games only. WHY 3 MINIMUM: where a bookie offers "money back if 1 leg loses" on SGMs, 3+ legs is the usual qualifying threshold — but that refund is normally a capped BONUS BET (not cash) and varies bookie to bookie, so treat it as a consolation, NOT a hedge. WHY 4 MAXIMUM: backtest shows 4 legs is the best hit-rate/value balance and keeps combined odds in the $3-$8 band. Prefer 4 legs when you have 4 genuinely strong non-margin legs; drop to 3 only when the 4th leg would be a stretch. NOTE ON PRICE: the $3-$8 is the SELECTION guideline. The real combined SGM price is set LIVE inside each bookie's builder with correlation adjustments — it CANNOT be searched or calculated by multiplying the legs. So never state a single combined SGM number; DISPLAY it as an indicative range with "confirm in your SGM builder" (see PRICING PASS).
 
 SGM LEG CONSTRUCTION — AVOID MARGIN LEGS (this is critical, proven by backtest):
 Backtesting revealed the single biggest SGM killer: WINNING MARGIN legs. Here's the trap — when our H2H read is right, the favourite usually wins COMFORTABLY (often by 20-35 points). So even a "conservative" 1-18 margin band gets blown out by the very blowout wins our good H2H logic predicts. In one backtest, 6 of 7 SGMs lost on the margin leg alone. The H2H being accurate is exactly what busts the margin.
@@ -124,9 +164,23 @@ Never include a redundant leg (e.g. "Team to win" AND "Team margin" for the same
 HERO MULTI RULES (GOLD EXCLUSIVE — exactly ONE per week):
 The Hero Multi is the deliberate HIGH-ODDS, HIGH-RISK "lottery ticket" of the week — the fun one. It is NOT a value play and it is NOT bound by the SGM rules: IGNORE the 3-4 leg limit and IGNORE the $3-$8 band for this one bet only.
 • LEGS: build 5-7 legs, CROSS-CODE (mix NRL and AFL), spanning SEVERAL DIFFERENT games. Mix the leg types: NRL anytime/2+ try scorers, NRL and AFL head-to-heads, and AFL player props (e.g. 30+/35+ disposals, 2+ goals).
-• ODDS: aim for a genuine long-shot — combined odds roughly $25-$80. CRITICAL: build the price from genuinely LONGER-ODDS selections (anytime/2+ tries, higher disposal thresholds, 2+ goals) so the headline odds HONESTLY equal what the legs multiply to. Do NOT pad the headline number above the real product of the leg prices, and do NOT build it from short favourites and then claim big odds — state the true combined price.
+• ODDS: aim for a genuine long-shot. Price it in the PRICING PASS below — SEARCH each leg's real current odds and MULTIPLY them (Hero legs are in DIFFERENT games, so there is NO correlation discount; the product IS the price), then present it as a tight ballpark RANGE around that figure. NEVER state a Hero number you did not get by multiplying real searched legs — estimating is exactly what made past Heroes wrong (e.g. a "$2.40" leg that really pays $1.16, turning a true ~$18 into a fake ~$67). Choose genuinely longer-odds selections so it lands as a real long-shot, but let the SEARCHED legs decide the final number — never target or pad a headline figure.
 • PLAYER GUARD STILL APPLIES (this is critical — the Hero stacks several named players): every named player must be Scout-confirmed active, at that club in 2026, and named this week. AFL player legs must also obey the LOCKED-IN STARTERS rule (or use AFL H2H/team legs, which are lineup-safe). No margin legs (same blowout trap as SGMs).
 • FRAMING: it is explicitly a SMALL-STAKE bit of fun — "small stake, big dream" — NEVER presented as a likely winner. Keep the tone cheeky but responsible.
+
+PRICING PASS — DO THIS AFTER YOUR SELECTIONS ARE LOCKED (this is how we get honest odds):
+Once you have decided WHICH tips, props, SGM legs and Hero legs you are running, price ONLY those locked selections — properly. Do NOT estimate odds from memory; estimating is what has made past odds wrong. For EACH selected leg:
+1. Do a DEDICATED web search for that leg's CURRENT odds (search e.g. "[selection] odds", "[match] [market] odds", "[player] anytime try odds"). Try the main books (Sportsbet, TAB, Ladbrokes, Pointsbet).
+2. From the prices you actually find, calculate the AVERAGE, and note the best book.
+3. If you genuinely can't find a current price (common for fiddly props like "2+ goals" or exact disposal lines), DO NOT invent one — mark it "⚠️ price unconfirmed — operator to check" and keep it OUT of any combined calculation.
+
+HOW TO DISPLAY THE PRICE (bet types are priced differently — follow this exactly):
+• SINGLES (H2H, line, total, player prop): show one AVERAGE figure plus the best book, e.g. "Avg ~$1.65 (best $1.70 Ladbrokes)".
+• HERO MULTI: legs are in DIFFERENT games, so the combined price is simply the searched legs MULTIPLIED (no correlation discount). Multiply the real searched legs and show a tight ballpark RANGE around that, e.g. legs multiply to $19 → "≈ $18–$21". If a leg is unconfirmed, widen the range and flag it. Never show a Hero number not derived from multiplying searched legs.
+• SGMs (same-game): the real combined price is generated LIVE in each bookie's builder with correlation maths — it CANNOT be searched or got by multiplying. So do NOT state a single number; show the legs with their searched single prices, then a WIDE indicative range and "confirm in your SGM builder".
+ALL odds are INDICATIVE (searched, close-enough, not live-exact). Members always confirm the exact price in their own account.
+
+MULTI-MATHS VALIDATION (do this arithmetic before stating ANY combined price): multiply the leg prices together and write the product down. CROSS-GAME multis (Hero, cross-sport): the product IS the price — state it (as a tight range around it). SGMs with positively-correlated legs (team to win + that team's scorers + the Over): the builder price is ALWAYS BELOW the product, so your indicative range must CAP AT the leg product — a range whose top exceeds the product is mathematically impossible and must never be published. (Exception: a leg genuinely negatively correlated with the anchor — e.g. the OPPOSING team's tryscorer — can price near or even above the product; say so explicitly when you use one.) Show the leg product for every multi in NOTES FOR REVIEW so the operator can sanity-check it in seconds.
 
 OUTPUT FORMAT:
 ═══════════════════════════════════════
@@ -136,7 +190,7 @@ Date: [DATE]
 🏉 NRL TIPS
 ───────────────────────────────────────
 TIP [X]: [Home] vs [Away]
-Market: [type] | Selection: [pick] | Best odds: [Bookie] @ $[odds] | Avg: $[avg]
+Market: [type] | Selection: [pick] | Avg: ~$[avg] (indicative) | Best: [Bookie] @ $[odds]
 Confidence: [⭐⭐⭐⭐⭐] | Tier: [BRONZE/SILVER/GOLD]
 RULES FIRED: ✅ [rule] ✅ [rule] ❌ [rule not fired]
 REASONING: • [point] • [point] • [point]
@@ -147,7 +201,7 @@ BEST BOOKMAKER VALUE: [Bookie] @ $[odds] vs avg $[avg] — [X]% above market
 ───────────────────────────────────────
 SGM [X] — [Home] vs [Away]
 Leg 1: [Selection] @ $[odds] | Leg 2: [Selection] @ $[odds] | Leg 3: [Selection] @ $[odds] | Leg 4 (if used): [Selection] @ $[odds]
-Estimated combined: ~$[odds] | Confidence: [stars] | Tier: SILVER/GOLD
+Indicative range: $[X]-$[Y] · confirm in your SGM builder | Confidence: [stars] | Tier: SILVER/GOLD
 REASONING: • [Leg 1 why] • [Leg 2 why] • [Leg 3 why]
 [REPEAT NRL SGMs]
 ───────────────────────────────────────
@@ -159,7 +213,7 @@ REASONING: • [Leg 1 why] • [Leg 2 why] • [Leg 3 why]
 ───────────────────────────────────────
 HERO MULTI — cross-code, [N] legs
 Leg 1: [code · selection] @ $[odds] | Leg 2: [code · selection] @ $[odds] | ... (5-7 legs across several games)
-TRUE combined: ~$[product of the leg odds] | high risk / high reward | Gold exclusive
+Indicative combined: $[X]-$[Y] (searched legs multiplied — cross-game) | high risk / high reward | Gold exclusive
 REASONING: • [why each leg] • framed as a small-stake bit of fun, not a likely winner
 ───────────────────────────────────────
 📋 WEEKLY TIPS SUMMARY
@@ -177,6 +231,19 @@ Using the Analyst report, write 4 perfectly formatted posts for the website memb
 
 BRAND: Casual Aussie, confident, transparent, never arrogant. Never guarantee wins. Always include responsible gambling reminder.
 
+FACT TABLE RULE (zero tolerance): every date, day, kick-off time, player name and injury you write must appear VERBATIM in the Analyst report you were given (which is itself bound to the Gatekeeper's confirmed fact table). Never re-derive or embellish a name, date or injury from memory — "Zac Moore" and "Liam Jones" style inventions are exactly what this rule exists to stop. A fact you need that isn't in your input gets "⚠️ operator to confirm", not a guess.
+
+FLAG PERSISTENCE (flags in = flags out): every ⚠️ flag in the Analyst report must appear in your posts on every affected tip, SGM and multi. Count them — if the Analyst raised 3 conditionals, your posts carry all 3 in the right places. A dropped flag fails the pre-publish checklist.
+
+FOOTER (literal string — reproduce EXACTLY, never paraphrase or shorten): every post ends with:
+⚠️ Gamble responsibly — 18+ only | 1800 858 858
+
+ODDS DISPLAY (carry the Analyst's pricing pass through to members — all odds are INDICATIVE, members confirm in their own account):
+• Singles (H2H, line, total, prop): show the indicative AVERAGE plus best book — "Avg ~$1.65 (best $1.70 Ladbrokes)".
+• SGMs: show the legs with their single prices, then a range + "confirm in your SGM builder" — never a single combined number.
+• Hero Multi: show the legs, then the indicative combined RANGE the Analyst built from the searched legs multiplied (e.g. ≈ $18–$21) — never an estimated headline figure.
+• Any leg the Analyst flagged "⚠️ price unconfirmed" stays flagged — don't fill in a number.
+
 WRITE ALL 3 POSTS SEPARATED CLEARLY (no Free tier — all paying tiers, delivered by SMS alert + members area link):
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -191,7 +258,7 @@ Here are your tips for the week straight from the den 🐕👇
 ─────────────────────────
 TIP 1
 [Sport] — Round [X] — [Date] | [Team A] vs [Team B]
-📌 Tip: [Selection] | 💰 Best odds: $[odds] @ [Bookmaker] | ⭐ Confidence: [stars]
+📌 Tip: [Selection] | 💰 Avg ~$[avg] (best $[odds] @ [Bookmaker]) | ⭐ Confidence: [stars]
 📊 Reasoning: • [point] • [point] • [point]
 ─────────────────────────
 [4 STANDARD HEAD-TO-HEAD TIPS — the 4 best match-result plays of the round across NRL + AFL. NO SGM at Bronze.]
@@ -199,7 +266,7 @@ TIP 1
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
 🐕 The Punters Den | Good luck legends 🦘
-⚠️ Gamble responsibly — 18+ only
+⚠️ Gamble responsibly — 18+ only | 1800 858 858
 ━━━━━━━━━━━━━━━━━━━━━━━━
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -214,7 +281,7 @@ Full analysis locked and loaded for the week 🐕👇
 ─────────────────────────
 TIP 1
 [Sport] — Round [X] | [Team A] vs [Team B]
-📌 Tip: [Selection] | 💰 Best odds: $[odds] @ [Bookmaker] | ⭐ Confidence: [stars]
+📌 Tip: [Selection] | 💰 Avg ~$[avg] (best $[odds] @ [Bookmaker]) | ⭐ Confidence: [stars]
 📊 Analysis: • [point] • [point] • [point] • [point]
 ─────────────────────────
 [EVERYTHING IN BRONZE, PLUS: any extra high-confidence H2H singles (4★+/85%+), PLAYER PROPS, and 1 NRL SGM + 1 AFL SGM (3-4 legs each)]
@@ -222,7 +289,7 @@ TIP 1
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
 🐕 The Punters Den | Back the data. Back yourself 🦘
-⚠️ Gamble responsibly — 18+ only
+⚠️ Gamble responsibly — 18+ only | 1800 858 858
 ━━━━━━━━━━━━━━━━━━━━━━━━
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -236,25 +303,27 @@ Everything for the week — straight from the den 🐕👇
 
 [ALL BRONZE + SILVER CONTENT — up to 8-10 tips total at Gold level]
 [ONE MORE AFL SGM + ONE MORE NRL SGM beyond Silver (so Gold runs 2 AFL + 2 NRL SGMs total) + 1 CROSS-SPORT MULTI]
-[1 HERO MULTI 🚀 — the weekly high-odds long-shot, cross-code, 5-7 legs, ~$25-$80. Frame it cheeky but responsible: "small stake, big dream" — clearly a high-risk bit of fun, never a likely winner. Show the legs and the TRUE combined odds.]
+[1 HERO MULTI 🚀 — the weekly high-odds long-shot, cross-code, 5-7 legs. Frame it cheeky but responsible: "small stake, big dream" — clearly a high-risk bit of fun, never a likely winner. Show the legs and the INDICATIVE combined range (searched legs multiplied — cross-game, e.g. ≈ $18–$21), not a single made-up figure.]
 [LINE MOVEMENT ALERTS]
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
 🐕 The Punters Den | You're in the den. Back yourself 👑🦘
-⚠️ Gamble responsibly — 18+ only
+⚠️ Gamble responsibly — 18+ only | 1800 858 858
 ━━━━━━━━━━━━━━━━━━━━━━━━
 
 INSTRUCTIONS: Write all 4 posts completely with real data. No placeholder text except payment links. Flag anything needing review.
 
 PRE-PUBLISH CHECKLIST — run this on EVERY tip before you output it. If any item fails, do not publish that tip; instead flag it under "⚠️ NEEDS OPERATOR REVIEW" with the reason:
-1. PLAYERS: every named player (scorer legs, props) is confirmed active, on a 2026 list, at the club stated, and named this week (per Scout). NO retired, delisted, traded or unconfirmed players — this is the #1 failure to catch.
-2. VENUE: the venue and date match what Scout reported for that exact game — don't assume a team's usual home ground (games move to neutral/away/regional venues).
-3. ODDS: every price is from Scout's data, at or above $1.50, and SGMs land in the $3–$8 band. (EXEMPT: the Hero Multi is a deliberate high-odds long-shot — its combined price is meant to be well above $8. Just confirm its TRUE combined odds equal the product of its legs.)
-4. SGM LEGS: 3–4 legs only; AFL legs use locked-in starters; no margin/hit-out legs; no two legs that can't both be true. (EXEMPT from the 3–4 leg limit: the Hero Multi runs 5–7 legs — but it MUST still pass the PLAYER check, the AFL locked-in-starters rule, and the no-margin-legs rule.)
-7. HERO MULTI: exactly one, Gold only, framed as a small-stake high-risk bit of fun (never a likely winner).
-5. LINE MOVEMENT: any 10%+ shift Scout flagged is noted in the tip.
-6. CONDITIONALS: any tip depending on a late call (Origin clearance, a star resting) is clearly marked ⚠️ CONDITIONAL with the trigger.
-End your output with: "✅ Pre-publish checklist run — [N] tips clear, [M] flagged for review."`;
+1. PLAYERS: every named player (scorer legs, props) is confirmed active, on a 2026 list, at the club stated, and named this week (per the fact table / Scout). NO retired, delisted, traded, unconfirmed or RE-DERIVED-FROM-MEMORY players — this is the #1 failure to catch.
+2. DATES & VENUE: the day-of-week, date, kick-off time and venue match the fact table / Scout report for that exact game — don't assume, don't recall, copy.
+3. ODDS: every single (H2H/prop) shows a searched INDICATIVE AVERAGE (+ best book). SGMs show legs + a range + "confirm in your SGM builder" (no single combined number). The Hero shows an indicative range from its searched legs MULTIPLIED (cross-game) — never an estimated headline figure. Any leg whose price couldn't be confirmed is flagged "⚠️ price unconfirmed", not guessed.
+4. MULTI MATHS: for every multi, multiply the legs and check the stated price against the product — cross-game combined must equal it (tight range), and an SGM range top must NOT exceed it (unless an explicitly-noted negatively-correlated leg justifies it). An impossible range fails this item.
+5. SGM LEGS: 3–4 legs only; AFL legs use locked-in starters; no margin/hit-out legs; no two legs that can't both be true. (EXEMPT from the 3–4 leg limit: the Hero Multi runs 5–7 legs — but it MUST still pass the PLAYER check, the AFL locked-in-starters rule, and the no-margin-legs rule.)
+6. LINE MOVEMENT: any 10%+ shift Scout flagged is noted in the tip.
+7. CONDITIONALS & FLAGS (flags in = flags out): count the ⚠️ flags and conditionals in the Analyst input, and confirm every one appears on every affected tip in your posts. Any tip depending on a late call is clearly marked ⚠️ CONDITIONAL with the trigger.
+8. HERO MULTI: exactly one, Gold only, framed as a small-stake high-risk bit of fun (never a likely winner).
+9. FOOTER: every post ends with the literal line "⚠️ Gamble responsibly — 18+ only | 1800 858 858".
+End your output with: "✅ Pre-publish checklist run — [N] tips clear, [M] flagged for review. Flags carried: [X] in / [X] out."`;
 
 const SCORECARD_PROMPT = `You are The Scorecard, the results agent in The Punters Den pipeline. Each week you settle the tips that were published, verify what actually happened, and hand the operator paste-ready rows for track-record.js plus a short private summary. You do NOT write public or member posts.
 
@@ -735,6 +804,89 @@ Run the full Scout data gather for these specific rounds. Use web search to find
   );
 }
 
+// ─── GATEKEEPER AGENT ─────────────────────────────────────────────────────────
+
+function GatekeeperAgent({ prefillData, onComplete }) {
+  const [input, setInput] = useState(prefillData || "");
+  const [output, setOutput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState(-1);
+  const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  const today = new Date().toLocaleDateString("en-AU", { weekday: "long", year: "numeric", month: "long", day: "numeric", timeZone: "Australia/Sydney" });
+
+  const steps = ["📅 Verifying every fixture date & day...", "🧑 Verifying player names & statuses...", "💰 Sanity-checking the odds...", "⚠️ Compiling carry-forward flags...", "🛡️ Building the confirmed fact table..."];
+
+  const run = async () => {
+    if (!input.trim()) { setError("Please paste the Scout report first."); return; }
+    setLoading(true); setOutput(""); setError(""); setStep(0);
+    const interval = setInterval(() => setStep((p) => p < steps.length - 1 ? p + 1 : p), 8000);
+    try {
+      const result = await callClaude({
+        systemPrompt: GATEKEEPER_PROMPT,
+        userMessage: `Today's date is ${today} (AEST).\n\nScout report to verify:\n\n${input}\n\nRun all three checks with fresh web searches — every fixture's date/day/time, every named player's full name and status, and the odds sanity pass — then output the confirmed fact table in the exact format specified.`,
+      });
+      clearInterval(interval);
+      setOutput(result);
+      if (onComplete) onComplete(result);
+    } catch (e) {
+      clearInterval(interval);
+      setError(e.message);
+    } finally {
+      setLoading(false); setStep(-1);
+    }
+  };
+
+  const copy = () => { navigator.clipboard.writeText(output); setCopied(true); setTimeout(() => setCopied(false), 2000); };
+
+  return (
+    <div>
+      <div style={{ background: "#0d1a0d", border: "1px solid #2d5a2d", borderRadius: 12, padding: "16px 20px", marginBottom: 16 }}>
+        <p style={{ margin: 0, fontSize: 13, color: "#86efac", lineHeight: 1.6 }}>
+          🛡️ <b>Why this step exists:</b> the Gatekeeper re-verifies the three things that cause publishing errors — game dates/days, player names, and odds sanity — with fresh searches, then hands you a fact table. <b>Review it, correct anything wrong, then run the Analyst.</b> Downstream agents may only use facts from this table.
+        </p>
+      </div>
+
+      <div style={{ background: "#111", border: "1px solid #222", borderRadius: 12, padding: 24, marginBottom: 16 }}>
+        <h2 style={{ margin: "0 0 8px", fontSize: 17, color: "#fff" }}>🛡️ Paste Scout Report</h2>
+        <p style={{ margin: "0 0 12px", color: "#aaa", fontSize: 13 }}>
+          {prefillData ? "✅ Scout report auto-loaded from this session." : "Run the Scout agent first, then paste the report below."}
+        </p>
+        <Textarea value={input} onChange={setInput} placeholder="Paste the Scout report here..." rows={8} />
+        <p style={{ margin: "6px 0 0", fontSize: 12, color: input.length > 100 ? "#6bcf6b" : "#555" }}>
+          {input.length > 100 ? `✅ ${input.length.toLocaleString()} characters loaded` : "Waiting for Scout data..."}
+        </p>
+      </div>
+
+      {error && !loading && (
+        <div style={{ background: "#1a0a0a", border: "1px solid #e94560", borderRadius: 10, padding: "14px 20px", marginBottom: 16 }}>
+          <p style={{ margin: "0 0 4px", color: "#e94560", fontWeight: 700 }}>⚠️ Error</p>
+          <p style={{ margin: 0, color: "#aaa", fontSize: 13 }}>{error}</p>
+        </div>
+      )}
+
+      {loading && (
+        <div style={{ background: "#111", border: "1px solid #222", borderRadius: 12, padding: "28px 24px", marginBottom: 16, textAlign: "center" }}>
+          <div style={{ fontSize: 36, marginBottom: 14 }}>🛡️</div>
+          <h3 style={{ margin: "0 0 20px", color: "#fff" }}>Gatekeeper verifying the round...</h3>
+          <StatusTracker steps={steps} currentStep={step} />
+          <p style={{ marginTop: 16, fontSize: 12, color: "#555" }}>Re-checking dates, names and odds with fresh searches — takes a minute or two...</p>
+        </div>
+      )}
+
+      <RunButton onClick={run} disabled={!input.trim()} loading={loading} label="🛡️ Run Gatekeeper Verification" />
+
+      {output && (
+        <div style={{ marginTop: 20 }}>
+          <h3 style={{ margin: "0 0 12px", color: "#6bcf6b", fontSize: 15 }}>✅ Fact Table Ready — review it before running the Analyst</h3>
+          <OutputBox text={output} onCopy={copy} copied={copied} exportName="gatekeeper" />
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── ANALYST AGENT ────────────────────────────────────────────────────────────
 
 function AnalystAgent({ prefillData, onComplete }) {
@@ -747,7 +899,7 @@ function AnalystAgent({ prefillData, onComplete }) {
 
   const today = new Date().toLocaleDateString("en-AU", { weekday: "long", year: "numeric", month: "long", day: "numeric", timeZone: "Australia/Sydney" });
 
-  const steps = ["📋 Applying tipping rules...", "⭐ Scoring confidence...", "💰 Checking bookmaker value...", "🎯 Building SGMs...", "📊 Sorting by tier...", "📝 Compiling report..."];
+  const steps = ["📋 Applying tipping rules...", "⭐ Scoring confidence...", "🎯 Building SGMs & Hero...", "💵 Pricing selected legs (live search)...", "📊 Sorting by tier...", "📝 Compiling report..."];
 
   const run = async () => {
     if (!input.trim()) { setError("Please paste the Scout report first."); return; }
@@ -756,7 +908,7 @@ function AnalystAgent({ prefillData, onComplete }) {
     try {
       const result = await callClaude({
         systemPrompt: ANALYST_PROMPT,
-        userMessage: `Today's date is ${today} (AEST).\n\nScout report:\n\n${input}\n\nRun the full Analyst process. Apply all rules, score every game, build SGMs and produce the complete tiered tips report in the exact format specified.`,
+        userMessage: `Today's date is ${today} (AEST).\n\nScout report (with the Gatekeeper's confirmed fact table appended, if it was run — obey the FACT TABLE RULE for every date, day, name and status):\n\n${input}\n\nRun the full Analyst process. Apply all rules, score every game, build SGMs and the Hero, THEN run the pricing pass — search the real current odds for every selected leg, average them, and present singles as an average, SGMs as legs + range + "confirm in builder" (range capped at the leg product), and the Hero as a range from its searched legs multiplied. Show every multi's leg product in NOTES FOR REVIEW, carry every ⚠️ flag onto every affected tip, and flag any leg you can't price. Produce the complete tiered tips report in the exact format specified.`,
       });
       clearInterval(interval);
       setOutput(result);
@@ -774,9 +926,9 @@ function AnalystAgent({ prefillData, onComplete }) {
   return (
     <div>
       <div style={{ background: "#111", border: "1px solid #222", borderRadius: 12, padding: 24, marginBottom: 16 }}>
-        <h2 style={{ margin: "0 0 8px", fontSize: 17, color: "#fff" }}>📊 Paste Scout Report</h2>
+        <h2 style={{ margin: "0 0 8px", fontSize: 17, color: "#fff" }}>📊 Paste Scout Report + Confirmed Fact Table</h2>
         <p style={{ margin: "0 0 12px", color: "#aaa", fontSize: 13 }}>
-          {prefillData ? "✅ Scout report auto-loaded from this session." : "Run the Scout agent first, then paste the report below."}
+          {prefillData ? "✅ Scout report (and fact table, if Gatekeeper was run) auto-loaded from this session." : "Run Scout, then the Gatekeeper, then paste both outputs below."}
         </p>
         <Textarea value={input} onChange={setInput} placeholder="Paste the Scout report here..." rows={8} />
         <p style={{ margin: "6px 0 0", fontSize: 12, color: input.length > 100 ? "#6bcf6b" : "#555" }}>
@@ -1225,6 +1377,7 @@ Remember the two strict phases: FIRST generate the tips using only pre-game info
 const NAV = [
   { id: "home", label: "🐕 Home", short: "Home" },
   { id: "scout", label: "🔍 Scout", short: "Scout" },
+  { id: "gatekeeper", label: "🛡️ Gatekeeper", short: "Gatekeeper" },
   { id: "analyst", label: "📊 Analyst", short: "Analyst" },
   { id: "publisher", label: "📣 Publisher", short: "Publisher" },
   { id: "scorecard", label: "📈 Scorecard", short: "Scorecard" },
@@ -1233,15 +1386,17 @@ const NAV = [
 
 export default function PuntersDenApp() {
   const [page, setPage] = useState("home");
-  const [weekDone, setWeekDone] = useState({ scout: false, analyst: false, publisher: false, scorecard: false });
+  const [weekDone, setWeekDone] = useState({ scout: false, gatekeeper: false, analyst: false, publisher: false, scorecard: false });
   // Pass data between agents automatically
   const [scoutOutput, setScoutOutput] = useState("");
+  const [gatekeeperOutput, setGatekeeperOutput] = useState("");
   const [analystOutput, setAnalystOutput] = useState("");
 
   const today = new Date().toLocaleDateString("en-AU", { weekday: "long", year: "numeric", month: "long", day: "numeric", timeZone: "Australia/Sydney" });
   const completedCount = Object.values(weekDone).filter(Boolean).length;
 
   const handleScoutComplete = (data) => { setScoutOutput(data); setWeekDone((p) => ({ ...p, scout: true })); };
+  const handleGatekeeperComplete = (data) => { setGatekeeperOutput(data); setWeekDone((p) => ({ ...p, gatekeeper: true })); };
   const handleAnalystComplete = (data) => { setAnalystOutput(data); setWeekDone((p) => ({ ...p, analyst: true })); };
   const handlePublisherComplete = () => setWeekDone((p) => ({ ...p, publisher: true }));
 
@@ -1282,10 +1437,10 @@ export default function PuntersDenApp() {
               <span style={{ fontSize: 28 }}>{NAV.find(n => n.id === page)?.label.split(" ")[0]}</span>
               <div>
                 <h1 style={{ margin: 0, fontSize: 22, fontWeight: 800, color: "#fff" }}>
-                  {page === "scout" ? "Scout Agent" : page === "analyst" ? "Analyst Agent" : page === "publisher" ? "Publisher Agent" : page === "backtest" ? "Backtest Engine" : "Scorecard Agent"}
+                  {page === "scout" ? "Scout Agent" : page === "gatekeeper" ? "Gatekeeper Agent" : page === "analyst" ? "Analyst Agent" : page === "publisher" ? "Publisher Agent" : page === "backtest" ? "Backtest Engine" : "Scorecard Agent"}
                 </h1>
                 <p style={{ margin: 0, fontSize: 12, color: "#e94560", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1px" }}>
-                  {page === "scout" ? "Weekly Data Gather" : page === "analyst" ? "Tiered Tips Generator" : page === "publisher" ? "Website Post Generator" : page === "backtest" ? "Internal Testing — How Would We Have Done" : "Results & Transparency Report"}
+                  {page === "scout" ? "Weekly Data Gather" : page === "gatekeeper" ? "Verify Before You Analyse" : page === "analyst" ? "Tiered Tips Generator" : page === "publisher" ? "Website Post Generator" : page === "backtest" ? "Internal Testing — How Would We Have Done" : "Results & Transparency Report"}
                 </p>
               </div>
             </div>
@@ -1310,16 +1465,16 @@ export default function PuntersDenApp() {
                 </div>
               </div>
               <p style={{ margin: "0 0 20px", color: "#aaa", fontSize: 14, lineHeight: 1.7 }}>
-                Your full weekly NRL & AFL tipping pipeline. Scout → Analyst → Publisher → Scorecard — all in one place.
+                Your full weekly NRL & AFL tipping pipeline. Scout → Gatekeeper → Analyst → Publisher → Scorecard — all in one place.
               </p>
               {/* Progress */}
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
                   <span style={{ fontSize: 12, color: "#aaa" }}>This week's pipeline progress</span>
-                  <span style={{ fontSize: 12, color: completedCount === 4 ? "#22c55e" : "#e94560", fontWeight: 700 }}>{completedCount}/4 complete</span>
+                  <span style={{ fontSize: 12, color: completedCount === 5 ? "#22c55e" : "#e94560", fontWeight: 700 }}>{completedCount}/5 complete</span>
                 </div>
                 <div style={{ background: "#0a0a0a", borderRadius: 99, height: 8, overflow: "hidden" }}>
-                  <div style={{ background: "linear-gradient(90deg, #3b82f6, #a855f7, #f97316, #22c55e)", width: `${(completedCount / 4) * 100}%`, height: "100%", borderRadius: 99, transition: "width 0.5s" }} />
+                  <div style={{ background: "linear-gradient(90deg, #3b82f6, #a855f7, #f97316, #22c55e)", width: `${(completedCount / 5) * 100}%`, height: "100%", borderRadius: 99, transition: "width 0.5s" }} />
                 </div>
               </div>
             </div>
@@ -1329,7 +1484,8 @@ export default function PuntersDenApp() {
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
               {[
                 { id: "scout", icon: "🔍", name: "Scout Agent", sub: "Run Friday morning", desc: "Searches the web for all NRL & AFL fixtures, ladder, team news, injuries and odds from 4 bookmakers.", color: "#3b82f6", border: "#1d4ed8", bg: "#0d1f3c", tags: ["NRL & AFL Fixtures", "Live Odds", "Team News", "Line Movement"] },
-                { id: "analyst", icon: "📊", name: "Analyst Agent", sub: "Run after Scout", desc: "Applies tipping rules, scores confidence stars, builds SGMs and generates tips for every subscription tier.", color: "#a855f7", border: "#7c3aed", bg: "#1a0d2e", tags: ["Rule Scoring", "Confidence Stars", "SGM Builder", "Tier Filtering"] },
+                { id: "gatekeeper", icon: "🛡️", name: "Gatekeeper Agent", sub: "Run after Scout — confirm before Analyst", desc: "Re-verifies every game date, every player name and the odds sanity with fresh searches, then hands you a confirmed fact table to review.", color: "#22d3ee", border: "#0e7490", bg: "#082f3a", tags: ["Fixture Dates", "Player Names", "Odds Sanity", "Fact Table"] },
+                { id: "analyst", icon: "📊", name: "Analyst Agent", sub: "Run after Gatekeeper confirms", desc: "Applies tipping rules, scores confidence stars, builds SGMs and generates tips for every subscription tier.", color: "#a855f7", border: "#7c3aed", bg: "#1a0d2e", tags: ["Rule Scoring", "Confidence Stars", "SGM Builder", "Tier Filtering"] },
                 { id: "publisher", icon: "📣", name: "Publisher Agent", sub: "Run after Analyst", desc: "Writes all 3 posts — Bronze, Silver and Gold — ready to copy straight into your website member area.", color: "#f97316", border: "#c2410c", bg: "#2a1200", tags: ["Bronze Post", "Silver Post", "Gold VIP Post"] },
                 { id: "scorecard", icon: "📈", name: "Scorecard Agent", sub: "Run every Monday", desc: "Settles every published tip, verifies the scorer/SGM legs, and hands you paste-ready track-record.js rows plus a short private summary.", color: "#22c55e", border: "#15803d", bg: "#0d2010", tags: ["Settle tips", "Verify legs", "track-record.js rows", "Private summary"] },
               ].map((agent, idx) => (
@@ -1380,7 +1536,7 @@ export default function PuntersDenApp() {
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {[
                     { day: "Thursday", icon: "👀", tasks: ["Monitor team news dropping", "Note early injury alerts"] },
-                    { day: "Friday", icon: "🚀", tasks: ["Run Scout → Analyst → Publisher", "Operator reviews all tips", "Post to all channels"] },
+                    { day: "Friday", icon: "🚀", tasks: ["Run Scout → Gatekeeper (confirm facts) → Analyst → Publisher", "Operator reviews all tips", "Post to all channels"] },
                     { day: "Sat–Sun", icon: "🏉", tasks: ["Games play out", "Monitor results live", "Engage with members"] },
                     { day: "Monday", icon: "📊", tasks: ["Enter results", "Run Scorecard", "Paste rows into track-record.js", "Settle any 'pending' legs"] },
                   ].map(d => (
@@ -1423,10 +1579,17 @@ export default function PuntersDenApp() {
             </div>
 
             {/* Auto-flow hint */}
-            {scoutOutput && !weekDone.analyst && (
+            {scoutOutput && !weekDone.gatekeeper && (
               <div style={{ background: "#0d1f3c", border: "1px solid #1d4ed8", borderRadius: 10, padding: "14px 18px", marginBottom: 16 }}>
                 <p style={{ margin: 0, fontSize: 13, color: "#7eb3ff" }}>
-                  ✅ Scout report ready! <button onClick={() => setPage("analyst")} style={{ background: "none", border: "none", color: "#3b82f6", cursor: "pointer", fontWeight: 700, fontSize: 13, textDecoration: "underline" }}>Open Analyst →</button> The report has been auto-loaded.
+                  ✅ Scout report ready! <button onClick={() => setPage("gatekeeper")} style={{ background: "none", border: "none", color: "#3b82f6", cursor: "pointer", fontWeight: 700, fontSize: 13, textDecoration: "underline" }}>Open Gatekeeper →</button> Verify the round before analysing.
+                </p>
+              </div>
+            )}
+            {gatekeeperOutput && !weekDone.analyst && (
+              <div style={{ background: "#0d2010", border: "1px solid #15803d", borderRadius: 10, padding: "14px 18px", marginBottom: 16 }}>
+                <p style={{ margin: 0, fontSize: 13, color: "#86efac" }}>
+                  🛡️ Fact table confirmed! <button onClick={() => setPage("analyst")} style={{ background: "none", border: "none", color: "#22c55e", cursor: "pointer", fontWeight: 700, fontSize: 13, textDecoration: "underline" }}>Open Analyst →</button> Scout report + fact table auto-loaded.
                 </p>
               </div>
             )}
@@ -1442,7 +1605,8 @@ export default function PuntersDenApp() {
 
         {/* AGENT PAGES */}
         {page === "scout" && <ScoutAgent onComplete={handleScoutComplete} />}
-        {page === "analyst" && <AnalystAgent prefillData={scoutOutput} onComplete={handleAnalystComplete} />}
+        {page === "gatekeeper" && <GatekeeperAgent prefillData={scoutOutput} onComplete={handleGatekeeperComplete} />}
+        {page === "analyst" && <AnalystAgent prefillData={gatekeeperOutput ? `${scoutOutput}\n\n${gatekeeperOutput}` : scoutOutput} onComplete={handleAnalystComplete} />}
         {page === "publisher" && <PublisherAgent prefillData={analystOutput} onComplete={handlePublisherComplete} />}
         {page === "scorecard" && <ScorecardAgent prefillAnalyst={analystOutput} />}
         {page === "backtest" && <BacktestAgent />}
