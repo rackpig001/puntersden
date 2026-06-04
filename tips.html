@@ -31,6 +31,9 @@
   .tip .sel b { color:var(--green); }
   .tip .odds { font-family:'Anton'; color:var(--gold); font-size:20px; }
   .tip .odds-note { font-size:11px; color:var(--muted); font-weight:600; letter-spacing:.3px; display:inline-block; margin-left:6px; }
+  .tip .play-tag { font-size:10px; font-weight:800; letter-spacing:.5px; padding:2px 7px; border-radius:5px; vertical-align:middle; }
+  .tip .play-tag.strong { background:#0d2a14; color:#4ade80; border:1px solid #2d5a2d; }
+  .tip .play-tag.value { background:#2a1f00; color:#f0c14b; border:1px solid #6b5418; }
   .tip .reason { color:var(--muted); font-size:14px; margin-top:8px; }
   .legs { margin-top:10px; }
   .leg { background:rgba(0,0,0,0.2); border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin-bottom:6px; font-size:14px; }
@@ -131,8 +134,9 @@
         h += `</div>`;
       } else {
         const head = t.avg ? `~$${t.avg}` : priced;
-        const tag = t.avg ? 'avg · indicative' : 'indicative';
-        h += `<div class="sel"><b>${t.sel || ''}</b> <span class="odds">${head}</span> <span class="odds-note">${tag}</span></div>`;
+        const note = t.avg ? 'avg · indicative' : 'indicative';
+        const badge = t.tag ? `<span class="play-tag ${String(t.tag).toLowerCase()}">${t.tag}</span>` : '';
+        h += `<div class="sel"><b>${t.sel || ''}</b> ${badge} <span class="odds">${head}</span> <span class="odds-note">${note}</span></div>`;
         if (t.avg && t.odds && t.bookie) h += `<div class="reason">Best: $${t.odds} @ ${t.bookie}</div>`;
         else if (t.bookie) h += `<div class="reason">Best bookie: ${t.bookie}</div>`;
       }
