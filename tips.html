@@ -30,6 +30,7 @@
   .tip .sel { font-size:16px; }
   .tip .sel b { color:var(--green); }
   .tip .odds { font-family:'Anton'; color:var(--gold); font-size:20px; }
+  .tip .odds-note { font-size:11px; color:var(--muted); font-weight:600; letter-spacing:.3px; display:inline-block; margin-left:6px; }
   .tip .reason { color:var(--muted); font-size:14px; margin-top:8px; }
   .legs { margin-top:10px; }
   .leg { background:rgba(0,0,0,0.2); border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin-bottom:6px; font-size:14px; }
@@ -103,6 +104,7 @@
     const tierName = (data.tier || '').charAt(0).toUpperCase() + (data.tier || '').slice(1);
     let html = `<div class="head"><div class="kick">Members Only</div><h1>Your Tips</h1>`
       + `<span class="tier-badge">${tierName} member</span><div class="week">${data.week}</div></div>`;
+    html += `<div style="text-align:center;font-size:13px;color:var(--muted);margin:0 0 18px;line-height:1.5;">💡 Odds shown are indicative — always confirm the exact price in your own account before betting.</div>`;
 
     const DAY_ORDER = ['Thu','Fri','Sat','Sun'];
     const DAY_LABEL = { Thu:'Thursday', Fri:'Friday', Sat:'Saturday', Sun:'Sunday' };
@@ -117,17 +119,24 @@
       if (t.tier && tierLabel[t.tier]) line += `<span class="tier-tag ${t.tier}">${tierLabel[t.tier]}</span>`;
       h += `<div class="sport">${line}</div>`;
       h += `<div class="match">${t.match || ''}</div>`;
+      const priced = t.range ? `~$${t.range}` : (t.odds ? `~$${t.odds}` : '');
       if (isMulti) {
+        const isSGM = (t.type || '').indexOf('Same Game') !== -1;
+        const note = isSGM ? 'indicative — confirm in your builder' : 'indicative — cross-game multi';
         h += `<div class="sel"><span class="sgm-tag">🎯 ${t.type || 'Same Game Multi'}</span></div>`;
-        h += `<div class="sel"><b>${t.sel || ''}</b> <span class="odds">$${t.odds}</span></div>`;
+        h += `<div class="sel"><b>${t.sel || ''}</b> <span class="odds">${priced}</span></div>`;
+        if (priced) h += `<div class="odds-note">${note}</div>`;
         h += `<div class="legs">`;
         t.legs.forEach(function (l) { h += `<div class="leg"><span class="c">✓</span>${l}</div>`; });
         h += `</div>`;
       } else {
-        h += `<div class="sel"><b>${t.sel || ''}</b> <span class="odds">$${t.odds}</span></div>`;
+        const head = t.avg ? `~$${t.avg}` : priced;
+        const tag = t.avg ? 'avg · indicative' : 'indicative';
+        h += `<div class="sel"><b>${t.sel || ''}</b> <span class="odds">${head}</span> <span class="odds-note">${tag}</span></div>`;
+        if (t.avg && t.odds && t.bookie) h += `<div class="reason">Best: $${t.odds} @ ${t.bookie}</div>`;
+        else if (t.bookie) h += `<div class="reason">Best bookie: ${t.bookie}</div>`;
       }
       if (t.reason) h += `<div class="reason">${t.reason}</div>`;
-      if (t.bookie) h += `<div class="reason">Best bookie: ${t.bookie}</div>`;
       h += `</div>`;
       return h;
     }
