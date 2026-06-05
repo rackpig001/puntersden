@@ -11,6 +11,10 @@
 //
 // (Started fresh for a clean, verified live record — Jun 2026.)
 
+// Preview switch: set to true ONLY when filling the arrays with sample data to
+// test layout. It shows a red "PREVIEW MODE" banner on the Scoreboard. LIVE = false.
+window.DEMO_DATA = false;
+
 window.TRACK_RECORD = [
 
 ];
