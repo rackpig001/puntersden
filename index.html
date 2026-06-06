@@ -104,7 +104,8 @@
   .hero p.lead { font-size: 18px; color: var(--muted); max-width: 520px; margin-bottom: 34px; line-height: 1.65; }
   .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
   .hero-btns .btn { padding: 15px 28px; font-size: 15px; }
-  .trust { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .trust { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 1.45; color: var(--muted); max-width: 520px; }
+  .trust .ic { flex-shrink: 0; font-size: 15px; line-height: 1.4; }
   .trust b { color: var(--text); }
 
   /* ── hero card (sample tip) ── */
@@ -362,8 +363,8 @@
         <a href="#pricing" class="btn">Start Your Free Week</a>
         <a href="#how" class="btn btn-ghost">See How It Works</a>
       </div>
-      <div class="trust" style="margin-bottom:10px;">📱 Your tips land <b>straight on your phone</b> by SMS — no app, no logins.</div>
-      <div class="trust">🔍 Every tip tracked. <b>Win or lose.</b> Full transparency.</div>
+      <div class="trust" style="margin-bottom:12px;"><span class="ic">📱</span><span>Your tips land <b>straight on your phone</b> by SMS — no app, no logins.</span></div>
+      <div class="trust"><span class="ic">🔍</span><span>Every tip tracked. <b>Win or lose.</b> Full transparency.</span></div>
     </div>
     <div>
       <div class="tip-card">

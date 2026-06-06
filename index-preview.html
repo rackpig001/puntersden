@@ -6,6 +6,19 @@
 <title>The Punters Den — NRL & AFL Tips, Powered by AI Agents</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="description" content="AI-powered NRL & AFL betting tips, delivered to your phone by SMS. Every tip tracked in the open — win or lose. First week free, from $5/week.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Punters Den">
+<meta property="og:title" content="The Punters Den — NRL & AFL Tips, Powered by AI Agents">
+<meta property="og:description" content="AI-powered NRL & AFL betting tips, delivered to your phone by SMS. Every tip tracked in the open — win or lose. First week free, from $5/week.">
+<meta property="og:url" content="https://thepuntersden.com/">
+<meta property="og:image" content="https://thepuntersden.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Punters Den — NRL & AFL Tips, Powered by AI Agents">
+<meta name="twitter:description" content="AI-powered NRL & AFL betting tips, delivered to your phone by SMS. Every tip tracked in the open — win or lose. First week free, from $5/week.">
+<meta name="twitter:image" content="https://thepuntersden.com/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -54,7 +67,7 @@
   .logo { display: flex; align-items: center; gap: 10px; font-family: 'Anton'; font-size: 22px; letter-spacing: 1px; text-transform: uppercase; }
   .logo .paw { font-size: 26px; }
   .logo img.paw{height:30px;width:auto;vertical-align:middle;}
-  .logo .den { color: var(--red); }
+  .logo .den { color: var(--gold); }
   .nav-links { display: flex; gap: 32px; align-items: center; }
   .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.3px; transition: color 0.2s; }
   .nav-links a:hover { color: var(--text); }
@@ -91,7 +104,8 @@
   .hero p.lead { font-size: 18px; color: var(--muted); max-width: 520px; margin-bottom: 34px; line-height: 1.65; }
   .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
   .hero-btns .btn { padding: 15px 28px; font-size: 15px; }
-  .trust { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .trust { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 1.45; color: var(--muted); max-width: 520px; }
+  .trust .ic { flex-shrink: 0; font-size: 15px; line-height: 1.4; }
   .trust b { color: var(--text); }
 
   /* ── hero card (sample tip) ── */
@@ -349,7 +363,8 @@
         <a href="#pricing" class="btn">Start Your Free Week</a>
         <a href="#how" class="btn btn-ghost">See How It Works</a>
       </div>
-      <div class="trust">🔍 Every tip tracked. <b>Win or lose.</b> Full transparency.</div>
+      <div class="trust" style="margin-bottom:12px;"><span class="ic">📱</span><span>Your tips land <b>straight on your phone</b> by SMS — no app, no logins.</span></div>
+      <div class="trust"><span class="ic">🔍</span><span>Every tip tracked. <b>Win or lose.</b> Full transparency.</span></div>
     </div>
     <div>
       <div class="tip-card">
@@ -632,7 +647,7 @@
         <ul class="pfeat">
           <li>🎁 First week free</li>
           <li><b>Everything in Bronze, plus:</b></li>
-          <li>Our highest-confidence plays (85%+)</li>
+          <li>Our highest-confidence plays</li>
           <li>A Same Game Multi for each code</li>
           <li>Deeper analysis on every pick</li>
         </ul>
@@ -732,7 +747,6 @@
         body: JSON.stringify({ tier })
       });
       const data = await res.json();
-      console.log('[checkout] response status:', res.status, 'data:', data);
 
       if (!res.ok || !data.url) {
         alert("Couldn't start checkout (" + (data.error || ('HTTP ' + res.status)) + "). Please try again in a moment.");
