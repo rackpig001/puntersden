@@ -170,16 +170,11 @@
 
   /* ── problem ── */
   .problem { background: var(--panel); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+  .problem-grid { max-width: 760px; margin: 0 auto; text-align: center; }
   .problem h2 { font-size: clamp(30px, 4vw, 46px); margin-bottom: 22px; }
   .problem h2 .red { color: var(--red); }
   .problem p { color: var(--muted); font-size: 16px; margin-bottom: 16px; }
   .problem p b { color: var(--text); }
-  .myth-list { display: flex; flex-direction: column; gap: 14px; }
-  .myth { display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; border-left: 3px solid var(--red); }
-  .myth .ic { font-size: 22px; }
-  .myth .mt { font-weight: 700; font-size: 15px; margin-bottom: 2px; }
-  .myth .md { font-size: 13px; color: var(--muted); }
 
   /* ── how it works ── */
   .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
@@ -281,7 +276,6 @@
   @media (max-width: 900px) {
     .hero-grid { grid-template-columns: 1fr; gap: 40px; }
     .tip-card { transform: none; max-width: 420px; }
-    .problem-grid { grid-template-columns: 1fr; gap: 36px; }
     .steps { grid-template-columns: repeat(2, 1fr); }
     .price-grid { grid-template-columns: repeat(2, 1fr); }
     .nav-links { display: none; }
@@ -570,6 +564,8 @@
       <div class="feat reveal"><span class="fic">🔍</span><div><h3>Kept honest</h3><p>Most tipsters only show you the winners. We leave the losers up too — same board, same odds. Go find another mob who'll do that.</p></div></div>
       <div class="feat reveal"><span class="fic">💎</span><div><h3>Quality over quantity</h3><p>We'd rather hand you a handful of genuine value than a long card of maybes. If the edge isn't there, the agents don't force it.</p></div></div>
       <div class="feat reveal"><span class="fic">🇦🇺</span><div><h3>Footy, done properly</h3><p>No soccer, no overnight US sports. Just NRL and AFL — the codes we live and breathe, nothing else.</p></div></div>
+      <div class="feat reveal"><span class="fic">📱</span><div><h3>Straight to your phone</h3><p>Your private tips link lands by SMS the moment you join, and we text the den when each round drops. No app, no logins.</p></div></div>
+      <div class="feat reveal"><span class="fic">⏸️</span><div><h3>No off-season bills</h3><p>When the NRL &amp; AFL seasons wrap, your subscription ends on its own — and we text you before the new season so you can jump back in. You never pay for a dead month.</p></div></div>
     </div>
   </div>
 </section>
@@ -597,15 +593,9 @@
   <div class="wrap problem-grid">
     <div class="reveal">
       <h2>Tired of tips that <span class="red">don't stack up?</span></h2>
-      <p>Everyone's got a tip — the mate at the pub, the bloke on Insta with the flashy slips. <b>You only ever see their wins.</b></p>
-      <p>So you never really know if any of it works over time.</p>
-      <p>That's why the den exists. Our AI agents grade every game, find the genuine value, and only tip when the numbers say there's an edge — then track every tip, <b>win or lose</b>, out in the open.</p>
-    </div>
-    <div class="myth-list reveal">
-      <div class="myth"><span class="ic">🍺</span><div><div class="mt">The pub mate</div><div class="md">Loud about wins, silent about losses.</div></div></div>
-      <div class="myth"><span class="ic">📸</span><div><div class="mt">The Insta tipster</div><div class="md">Only posts the slips that came in.</div></div></div>
-      <div class="myth"><span class="ic">🎰</span><div><div class="mt">The bookies' "free" tips</div><div class="md">Designed to get you betting more.</div></div></div>
-      <div class="myth"><span class="ic">🐕</span><div><div class="mt">The Punters Den</div><div class="md">Every tip tracked. The data does the talking.</div></div></div>
+      <p>Everyone's got a tip — the mate at the pub, the bloke on Insta with the flashy slips. <b>You only ever see their wins.</b> So you never really know if any of it works over time.</p>
+      <p>That's why the den exists. Our AI agents grade every game, only tip when the numbers say there's an edge — and every tip lands on our <b>public Scoreboard, win or lose.</b> And when the season ends, so does your bill.</p>
+      <p style="margin-top:22px;"><b>Don't take our word for it</b> → <a href="results.html" class="btn btn-ghost" style="margin-left:10px; padding:12px 22px; font-size:14px;">Check the Scoreboard</a></p>
     </div>
   </div>
 </section>
