@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Punters Den — The Scoreboard</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -26,6 +28,7 @@
   .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
   .logo { display: flex; align-items: center; gap: 10px; font-family: 'Anton'; font-size: 22px; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; color: inherit; }
   .logo .paw { font-size: 26px; }
+  .logo img.paw { height: 30px; width: auto; vertical-align: middle; }
   .logo .den { color: var(--red); }
   .nav-links { display: flex; gap: 32px; align-items: center; }
   .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
@@ -205,7 +208,7 @@
 
 <nav>
   <div class="wrap nav-inner">
-    <a href="index.html" class="logo"><span class="paw">🐕</span> The Punters <span class="den">Den</span></a>
+    <a href="index.html" class="logo"><img src="logo.png" alt="The Punters Den" class="paw"> The Punters <span class="den">Den</span></a>
     <div class="nav-links" id="navLinks">
       <a href="index.html">← Back to Home</a>
       <a href="results.html" class="active">The Scoreboard</a>
@@ -359,7 +362,7 @@
 
 <footer>
   <div class="wrap">
-    <div class="logo" style="justify-content:center;"><span class="paw">🐕</span> The Punters <span class="den">Den</span></div>
+    <div class="logo" style="justify-content:center;"><img src="logo.png" alt="The Punters Den" class="paw"> The Punters <span class="den">Den</span></div>
     <div class="foot-rg">
       <b>The den finds the edge.</b> This service provides tips and analysis for information and entertainment purposes only. We are not a bookmaker. 18+ only. Gambling involves risk — never bet more than you can afford to lose. Gambling Help <b>1800 858 858</b>.
     </div>
