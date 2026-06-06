@@ -209,11 +209,9 @@
       <a href="index.html">← Back to Home</a>
       <a href="results.html" class="active">The Scoreboard</a>
       <a href="#how-scoreboard" onclick="document.getElementById('navLinks').classList.remove('open')">How It Works</a>
-      <!-- Member area coming later — re-enable when built:
-      <a href="/find">My Tips</a>
-      -->
+      <a href="/find" class="my-tips-link">🎯 My Tips</a>
     </div>
-    <a href="index.html#pricing" class="btn nav-cta">Join the Den</a>
+    <a href="index.html#pricing" class="btn nav-cta member-swap">Join the Den</a>
     <button class="burger" aria-label="Menu" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
   </div>
 </nav>
@@ -662,5 +660,21 @@
   }
 </script>
 
+<script>
+/* 🎯 My Tips smart links — see index.html for the full note */
+(function () {
+  try {
+    var k = localStorage.getItem('pd_tips_key');
+    var href = k ? '/tips?key=' + encodeURIComponent(k) : '/find';
+    document.querySelectorAll('.my-tips-link').forEach(function (a) { a.setAttribute('href', href); });
+    if (k) {
+      document.querySelectorAll('.member-swap').forEach(function (a) {
+        a.setAttribute('href', href);
+        a.textContent = '🎯 My Tips';
+      });
+    }
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>

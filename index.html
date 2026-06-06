@@ -121,6 +121,9 @@
   .sample-grid .tip-card.acc-teal::before  { background: linear-gradient(90deg, #2fd2c4, var(--gold)); }
   .sample-grid .tip-card.acc-amber::before { background: linear-gradient(90deg, #f0934b, var(--gold)); }
   .sample-grid .tip-card.acc-red::before   { background: linear-gradient(90deg, #e6584e, #ff8a6a); }
+  .pick .play-tag { font-size: 11px; font-weight: 800; letter-spacing: .5px; padding: 2px 8px; border-radius: 5px; vertical-align: middle; }
+  .play-tag.value { background: #2a1f00; color: #f0c14b; border: 1px solid #6b5418; }
+  .play-tag.strong { background: #0d2a14; color: #4ade80; border: 1px solid #2d5a2d; }
   .swipe-hint { display: none; }
   @media (max-width: 720px) {
     .sample-grid {
@@ -331,9 +334,9 @@
       <a href="results.html">Results</a>
       <a href="#pricing" onclick="document.getElementById('navLinks').classList.remove('open')">Pricing</a>
       <a href="#faq" onclick="document.getElementById('navLinks').classList.remove('open')">FAQ</a>
-      <a href="/find">My Tips</a>
+      <a href="/find" class="my-tips-link">🎯 My Tips</a>
     </div>
-    <a href="#pricing" class="btn nav-cta">Join the Den</a>
+    <a href="#pricing" class="btn nav-cta member-swap">Join the Den</a>
     <button class="burger" aria-label="Menu" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
   </div>
 </nav>
@@ -358,7 +361,7 @@
           <span class="badge">● Sample</span>
         </div>
         <div class="match">Storm v Eels</div>
-        <div class="pick">📌 <b>4-leg Same Game Multi</b> · 5★ confidence</div>
+        <div class="pick">📌 <b>4-leg Same Game Multi</b> · the weekly builder play</div>
         <div class="sgm-legs">
           <div class="leg"><span class="lc">✓</span> Storm to Win</div>
           <div class="leg"><span class="lc">✓</span> Cameron Munster — Anytime Try Scorer</div>
@@ -432,7 +435,7 @@
           <span class="badge">● Sample</span>
         </div>
         <div class="match">Geelong v Western Bulldogs</div>
-        <div class="pick">📌 <b>4-leg Same Game Multi</b> · 4★ confidence</div>
+        <div class="pick">📌 <b>4-leg Same Game Multi</b> · Silver &amp; Gold</div>
         <div class="sgm-legs">
           <div class="leg"><span class="lc">✓</span> Geelong to Win</div>
           <div class="leg"><span class="lc">✓</span> Jeremy Cameron — 2+ goals</div>
@@ -453,7 +456,7 @@
           <span class="badge">● Sample</span>
         </div>
         <div class="match">Roosters v Knights</div>
-        <div class="pick">📌 <b>4-leg Same Game Multi</b> · 4★ confidence</div>
+        <div class="pick">📌 <b>4-leg Same Game Multi</b> · Silver &amp; Gold</div>
         <div class="sgm-legs">
           <div class="leg"><span class="lc">✓</span> Roosters to Win</div>
           <div class="leg"><span class="lc">✓</span> Mark Nawaqanitawase — anytime try</div>
@@ -485,7 +488,7 @@
         </div>
         <div class="sgm-odds">
           <span class="lbl">Combined odds</span>
-          <span class="big-odds">$75.00</span>
+          <span class="big-odds">$42.50</span>
         </div>
         <div class="blur-note">🚀 Small stake, big dream — the full Hero Multi drops for Gold members</div>
       </div>
@@ -497,7 +500,7 @@
           <span class="badge">● Sample</span>
         </div>
         <div class="match">Titans v Raiders</div>
-        <div class="pick">📌 <b>Match Result</b> · value play</div>
+        <div class="pick">📌 <b>Match Result</b> <span class="play-tag value">VALUE</span></div>
         <div class="sgm-legs">
           <div class="leg"><span class="lc">✓</span> Raiders to Win</div>
           <div class="leg" style="border-style:dashed; opacity:0.85;"><span class="lc" style="color:var(--gold);">★</span> Form and matchup point its way</div>
@@ -506,7 +509,7 @@
           <span class="lbl">Our odds</span>
           <span class="big-odds">$2.00</span>
         </div>
-        <div class="blur-note">🔒 Full reasoning + best bookie unlocked for members</div>
+        <div class="blur-note">🔒 Full reasoning unlocked for members</div>
       </div>
 
       <!-- AFL H2H value single -->
@@ -516,16 +519,37 @@
           <span class="badge">● Sample</span>
         </div>
         <div class="match">Geelong v Sydney</div>
-        <div class="pick">📌 <b>Match Result</b> · value play</div>
+        <div class="pick">📌 <b>Match Result</b> <span class="play-tag strong">STRONG</span></div>
         <div class="sgm-legs">
           <div class="leg"><span class="lc">✓</span> Geelong to Win</div>
-          <div class="leg" style="border-style:dashed; opacity:0.85;"><span class="lc" style="color:var(--gold);">★</span> Underrated at home — strong value at the price</div>
+          <div class="leg" style="border-style:dashed; opacity:0.85;"><span class="lc" style="color:var(--gold);">★</span> Short price, real edge — every rule fires</div>
         </div>
         <div class="sgm-odds">
           <span class="lbl">Our odds</span>
-          <span class="big-odds">$2.44</span>
+          <span class="big-odds">$1.62</span>
         </div>
-        <div class="blur-note">🔒 Full reasoning + best bookie unlocked for members</div>
+        <div class="blur-note">🔒 Full reasoning unlocked for members</div>
+      </div>
+
+      <!-- CROSS-SPORT MULTI (Gold exclusive) -->
+      <div class="tip-card acc-gold reveal">
+        <div class="tc-head">
+          <span class="sport">🔀 Cross-Sport Multi · Gold Exclusive</span>
+          <span class="badge">● Sample</span>
+        </div>
+        <div class="match">NRL + AFL · One Slip</div>
+        <div class="pick">📌 <b>4-leg cross-code multi</b> · both codes, one bet</div>
+        <div class="sgm-legs">
+          <div class="leg"><span class="lc">✓</span> NRL · Sharks to Win</div>
+          <div class="leg"><span class="lc">✓</span> NRL · Dolphins to Win</div>
+          <div class="leg"><span class="lc">✓</span> AFL · Fremantle to Win</div>
+          <div class="leg"><span class="lc">✓</span> AFL · Sydney to Win</div>
+        </div>
+        <div class="sgm-odds">
+          <span class="lbl">Combined odds</span>
+          <span class="big-odds">$4.65</span>
+        </div>
+        <div class="blur-note">🔒 Four games, two codes — drops weekly for Gold members</div>
       </div>
 
     </div>
@@ -636,6 +660,7 @@
       </div>
     </div>
     <p class="price-note">💡 Free trial — cancel anytime in the first 7 days, no charge. Our Same Game Multis are built as 3–4 leg value plays. The Gold <b>Hero Multi</b> is a deliberate high-odds long-shot — a bit of fun, so keep the stake small.</p>
+    <p class="price-note">⏸️ <b>Season's over? So is your bill.</b> When the NRL &amp; AFL seasons wrap, subscriptions end automatically — you're never billed through the off-season. We'll text you before the new season kicks off so you can jump straight back in.</p>
   </div>
 </section>
 
@@ -648,10 +673,11 @@
     </div>
     <div class="faq-list">
       <details class="faq reveal"><summary>How do the AI agents work? <span class="plus">+</span></summary><div class="ans">Our AI agents pull in every NRL and AFL game — form, injuries, team news and the latest odds — and score each one against our tipping rules to find genuine value. Then a real punter reviews every tip before it goes out.</div></details>
-      <details class="faq reveal"><summary>When do tips get posted? <span class="plus">+</span></summary><div class="ans">Tips go out midweek, before the first games of the round kick off, so you've got time to get set. Paying members can see them on the site any time — just tap "My Tips" and pop in your mobile number. (SMS alerts straight to your phone are coming soon.)</div></details>
+      <details class="faq reveal"><summary>When do tips get posted? <span class="plus">+</span></summary><div class="ans">Tips go out midweek, before the first games of the round kick off, so you've got time to get set. The moment they drop we text the den — your private tips link lives on your phone, one tap away, any time.</div></details>
       <details class="faq reveal"><summary>What happens when a tip loses? <span class="plus">+</span></summary><div class="ans">It goes on the record, same as the wins. No tipping service wins every bet — anyone who claims otherwise is lying. We aim for a strong strike rate over time and we're upfront about every result.</div></details>
-      <details class="faq reveal"><summary>How do I get the tips? <span class="plus">+</span></summary><div class="ans">No app, no account, no fuss. You pay, then head to "My Tips" on the site and enter your mobile number to see that round's tips any time — and bookmark the page so it's one tap next round. (SMS alerts to your phone are coming soon; for now it's all on the site.)</div></details>
+      <details class="faq reveal"><summary>How do I get the tips? <span class="plus">+</span></summary><div class="ans">No app, no account, no fuss. The moment you join, your private tips link lands on your phone by SMS — one tap and you're on this round's tips. Lost the text? Hit "My Tips" anywhere on the site and pop in your mobile number.</div></details>
       <details class="faq reveal"><summary>Can I cancel anytime? <span class="plus">+</span></summary><div class="ans">Absolutely. No lock-in contracts. Cancel whenever you like.</div></details>
+      <details class="faq reveal"><summary>What happens in the off-season? <span class="plus">+</span></summary><div class="ans">When the NRL and AFL seasons wrap up, your subscription ends automatically — we don't bill you a cent over the off-season for tips that don't exist. Then before the new season kicks off, we'll text you so you can jump straight back in. Footy's back, den's open.</div></details>
       <details class="faq reveal"><summary>Is this legal? <span class="plus">+</span></summary><div class="ans">Yes. We provide tips and analysis for entertainment and information only — we're not a bookmaker and we don't take bets. You do your own betting through your own licensed bookmaker.</div></details>
       <details class="faq reveal"><summary>Do you guarantee I'll win money? <span class="plus">+</span></summary><div class="ans">No, and be wary of anyone who does. We provide a statistical edge based on data and analysis. Betting always carries risk. Never bet more than you can afford to lose.</div></details>
     </div>
@@ -751,7 +777,7 @@
   })();
 </script>
 
-<a href="#pricing" class="sticky-cta" id="stickyCta">Join the Den 🐕</a>
+<a href="#pricing" class="sticky-cta member-swap" id="stickyCta">Join the Den 🐕</a>
 
 <!-- Live track record — reads the same data file as the Scoreboard, so the landing stats stay in sync -->
 <script src="track-record.js"></script>
@@ -792,5 +818,23 @@
   })();
 </script>
 
+<script>
+/* 🎯 My Tips smart links: once a member has opened their private tips link on this
+   device, every "My Tips" button goes straight to their tips — and the Join CTAs
+   swap to "My Tips" (no point selling to someone who's already in the den). */
+(function () {
+  try {
+    var k = localStorage.getItem('pd_tips_key');
+    var href = k ? '/tips?key=' + encodeURIComponent(k) : '/find';
+    document.querySelectorAll('.my-tips-link').forEach(function (a) { a.setAttribute('href', href); });
+    if (k) {
+      document.querySelectorAll('.member-swap').forEach(function (a) {
+        a.setAttribute('href', href);
+        a.textContent = '🎯 My Tips';
+      });
+    }
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>

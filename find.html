@@ -48,6 +48,7 @@
   <h1>Get My Tips</h1>
   <p class="lead">Already a member but lost your link? Pop in the mobile number you signed up with and we'll take you straight to your tips. 🐕</p>
 
+  <a id="savedTips" href="/find" style="display:none; text-align:center; background:linear-gradient(135deg,var(--gold),#d9a82e); color:#231a02; border-radius:10px; padding:15px; font-size:16px; font-weight:800; text-decoration:none; margin-bottom:14px;">🎯 Open my tips on this device →</a>
   <div class="card">
     <label for="phone">Mobile number</label>
     <input id="phone" type="tel" inputmode="tel" placeholder="04XX XXX XXX" autocomplete="tel">
@@ -106,5 +107,17 @@
   }
 </script>
 
+<script>
+/* If this device has opened a member link before, offer the one-tap shortcut */
+(function () {
+  try {
+    var k = localStorage.getItem('pd_tips_key');
+    if (!k) return;
+    var a = document.getElementById('savedTips');
+    a.setAttribute('href', '/tips?key=' + encodeURIComponent(k));
+    a.style.display = 'block';
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>

@@ -99,11 +99,17 @@
   try {
     const res = await fetch('/.netlify/functions/get-tips?key=' + encodeURIComponent(key));
     if (res.status === 403) {
+      // dead link: forget it on this device so "My Tips" falls back to /find
+      try { if (localStorage.getItem('pd_tips_key') === key) localStorage.removeItem('pd_tips_key'); } catch (e) {}
       show(`<div class="state"><div class="big">Link not active</div><p>This link isn't active — your subscription may have ended, or the link's expired. <a href="/#pricing">Re-join the den</a> to get back on the tips.</p></div>`);
       return;
     }
     if (!res.ok) throw new Error('server');
     const data = await res.json();
+
+    // Valid member link: remember it on this device, so every "🎯 My Tips"
+    // button across the site takes them straight here — no phone entry needed.
+    try { localStorage.setItem('pd_tips_key', key); } catch (e) {}
 
     if (!data.tips || !data.tips.length) {
       show(`<div class="state"><div class="big">No tips posted yet</div><p>This week's tips aren't up just yet — check back here soon, they'll appear the moment they're posted. 🐕</p></div>`);
