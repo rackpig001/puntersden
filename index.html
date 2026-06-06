@@ -633,7 +633,7 @@
         <ul class="pfeat">
           <li>🎁 First week free</li>
           <li><b>Everything in Bronze, plus:</b></li>
-          <li>Our highest-confidence plays (85%+)</li>
+          <li>Our highest-confidence plays</li>
           <li>A Same Game Multi for each code</li>
           <li>Deeper analysis on every pick</li>
         </ul>
@@ -733,7 +733,6 @@
         body: JSON.stringify({ tier })
       });
       const data = await res.json();
-      console.log('[checkout] response status:', res.status, 'data:', data);
 
       if (!res.ok || !data.url) {
         alert("Couldn't start checkout (" + (data.error || ('HTTP ' + res.status)) + "). Please try again in a moment.");

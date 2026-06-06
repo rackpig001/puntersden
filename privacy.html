@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Punters Den — Privacy Policy</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -23,6 +25,7 @@
   .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; max-width: 1180px; margin: 0 auto; padding: 0 22px; }
   .logo { display: flex; align-items: center; gap: 10px; font-family: 'Anton'; font-size: 22px; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; color: inherit; }
   .logo .paw { font-size: 26px; }
+  .logo img.paw { height: 30px; width: auto; vertical-align: middle; }
   .logo .den { color: var(--gold); }
   .back { font-size: 14px; color: var(--muted); text-decoration: none; }
   .back:hover { color: var(--text); }
@@ -37,14 +40,14 @@
   .draft { background: rgba(230,88,78,0.1); border: 1px solid rgba(230,88,78,0.3); border-radius: 10px; padding: 14px 18px; margin-bottom: 30px; font-size: 13.5px; color: #f0b8b3; }
   footer { border-top: 1px solid var(--line); background: var(--panel); padding: 40px 0; position: relative; z-index: 2; margin-top: 40px; }
   .rg { text-align: center; color: var(--muted); font-size: 13px; }
-  @media (max-width: 540px) { .logo { font-size: 19px; } .logo .paw { font-size: 23px; } .doc h1 { font-size: 34px; } }
+  @media (max-width: 540px) { .logo { font-size: 16px; gap: 6px; } .logo .paw { font-size: 19px; } .doc h1 { font-size: 34px; } }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="logo"><span class="paw">🐕</span> The Punters <span class="den">Den</span></a>
+    <a href="index.html" class="logo"><img src="logo.png" alt="The Punters Den" class="paw"> The Punters <span class="den">Den</span></a>
     <a href="index.html" class="back">← Back to site</a>
   </div>
 </nav>
@@ -65,7 +68,7 @@
   <p>Depending on how you interact with us, we may collect:</p>
   <ul>
     <li><b>Account &amp; contact details</b> — such as your name and email address, when you subscribe or contact us.</li>
-    <li><b>Subscription &amp; payment information</b> — handled by our third-party payment and membership provider (Whop). We do not store your full card details on our systems.</li>
+    <li><b>Subscription &amp; payment information</b> — processed securely by our payment provider, Stripe. We do not store or have access to your full card details.</li>
     <li><b>Usage data</b> — basic analytics about how the website is used (e.g. pages visited), which may be collected via cookies or similar technologies.</li>
     <li><b>Communications</b> — any messages you send us.</li>
   </ul>
@@ -80,7 +83,7 @@
   </ul>
 
   <h2>4. Third-party providers</h2>
-  <p>We rely on trusted third parties to operate the Service, including our payment and membership platform (Whop) and content delivery channels (such as Telegram). These providers handle your information under their own privacy policies. We encourage you to review them.</p>
+  <p>We rely on trusted third parties to operate the Service, including our payment processor (Stripe) and our SMS provider, which we use to send your private tips link and weekly updates to your mobile number. These providers handle your information under their own privacy policies, and we encourage you to review them.</p>
 
   <h2>5. Disclosure of your information</h2>
   <p>We do not sell your personal information. We may disclose it to our service providers (as above), or where required by law, or to protect our rights. Some providers may store or process data overseas.</p>

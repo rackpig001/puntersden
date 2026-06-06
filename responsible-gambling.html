@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Punters Den — Responsible Gambling</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -23,6 +25,7 @@
   .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; max-width: 1180px; margin: 0 auto; padding: 0 22px; }
   .logo { display: flex; align-items: center; gap: 10px; font-family: 'Anton'; font-size: 22px; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; color: inherit; }
   .logo .paw { font-size: 26px; }
+  .logo img.paw { height: 30px; width: auto; vertical-align: middle; }
   .logo .den { color: var(--gold); }
   .back { font-size: 14px; color: var(--muted); text-decoration: none; }
   .back:hover { color: var(--text); }
@@ -33,95 +36,68 @@
   .doc p { margin-bottom: 14px; color: #d8dcd8; }
   .doc ul { margin: 0 0 14px 22px; color: #d8dcd8; }
   .doc li { margin-bottom: 8px; }
-  .help-banner { background: linear-gradient(135deg, rgba(47,210,122,0.12), rgba(245,197,66,0.08)); border: 1px solid rgba(47,210,122,0.3); border-radius: 14px; padding: 26px; margin: 10px 0 30px; text-align: center; }
-  .help-banner .num { font-family: 'Anton'; font-size: 34px; color: var(--green); letter-spacing: 1px; margin: 6px 0; }
-  .help-banner p { color: #d8dcd8; margin: 0; }
-  .resource-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; margin: 18px 0 8px; }
-  .res { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
-  .res h3 { font-size: 16px; margin-bottom: 6px; color: var(--text); }
-  .res p { font-size: 14px; color: var(--muted); margin-bottom: 10px; }
-  .res a { font-size: 14px; font-weight: 700; }
   .callout { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: 10px; padding: 18px 20px; margin: 22px 0; font-size: 15px; }
+  .help { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 22px; margin: 26px 0; }
+  .help .num { font-family: 'Anton'; font-size: 30px; color: var(--gold); letter-spacing: 1px; }
   footer { border-top: 1px solid var(--line); background: var(--panel); padding: 40px 0; position: relative; z-index: 2; margin-top: 40px; }
   .rg { text-align: center; color: var(--muted); font-size: 13px; }
-  @media (max-width: 540px) { .logo { font-size: 19px; } .logo .paw { font-size: 23px; } .doc h1 { font-size: 34px; } .resource-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 540px) { .logo { font-size: 16px; gap: 6px; } .logo .paw { font-size: 19px; } .doc h1 { font-size: 34px; } }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="logo"><span class="paw">🐕</span> The Punters <span class="den">Den</span></a>
+    <a href="index.html" class="logo"><img src="logo.png" alt="The Punters Den" class="paw"> The Punters <span class="den">Den</span></a>
     <a href="index.html" class="back">← Back to site</a>
   </div>
 </nav>
 
 <div class="wrap doc">
   <h1>Responsible Gambling</h1>
-  <div class="updated">Your wellbeing comes first.</div>
-
-  <div class="help-banner">
-    <p>Need help now? The National Gambling Helpline is free, confidential, and open 24/7.</p>
-    <div class="num">📞 1800 858 858</div>
-    <p><a href="https://www.gamblinghelponline.org.au" target="_blank" rel="noopener">gamblinghelponline.org.au</a> — free online counselling &amp; live chat, anytime.</p>
-  </div>
-
-  <h2>Our commitment</h2>
-  <p>The Punters Den provides tips and analysis for information and entertainment only. We want betting to stay fun. Gambling should never be used to make money, recover losses, or escape stress — and it should never put your finances, relationships, or wellbeing at risk.</p>
+  <div class="updated">Your wellbeing comes first</div>
 
   <div class="callout">
-    <b>Always remember:</b> There are no guaranteed winners. Our tips are a statistical edge, not a sure thing. Never bet more than you can comfortably afford to lose, and never chase your losses.
+    <b>The Punters Den is for entertainment.</b> We provide tips and analysis — we are not a bookmaker and we don't take bets. Betting always involves risk, and no tip is ever a guaranteed win. Only ever bet what you can comfortably afford to lose. You must be 18 or over.
   </div>
 
-  <h2>Tips for staying in control</h2>
+  <h2>Bet with your head, not over it</h2>
+  <p>Following tips should be a bit of fun on the footy — never a way to make money, chase losses, or solve money problems. A few simple habits keep it that way:</p>
   <ul>
-    <li><b>Set a budget</b> — decide what you can afford to lose before you start, and stick to it.</li>
-    <li><b>Set time limits</b> — don't let betting take over your day.</li>
-    <li><b>Never chase losses</b> — trying to win back money is how small problems become big ones.</li>
-    <li><b>Don't bet under the influence</b> — or when stressed, upset, or bored.</li>
-    <li><b>Keep it social and fun</b> — if it stops being enjoyable, take a break.</li>
-    <li><b>Bet with money, not credit</b> — never borrow to gamble.</li>
+    <li>Set a budget before the round and stick to it — only stake money you can afford to lose.</li>
+    <li>Never chase losses. A losing week is part of betting; trying to win it back quickly usually makes things worse.</li>
+    <li>Don't bet with money meant for rent, bills, food or family.</li>
+    <li>Set time and deposit limits with your bookmaker — every licensed Australian bookie offers these tools.</li>
+    <li>Take regular breaks, and never bet under the influence or to escape stress.</li>
+    <li>Treat the stake on our Hero Multi the way it's intended — a small bit of fun, not a serious play.</li>
   </ul>
 
-  <h2>Signs it might be a problem</h2>
-  <p>Gambling may be becoming harmful if you're spending more than you can afford, chasing losses, hiding your betting from others, feeling anxious or guilty about it, or it's affecting your work, mood, or relationships. If any of this sounds familiar, reaching out early makes a real difference.</p>
+  <h2>Signs it might be becoming a problem</h2>
+  <p>It may be time to step back and seek support if you find yourself:</p>
+  <ul>
+    <li>Betting more than you planned, or more often than you'd like.</li>
+    <li>Chasing losses or borrowing money to bet.</li>
+    <li>Hiding your betting from people close to you.</li>
+    <li>Feeling anxious, guilty or irritable about gambling.</li>
+    <li>Letting betting affect your work, sleep, relationships or finances.</li>
+  </ul>
 
-  <h2>Where to get free, confidential help</h2>
-  <div class="resource-grid">
-    <div class="res">
-      <h3>National Gambling Helpline</h3>
-      <p>Free, professional, confidential support 24/7 — for you or someone you care about.</p>
-      <a href="tel:1800858858">📞 1800 858 858</a>
-    </div>
-    <div class="res">
-      <h3>Gambling Help Online</h3>
-      <p>Free online counselling, live chat, email support and self-help tools, 24/7.</p>
-      <a href="https://www.gamblinghelponline.org.au" target="_blank" rel="noopener">gamblinghelponline.org.au →</a>
-    </div>
-    <div class="res">
-      <h3>BetStop — Self-Exclusion Register</h3>
-      <p>A free Australian Government tool to block yourself from all licensed online &amp; phone betting providers.</p>
-      <a href="https://www.betstop.gov.au" target="_blank" rel="noopener">betstop.gov.au →</a>
-    </div>
-    <div class="res">
-      <h3>Lifeline (crisis support)</h3>
-      <p>If you're in crisis or need someone to talk to about anything, 24/7 support.</p>
-      <a href="tel:131114">📞 13 11 14</a>
-    </div>
+  <div class="help">
+    <div class="num">1800 858 858</div>
+    <p style="margin:6px 0 0;"><b>Gambling Help Online</b> — free, confidential support, 24 hours a day, 7 days a week, anywhere in Australia.</p>
+    <p style="margin:8px 0 0;">Chat or find more at <a href="https://www.gamblinghelponline.org.au" target="_blank" rel="noopener">gamblinghelponline.org.au</a>.</p>
   </div>
 
-  <h2>Setting limits with your bookmaker</h2>
-  <p>All licensed Australian betting operators offer responsible gambling tools — including deposit limits, activity statements, time-outs, and self-exclusion. Use them. They're there to help you stay in control.</p>
+  <h2>Self-exclusion</h2>
+  <p>If you'd like to stop receiving our tips, you can cancel your subscription at any time, and you can ask us to remove your number from our messages by replying STOP to any text or contacting us. To block yourself from betting more broadly, you can register with <a href="https://www.betstop.gov.au" target="_blank" rel="noopener">BetStop</a>, Australia's free national self-exclusion register, which blocks you from all licensed Australian online bookmakers in one step.</p>
 
-  <h2>18+ only</h2>
-  <p>Our service and all betting in Australia is strictly for those aged 18 and over.</p>
+  <p>If you or someone you know needs help right now, please call Gambling Help on <b>1800 858 858</b>. If it's an emergency, call <b>000</b>.</p>
 </div>
 
 <footer>
   <div class="wrap">
-    <div class="rg">⚠️ Gamble responsibly. 18+ only. For entertainment purposes only. Gambling Help: 1800 858 858 · gamblinghelponline.org.au</div>
+    <p class="rg">⚠️ Gamble responsibly. 18+ only. For entertainment purposes only. Gambling Help: 1800 858 858 · <a href="https://www.gamblinghelponline.org.au" target="_blank" rel="noopener">gamblinghelponline.org.au</a></p>
   </div>
 </footer>
-
 </body>
 </html>

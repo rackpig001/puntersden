@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Punters Den — Terms & Conditions</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -23,6 +25,7 @@
   .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; max-width: 1180px; margin: 0 auto; padding: 0 22px; }
   .logo { display: flex; align-items: center; gap: 10px; font-family: 'Anton'; font-size: 22px; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; color: inherit; }
   .logo .paw { font-size: 26px; }
+  .logo img.paw { height: 30px; width: auto; vertical-align: middle; }
   .logo .den { color: var(--gold); }
   .back { font-size: 14px; color: var(--muted); text-decoration: none; }
   .back:hover { color: var(--text); }
@@ -37,14 +40,14 @@
   .draft { background: rgba(230,88,78,0.1); border: 1px solid rgba(230,88,78,0.3); border-radius: 10px; padding: 14px 18px; margin-bottom: 30px; font-size: 13.5px; color: #f0b8b3; }
   footer { border-top: 1px solid var(--line); background: var(--panel); padding: 40px 0; position: relative; z-index: 2; margin-top: 40px; }
   .rg { text-align: center; color: var(--muted); font-size: 13px; }
-  @media (max-width: 540px) { .logo { font-size: 19px; } .logo .paw { font-size: 23px; } .doc h1 { font-size: 34px; } }
+  @media (max-width: 540px) { .logo { font-size: 16px; gap: 6px; } .logo .paw { font-size: 19px; } .doc h1 { font-size: 34px; } }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="logo"><span class="paw">🐕</span> The Punters <span class="den">Den</span></a>
+    <a href="index.html" class="logo"><img src="logo.png" alt="The Punters Den" class="paw"> The Punters <span class="den">Den</span></a>
     <a href="index.html" class="back">← Back to site</a>
   </div>
 </nav>
@@ -78,7 +81,7 @@
   <p>Any win rates, strike rates, returns, or statistics we publish are provided in good faith but may include backtested (simulated) results that were not placed as live bets. Such figures are illustrative only and should not be relied upon as a prediction of future outcomes. Different bet types (for example Same Game Multis) carry different and often higher risk than head-to-head selections.</p>
 
   <h2>5. Subscriptions, billing and payments</h2>
-  <p>Paid tiers are billed on a recurring weekly basis via our third-party payment and membership provider (Whop), who acts as merchant of record. By subscribing you authorise the recurring charge until you cancel.</p>
+  <p>Paid tiers are billed on a recurring weekly basis through our payment processor, Stripe. The Punters Den is the merchant of record. By subscribing you authorise the recurring weekly charge until you cancel. Subscriptions run through the NRL and AFL seasons; when the seasons end your subscription is cancelled and billing stops, and we may text you before the next season starts so you can choose to re-join.</p>
   <ul>
     <li>Prices are listed in Australian Dollars (AUD) unless stated otherwise.</li>
     <li>You may cancel at any time; cancellation stops future billing and access continues until the end of the current paid period.</li>
