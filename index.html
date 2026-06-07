@@ -107,6 +107,20 @@
   .trust { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 1.45; color: var(--muted); max-width: 520px; }
   .trust .ic { flex-shrink: 0; font-size: 15px; line-height: 1.4; }
   .trust b { color: var(--text); }
+  .hero-cards { display: flex; flex-direction: column; gap: 16px; }
+  .result-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  .result-card .rc-top { font-family: 'Anton'; font-size: 13px; letter-spacing: 1px; color: var(--muted); text-align: center; margin-bottom: 12px; }
+  .result-card .rc-score { display: flex; justify-content: space-around; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
+  .result-card .rc-team { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+  .result-card .rc-name { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .result-card .rc-pts { font-family: 'Anton'; font-size: 44px; line-height: 1; color: var(--text); }
+  .result-card .rc-win .rc-pts { color: var(--green); }
+  .result-card .rc-win .rc-name { color: var(--text); }
+  .result-card .rc-tries-h { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .result-card .rc-tries { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .result-card .rt { font-size: 12px; color: var(--muted); background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; }
+  .result-card .rt.hit { color: #0a140f; background: var(--gold); border-color: var(--gold); font-weight: 800; }
+  .result-card .rc-link { display: block; text-align: center; font-size: 13px; font-weight: 700; color: var(--gold); text-decoration: none; padding-top: 4px; }
 
   /* ── hero card (sample tip) ── */
   .tip-card {
@@ -366,22 +380,47 @@
       <div class="trust" style="margin-bottom:12px;"><span class="ic">📱</span><span>Your tips land <b>straight on your phone</b> by SMS — no app, no logins.</span></div>
       <div class="trust"><span class="ic">🔍</span><span>Every tip tracked. <b>Win or lose.</b> Full transparency.</span></div>
     </div>
-    <div>
+    <div class="hero-cards">
+      <!-- CARD 1: the tip we sent -->
       <div class="tip-card acc-green">
         <div class="tc-head">
-          <span class="sport">🏉 NRL · Round 14</span>
+          <span class="sport">🏉 NRL · Same Game Multi</span>
           <span class="badge" style="color:var(--green); border-color:rgba(47,210,122,0.4);">✓ Won</span>
         </div>
-        <div class="match">Cowboys v Dolphins</div>
-        <div class="pick">📌 <b>Dolphins to Win</b></div>
+        <div class="match">Wests Tigers v Penrith · R14</div>
+        <div class="pick">📌 <b>3-Leg Same Game Multi</b></div>
         <div class="sgm-legs">
-          <div class="leg" style="border-style:dashed; opacity:0.85;"><span class="lc" style="color:var(--green);">✓</span> Landed 40–14 — the defence travelled and the backline fired</div>
+          <div class="leg"><span class="lc" style="color:var(--green);">✓</span> Penrith Panthers to Win</div>
+          <div class="leg"><span class="lc" style="color:var(--green);">✓</span> Brian To'o — Anytime Try</div>
+          <div class="leg"><span class="lc" style="color:var(--green);">✓</span> Isaah Yeo — Anytime Try</div>
         </div>
         <div class="sgm-odds">
-          <span class="lbl">Tipped at</span>
-          <span class="big-odds">$1.44</span>
+          <span class="lbl">Landed at</span>
+          <span class="big-odds">$8.00</span>
         </div>
-        <div class="blur-note">🔒 This week's tips + full reasoning for members</div>
+        <div class="blur-note">🔒 This week's multis + full reasoning for members</div>
+      </div>
+
+      <!-- CARD 2: the real result, match-centre style -->
+      <div class="result-card">
+        <div class="rc-top">ROUND 14 · FULL TIME</div>
+        <div class="rc-score">
+          <div class="rc-team"><span class="rc-name">Wests Tigers</span><span class="rc-pts">0</span></div>
+          <div class="rc-team rc-win"><span class="rc-name">Panthers</span><span class="rc-pts">68</span></div>
+        </div>
+        <div class="rc-tries-h">🏉 Tryscorers</div>
+        <div class="rc-tries">
+          <span class="rt">Paul Alamoti</span>
+          <span class="rt">Nathan Cleary</span>
+          <span class="rt">Freddy Lussick ×2</span>
+          <span class="rt">Thomas Jenkins ×2</span>
+          <span class="rt hit">Isaah Yeo ✓</span>
+          <span class="rt hit">Brian To'o ×2 ✓</span>
+          <span class="rt">Jack Cogger</span>
+          <span class="rt">Izack Tago</span>
+          <span class="rt">Lindsay Smith</span>
+        </div>
+        <a href="results.html" class="rc-link">See every tip — win or lose →</a>
       </div>
     </div>
   </div>
