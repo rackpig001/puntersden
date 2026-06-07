@@ -138,6 +138,11 @@
   .res-pill.push { background: rgba(255,255,255,0.07); color: var(--muted); border: 1px solid var(--line); }
   .res-pill.void { background: rgba(255,255,255,0.07); color: var(--muted); border: 1px solid var(--line); }
   .tip .pl { font-weight: 800; text-align: right; }
+  .tipw { margin-bottom: 10px; }
+  .tip { margin-bottom: 0; }
+  .tipw.has-note .tip { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none; }
+  .tip-note { font-size: 12.5px; color: var(--muted); line-height: 1.5; background: var(--panel-2); border: 1px solid var(--line); border-top: 1px dashed var(--line); border-radius: 0 0 12px 12px; padding: 11px 20px 13px; }
+  .tip-note b { color: var(--text); }
   .pl.pos { color: var(--green); }
   .pl.neg { color: var(--loss); }
   .pl.zero { color: var(--muted); }
@@ -243,18 +248,6 @@
 
 <div class="wrap">
   <div class="demo-banner" id="demoBanner" style="display:none;">👁 PREVIEW MODE — the results below are SAMPLE data for layout testing only. These are NOT real tips or results. Remove before launch.</div>
-  <!-- STATS -->
-  <div class="statbar">
-    <div class="stat"><div class="sv green" id="s-winrate">—</div><div class="sl">Win Rate</div></div>
-    <div class="stat"><div class="sv" id="s-total">—</div><div class="sl">Total Tips</div></div>
-    <div class="stat"><div class="sv" id="s-avg">—</div><div class="sl">Avg Odds Taken</div></div>
-    <div class="stat"><div class="sv green" id="s-roi">—</div><div class="sl">Return on Investment</div></div>
-  </div>
-
-  <div class="note" id="statsNote" style="border-left-color: var(--gold); margin-bottom: 20px;">
-    📊 <b>Strike rate &amp; ROI go live once we've logged enough tips</b> for the numbers to mean something. Until then, every individual result is shown below — nothing hidden.
-  </div>
-
   <!-- BREAKDOWN: Singles / Multis / Hero (tap to jump) -->
   <div class="breakdown" id="breakdown" style="display:none;">
     <div class="bd-card" data-bucket="singles" role="button" tabindex="0">
@@ -297,10 +290,7 @@
       <span class="fg-label">Type</span>
       <button class="chip active" data-val="all">All</button>
       <button class="chip" data-val="singles">Singles</button>
-      <button class="chip" data-val="H2H">H2H</button>
-      <button class="chip" data-val="Prop">Prop</button>
       <button class="chip" data-val="SGM">SGM</button>
-      <button class="chip" data-val="Line">Line</button>
     </div>
     <div class="filter-group" data-filter="result">
       <span class="fg-label">Result</span>
@@ -321,6 +311,18 @@
       <p>Every long-shot we've run — win or lose. Small stakes, just for fun. <b>Not counted</b> in our official win-rate or ROI.</p>
     </div>
     <div id="heroLogList"></div>
+  </div>
+
+  <!-- SEASON TOTALS (kept lower while we build a sample) -->
+  <div class="stat-head" style="font-family:'Anton'; font-size:22px; letter-spacing:0.5px; margin:38px 0 14px; text-align:center;">📊 Season Totals</div>
+  <div class="statbar">
+    <div class="stat"><div class="sv green" id="s-winrate">—</div><div class="sl">Win Rate</div></div>
+    <div class="stat"><div class="sv" id="s-total">—</div><div class="sl">Total Tips</div></div>
+    <div class="stat"><div class="sv" id="s-avg">—</div><div class="sl">Avg Odds Taken</div></div>
+    <div class="stat"><div class="sv green" id="s-roi">—</div><div class="sl">Return on Investment</div></div>
+  </div>
+  <div class="note" id="statsNote" style="border-left-color: var(--gold); margin-bottom: 20px;">
+    📊 <b>Strike rate &amp; ROI go live once we've logged enough tips</b> for the numbers to mean something. Until then, every individual result is shown above — nothing hidden.
   </div>
 
   <div class="note" style="border-left-color: var(--gold); margin-top: 30px;">
@@ -429,7 +431,7 @@
 
   function typeMatch(t) {
     if (state.type === 'all') return true;
-    if (state.type === 'singles') return ['H2H', 'Line', 'Prop'].indexOf(t.type) !== -1;
+    if (state.type === 'singles') return t.type === 'H2H';
     return t.type === state.type;
   }
   function passes(t) {
@@ -492,8 +494,7 @@
 
   function renderBreakdown() {
     const set = sportSet();
-    const SINGLE_TYPES = ['H2H', 'Line', 'Prop'];
-    const singles = set.filter(t => SINGLE_TYPES.indexOf(t.type) !== -1);
+    const singles = set.filter(t => t.type === 'H2H');
     const multis  = set.filter(t => t.type === 'SGM');   // includes the cross-sport multi (code CROSS)
     const hero    = (window.HERO_RECORD || []);
 
@@ -558,7 +559,9 @@
       const plClass = pl > 0 ? 'pos' : (pl < 0 ? 'neg' : 'zero');
       const dollars = pl * UNIT;
       const plTxt = (pl > 0 ? '+' : '') + (dollars >= 0 ? '$' + dollars.toFixed(0) : '-$' + Math.abs(dollars).toFixed(0));
-      return `<div class="tip ${t.result}">
+      const noteHtml = t.note ? `<div class="tip-note">📋 ${t.note}</div>` : '';
+      return `<div class="tipw ${t.note ? 'has-note' : ''}">
+        <div class="tip ${t.result}">
         <span class="rd">${t.rd}</span>
         <span class="codecell"><span class="tag ${t.code.toLowerCase()}">${t.code}</span></span>
         <span class="match">${t.match}</span>
@@ -567,6 +570,7 @@
         <span class="odds">$${t.odds.toFixed(2)}</span>
         <span class="result"><span class="res-pill ${t.result}">${t.result}</span></span>
         <span class="pl ${plClass}">${plTxt}</span>
+        </div>${noteHtml}
       </div>`;
     }).join('');
   }
