@@ -38,7 +38,12 @@
   .nav-links a:hover { color:var(--text); }
   .nav-links a.sb { color:var(--gold); }
   .wrap { max-width:760px; margin:0 auto; padding:34px 22px 80px; }
-  .head { margin-bottom:18px; }
+  .head { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; margin-bottom:18px; }
+  .head-l { min-width:0; }
+  .tier-badge { flex:0 0 auto; align-self:center; }
+  .between { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:28px 22px; text-align:center; margin-bottom:6px; }
+  .between .b-big { font-family:'Anton'; font-size:22px; margin-bottom:8px; }
+  .between p { color:var(--muted); font-size:14px; max-width:440px; margin:0 auto; }
   .kick { font-family:'Anton'; color:var(--gold); letter-spacing:1px; text-transform:uppercase; font-size:13px; }
   h1 { font-family:'Anton'; font-size:36px; letter-spacing:1px; margin:6px 0; }
   .tier-badge { display:inline-block; background:var(--panel); border:1px solid var(--line); border-radius:50px; padding:5px 14px; font-size:13px; color:var(--muted); }
@@ -130,8 +135,10 @@
 
 <div class="wrap">
   <div class="head" id="head" style="display:none;">
-    <div class="kick">Members Only</div>
-    <h1>Your Tips</h1>
+    <div class="head-l">
+      <div class="kick">Members Only</div>
+      <h1>Your Tips</h1>
+    </div>
     <span class="tier-badge" id="tierBadge"></span>
   </div>
 
@@ -184,8 +191,10 @@
     document.getElementById('tierBadge').textContent = (medal ? medal + ' ' : '') + tierName + ' member';
     document.getElementById('head').style.display = 'block';
 
-    const current = rounds.find(function (r) { return r.live; }) || rounds[0];
-    const past = rounds.filter(function (r) { return r !== current; });
+    // The round flagged live is "current". Between rounds (none live), there are no
+    // current tips — every round sits in Past tips until the next slate is published.
+    const current = rounds.find(function (r) { return r.live; }) || null;
+    const past = current ? rounds.filter(function (r) { return r !== current; }) : rounds.slice();
 
     // ── render helpers (day / code / specials grouping) ──
     const DAY_ORDER = ['Thu','Fri','Sat','Sun','Mon'];
@@ -307,13 +316,20 @@
     }
 
     function renderHome(reopenPast) {
-      let html = `<div class="signpost">🗓 <b>Next tips drop Wednesday</b> — we'll text you the moment they're up. Games run Thursday to Sunday.</div>`;
+      let html = '';
+      if (current) {
+        html += `<div class="signpost">🗓 <b>Next tips drop Wednesday</b> — we'll text you the moment they're up. Games run Thursday to Sunday.</div>`;
+      }
       html += ctaHTML();
-      html += tipsBlock(current.tips);
+      if (current) {
+        html += tipsBlock(current.tips);
+      } else {
+        html += `<div class="between"><div class="b-big">🏁 That round's a wrap</div><p>Next week's tips aren't up just yet — they drop Wednesday and we'll text you the moment they're live. Your last round's tips are below. 🐕</p></div>`;
+      }
       html += pastSection();
       show(html);
       wireDayFilter();
-      wirePast(reopenPast);
+      wirePast(current ? reopenPast : true);
     }
     function openRound(id) {
       const r = rounds.find(function (x) { return x.id === id; });
