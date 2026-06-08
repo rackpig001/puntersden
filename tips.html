@@ -27,18 +27,30 @@
   :root { --black:#0a140f; --panel:#10201a; --panel-2:#13261d; --gold:#f5c542; --green:#2fd27a; --loss:#e6584e; --text:#f4f4f6; --muted:#9aa69c; --line:rgba(255,255,255,0.08); }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:var(--black); color:var(--text); font-family:'Archivo',sans-serif; line-height:1.6; }
-  nav { border-bottom:1px solid var(--line); background:rgba(10,10,12,0.72); backdrop-filter:blur(14px); }
-  .nav-inner { display:flex; align-items:center; height:68px; max-width:760px; margin:0 auto; padding:0 22px; }
-  .logo { display:flex; align-items:center; gap:10px; font-family:'Anton'; font-size:22px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:inherit; }
-  .logo .paw { font-size:26px; }
-  .logo img.paw{height:30px;width:auto;vertical-align:middle;}
+  nav { border-bottom:1px solid var(--line); background:rgba(10,10,12,0.72); backdrop-filter:blur(14px); position:sticky; top:0; z-index:20; }
+  .nav-inner { display:flex; align-items:center; height:64px; max-width:760px; margin:0 auto; padding:0 22px; }
+  .logo { display:flex; align-items:center; gap:10px; font-family:'Anton'; font-size:20px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:inherit; }
+  .logo .paw { font-size:24px; }
+  .logo img.paw{height:28px;width:auto;vertical-align:middle;}
   .logo .den { color:var(--gold); }
-  .wrap { max-width:760px; margin:0 auto; padding:40px 22px 80px; }
-  .head { margin-bottom:28px; }
+  .nav-links { margin-left:auto; display:flex; gap:16px; align-items:center; }
+  .nav-links a { color:var(--muted); text-decoration:none; font-size:13px; font-weight:600; white-space:nowrap; }
+  .nav-links a:hover { color:var(--text); }
+  .nav-links a.sb { color:var(--gold); }
+  .wrap { max-width:760px; margin:0 auto; padding:34px 22px 80px; }
+  .head { margin-bottom:18px; }
   .kick { font-family:'Anton'; color:var(--gold); letter-spacing:1px; text-transform:uppercase; font-size:13px; }
-  h1 { font-family:'Anton'; font-size:38px; letter-spacing:1px; margin:6px 0; }
+  h1 { font-family:'Anton'; font-size:36px; letter-spacing:1px; margin:6px 0; }
   .tier-badge { display:inline-block; background:var(--panel); border:1px solid var(--line); border-radius:50px; padding:5px 14px; font-size:13px; color:var(--muted); }
-  .week { color:var(--muted); margin-top:8px; }
+  .odds-guide { text-align:center; font-size:13px; color:var(--muted); margin:0 0 18px; line-height:1.5; }
+
+  .signpost { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:11px 15px; font-size:13.5px; color:var(--muted); margin:0 0 14px; }
+  .signpost b { color:var(--text); }
+  .tr-cta { display:flex; align-items:center; justify-content:space-between; gap:12px; background:linear-gradient(165deg,rgba(47,210,122,0.08),var(--panel)); border:1px solid rgba(47,210,122,0.3); border-radius:14px; padding:15px 18px; margin-bottom:24px; text-decoration:none; color:inherit; }
+  .tr-cta .lft .big { font-family:'Anton'; font-size:22px; color:var(--green); line-height:1.1; }
+  .tr-cta .lft .sub { font-size:12.5px; color:var(--muted); margin-top:3px; }
+  .tr-cta .go { color:var(--gold); font-weight:700; font-size:13px; white-space:nowrap; }
+
   .tip { background:linear-gradient(165deg,var(--panel-2),var(--panel)); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:14px; position:relative; }
   .tip::before { content:""; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),#ffe08a); border-radius:14px 14px 0 0; }
   .tip .sport { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
@@ -50,7 +62,7 @@
   .tip .play-tag { font-size:10px; font-weight:800; letter-spacing:.5px; padding:2px 7px; border-radius:5px; vertical-align:middle; }
   .tip .play-tag.strong { background:#0d2a14; color:#4ade80; border:1px solid #2d5a2d; }
   .tip .play-tag.value { background:#2a1f00; color:#f0c14b; border:1px solid #6b5418; }
-  .day-filter { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:0 0 22px; padding:12px; background:var(--panel); border:1px solid var(--line); border-radius:14px; position:sticky; top:10px; z-index:5; }
+  .day-filter { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:0 0 22px; padding:12px; background:var(--panel); border:1px solid var(--line); border-radius:14px; position:sticky; top:74px; z-index:5; }
   .day-btn { font-size:15px; font-weight:700; font-family:'Archivo',sans-serif; padding:11px 17px; border-radius:999px; border:1.5px solid var(--line); background:var(--panel-2); color:var(--muted); cursor:pointer; transition:all .15s; min-height:46px; }
   .day-btn:hover { border-color:var(--gold); color:var(--text); }
   .day-btn.active { background:var(--gold); color:#0a140f; border-color:var(--gold); }
@@ -77,8 +89,30 @@
   .sgm-tag { font-family:'Anton'; font-size:12px; letter-spacing:1px; color:#2fd2c4; text-transform:uppercase; }
   .specials-head { font-family:'Anton'; font-size:15px; letter-spacing:1px; text-transform:uppercase; color:#2fd2c4; margin:34px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--line); }
   .code-head { font-family:'Archivo'; font-weight:800; font-size:13px; letter-spacing:0.5px; text-transform:uppercase; color:var(--muted); margin:16px 0 10px; }
-  @media (max-width:540px){ h1{font-size:30px;} .logo{font-size:18px;} }
-  @media (max-width: 540px) { .logo { font-size: 16px; gap: 6px; } .logo .paw { font-size: 19px; } }
+
+  /* Past tips */
+  .past-toggle { width:100%; display:flex; align-items:center; justify-content:space-between; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; cursor:pointer; margin-top:34px; }
+  .past-toggle .pt-l { font-family:'Anton'; font-size:16px; letter-spacing:.5px; }
+  .past-toggle .chev { transition:transform .2s; color:var(--muted); }
+  .past-toggle.open .chev { transform:rotate(180deg); }
+  .past-list { margin-top:10px; display:none; }
+  .past-list.open { display:block; }
+  .past-row { display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:8px; cursor:pointer; transition:border-color .15s; }
+  .past-row:hover { border-color:var(--gold); }
+  .past-row .rl { font-weight:700; font-size:14.5px; }
+  .past-row .rd { font-size:12px; color:var(--muted); margin-top:2px; }
+  .past-row .right { display:flex; align-items:center; gap:10px; flex:0 0 auto; }
+  .chip { font-size:11px; font-weight:800; padding:3px 8px; border-radius:6px; white-space:nowrap; }
+  .chip.pos { background:rgba(47,210,122,.15); color:var(--green); border:1px solid rgba(47,210,122,.3); }
+  .chip.neg { background:rgba(230,88,78,.15); color:var(--loss); border:1px solid rgba(230,88,78,.3); }
+  .arrow { color:var(--muted); font-size:18px; }
+  .back-link { display:inline-flex; align-items:center; gap:6px; color:var(--gold); font-weight:700; font-size:14px; cursor:pointer; margin-bottom:14px; background:none; border:none; font-family:'Archivo'; }
+  .round-title { font-family:'Anton'; font-size:26px; margin-bottom:4px; }
+  .round-sub { color:var(--muted); font-size:13px; margin-bottom:16px; }
+  .past-banner { background:var(--panel-2); border:1px dashed var(--line); border-radius:10px; padding:11px 15px; font-size:13px; color:var(--muted); margin-bottom:20px; }
+  .past-banner a { color:var(--gold); text-decoration:none; font-weight:600; }
+
+  @media (max-width:540px){ h1{font-size:30px;} .logo{font-size:16px; gap:6px;} .logo .paw{font-size:19px;} .nav-links{gap:12px;} .nav-links a{font-size:12px;} }
 </style>
 </head>
 <body>
@@ -86,16 +120,25 @@
 <nav>
   <div class="nav-inner">
     <a href="/" class="logo"><img src="logo.png" alt="The Punters Den" class="paw"> The Punters <span class="den">Den</span></a>
+    <div class="nav-links">
+      <a href="results.html" class="sb">📊 Scoreboard</a>
+      <a href="https://billing.stripe.com/p/login/dRm7sLcfd8MI9c1dxU6oo00" target="_blank" rel="noopener">Manage</a>
+      <a href="mailto:thepuntersdenau@gmail.com">Help</a>
+    </div>
   </div>
 </nav>
 
 <div class="wrap">
-  <div id="content">
-    <div class="state">
-      <div class="spinner"></div>
-      <p>Loading your tips…</p>
-    </div>
+  <div class="head" id="head" style="display:none;">
+    <div class="kick">Members Only</div>
+    <h1>Your Tips</h1>
+    <span class="tier-badge" id="tierBadge"></span>
   </div>
+
+  <div id="content">
+    <div class="state"><div class="spinner"></div><p>Loading your tips…</p></div>
+  </div>
+
   <p style="text-align:center; font-size:14px; color:var(--muted); margin-top:24px; line-height:1.5;">Lost this link? Get it back anytime — go to <a href="/find" style="color:var(--gold); text-decoration:none; font-weight:600;">thepuntersden.com/find</a> and enter your mobile number.</p>
   <p style="text-align:center; font-size:13px; color:var(--muted); margin-top:26px; line-height:1.6;">
     <a href="https://billing.stripe.com/p/login/dRm7sLcfd8MI9c1dxU6oo00" target="_blank" rel="noopener" style="color:var(--muted); text-decoration:underline;">Manage or cancel your subscription</a>
@@ -110,7 +153,6 @@
   const content = document.getElementById('content');
   const params = new URLSearchParams(window.location.search);
   const key = params.get('key');
-
   function show(html) { content.innerHTML = html; }
 
   if (!key) {
@@ -121,31 +163,36 @@
   try {
     const res = await fetch('/.netlify/functions/get-tips?key=' + encodeURIComponent(key));
     if (res.status === 403) {
-      // dead link: forget it on this device so "My Tips" falls back to /find
       try { if (localStorage.getItem('pd_tips_key') === key) localStorage.removeItem('pd_tips_key'); } catch (e) {}
       show(`<div class="state"><div class="big">Link not active</div><p>This link isn't active — your subscription may have ended, or the link's expired. <a href="/#pricing">Re-join the den</a> to get back on the tips.</p></div>`);
       return;
     }
     if (!res.ok) throw new Error('server');
     const data = await res.json();
-
-    // Valid member link: remember it on this device, so every "🎯 My Tips"
-    // button across the site takes them straight here — no phone entry needed.
     try { localStorage.setItem('pd_tips_key', key); } catch (e) {}
 
-    if (!data.tips || !data.tips.length) {
+    const rounds = (data.rounds || []);
+    if (!rounds.length) {
       show(`<div class="state"><div class="big">No tips posted yet</div><p>This week's tips aren't up just yet — check back here soon, they'll appear the moment they're posted. 🐕</p></div>`);
       return;
     }
 
-    const tierName = (data.tier || '').charAt(0).toUpperCase() + (data.tier || '').slice(1);
-    let html = `<div class="head"><div class="kick">Members Only</div><h1>Your Tips</h1>`
-      + `<span class="tier-badge">${tierName} member</span><div class="week">${data.week}</div></div>`;
-    html += `<div style="text-align:center;font-size:13px;color:var(--muted);margin:0 0 18px;line-height:1.5;">💡 Odds shown are a guide — always confirm the exact price in your own account before betting.</div>`;
+    // header
+    const tier = data.tier || '';
+    const medal = { bronze:'🥉', silver:'🥈', gold:'🥇' }[tier] || '';
+    const tierName = tier.charAt(0).toUpperCase() + tier.slice(1);
+    document.getElementById('tierBadge').textContent = (medal ? medal + ' ' : '') + tierName + ' member';
+    document.getElementById('head').style.display = 'block';
 
+    const current = rounds.find(function (r) { return r.live; }) || rounds[0];
+    const past = rounds.filter(function (r) { return r !== current; });
+
+    // ── render helpers (day / code / specials grouping) ──
     const DAY_ORDER = ['Thu','Fri','Sat','Sun','Mon'];
     const DAY_LABEL = { Thu:'Thursday', Fri:'Friday', Sat:'Saturday', Sun:'Sunday', Mon:'Monday' };
     const tierLabel = { bronze:'🥉 Bronze', silver:'🥈 Silver', gold:'🥇 Gold' };
+    const CODE_ORDER = ['NRL','AFL'];
+    const CODE_LABEL = { NRL:'🏉 NRL', AFL:'🏈 AFL' };
     function sportIcon(code) { return code === 'NRL' ? '🏉' : code === 'AFL' ? '🏈' : '🔀'; }
 
     function renderTip(t) {
@@ -176,74 +223,47 @@
       h += `</div>`;
       return h;
     }
-
-    // Multi-day "specials" (e.g. cross-sport multi) sit in their own block; everything else groups by day.
-    const specials = data.tips.filter(function (t) { return t.special; });
-    const dated = data.tips.filter(function (t) { return !t.special; });
-
-    const CODE_ORDER = ['NRL','AFL'];
-    const CODE_LABEL = { NRL:'🏉 NRL', AFL:'🏈 AFL' };
-
-    // Render a day's tips split by code (NRL then AFL then anything else),
-    // standard tips before multis within each code.
-    function renderDay(dayTips) {
+    function renderDayBlock(dayTips) {
       const codes = CODE_ORDER.slice();
       dayTips.forEach(function (t) { if (codes.indexOf(t.code) === -1) codes.push(t.code); });
+      let s = '';
       codes.forEach(function (code) {
         const codeTips = dayTips.filter(function (t) { return t.code === code; });
         if (!codeTips.length) return;
-        codeTips.sort(function (a, b) {
-          return ((a.legs && a.legs.length) ? 1 : 0) - ((b.legs && b.legs.length) ? 1 : 0);
+        codeTips.sort(function (a, b) { return ((a.legs && a.legs.length) ? 1 : 0) - ((b.legs && b.legs.length) ? 1 : 0); });
+        s += `<div class="code-head">${CODE_LABEL[code] || code}</div>`;
+        codeTips.forEach(function (t) { s += renderTip(t); });
+      });
+      return s;
+    }
+    function tipsBlock(tips) {
+      if (!tips || !tips.length) return `<div class="state" style="padding:30px 20px;"><p>This round's tips aren't up just yet — check back soon. 🐕</p></div>`;
+      const specials = tips.filter(function (t) { return t.special; });
+      const dated = tips.filter(function (t) { return !t.special; });
+      const undated = dated.filter(function (t) { return DAY_ORDER.indexOf(t.day) === -1; });
+      const presentDays = DAY_ORDER.filter(function (day) { return dated.some(function (t) { return t.day === day; }); });
+      const groupCount = presentDays.length + (undated.length ? 1 : 0) + (specials.length ? 1 : 0);
+      let html = `<div class="odds-guide">💡 Odds shown are a guide — always confirm the exact price in your own account before betting.</div>`;
+      if (groupCount > 1) {
+        html += '<div class="day-filter"><button class="day-btn active" data-filter="all">All</button>';
+        presentDays.forEach(function (day) {
+          const n = dated.filter(function (t) { return t.day === day; }).length;
+          html += '<button class="day-btn" data-filter="' + day + '">' + day + '<span class="cnt">' + n + '</span></button>';
         });
-        html += `<div class="code-head">${CODE_LABEL[code] || code}</div>`;
-        codeTips.forEach(function (t) { html += renderTip(t); });
+        if (undated.length) html += '<button class="day-btn" data-filter="__week">This week<span class="cnt">' + undated.length + '</span></button>';
+        if (specials.length) html += '<button class="day-btn" data-filter="__specials">⭐ Specials<span class="cnt">' + specials.length + '</span></button>';
+        html += '</div>';
+      }
+      DAY_ORDER.forEach(function (day) {
+        const dayTips = dated.filter(function (t) { return t.day === day; });
+        if (!dayTips.length) return;
+        html += '<div class="day-group" data-day="' + day + '"><div class="day-head">🗓 ' + DAY_LABEL[day] + '</div>' + renderDayBlock(dayTips) + '</div>';
       });
+      if (undated.length) html += '<div class="day-group" data-day="__week"><div class="day-head">🗓 This week</div>' + renderDayBlock(undated) + '</div>';
+      if (specials.length) html += '<div class="day-group" data-day="__specials"><div class="specials-head">⭐ Specials</div>' + specials.map(renderTip).join('') + '</div>';
+      return html;
     }
-
-    // Build the day-filter bar (only if there's more than one group to switch between)
-    const undated = dated.filter(function (t) { return DAY_ORDER.indexOf(t.day) === -1; });
-    const presentDays = DAY_ORDER.filter(function (day) { return dated.some(function (t) { return t.day === day; }); });
-    const groupCount = presentDays.length + (undated.length ? 1 : 0) + (specials.length ? 1 : 0);
-    if (groupCount > 1) {
-      let fb = '<div class="day-filter"><button class="day-btn active" data-filter="all">All</button>';
-      presentDays.forEach(function (day) {
-        const n = dated.filter(function (t) { return t.day === day; }).length;
-        fb += '<button class="day-btn" data-filter="' + day + '">' + day + '<span class="cnt">' + n + '</span></button>';
-      });
-      if (undated.length) fb += '<button class="day-btn" data-filter="__week">This week<span class="cnt">' + undated.length + '</span></button>';
-      if (specials.length) fb += '<button class="day-btn" data-filter="__specials">⭐ Specials<span class="cnt">' + specials.length + '</span></button>';
-      fb += '</div>';
-      html += fb;
-    }
-
-    DAY_ORDER.forEach(function (day) {
-      const dayTips = dated.filter(function (t) { return t.day === day; });
-      if (!dayTips.length) return;
-      html += '<div class="day-group" data-day="' + day + '">';
-      html += `<div class="day-head">🗓 ${DAY_LABEL[day]}</div>`;
-      renderDay(dayTips);
-      html += '</div>';
-    });
-
-    // Safety net: any tip with a missing/unknown day still shows, in a trailing group.
-    if (undated.length) {
-      html += '<div class="day-group" data-day="__week">';
-      html += `<div class="day-head">🗓 This week</div>`;
-      renderDay(undated);
-      html += '</div>';
-    }
-
-    if (specials.length) {
-      html += '<div class="day-group" data-day="__specials">';
-      html += `<div class="specials-head">⭐ Specials</div>`;
-      specials.forEach(function (t) { html += renderTip(t); });
-      html += '</div>';
-    }
-
-    show(html);
-
-    // Wire the day filter: tap a day to show only those tips, "All" shows everything
-    (function () {
+    function wireDayFilter() {
       const bar = document.querySelector('.day-filter');
       if (!bar) return;
       bar.addEventListener('click', function (e) {
@@ -255,7 +275,63 @@
           g.style.display = (f === 'all' || g.getAttribute('data-day') === f) ? '' : 'none';
         });
       });
-    })();
+    }
+
+    // ── track-record CTA (uses the latest past round's summary if available) ──
+    function ctaHTML() {
+      const s = (past.length && past[0].summary) ? past[0].summary : null;
+      if (s) {
+        return `<a href="results.html" class="tr-cta"><div class="lft"><div class="big">Last round: ${s}</div><div class="sub">See every tip we send, win or lose</div></div><div class="go">📊 Scoreboard →</div></a>`;
+      }
+      return `<a href="results.html" class="tr-cta"><div class="lft"><div class="big" style="font-size:18px;">How are we tracking?</div><div class="sub">Every tip we send, graded in the open — win or lose</div></div><div class="go">📊 Scoreboard →</div></a>`;
+    }
+
+    // ── past tips section ──
+    function pastSection() {
+      if (!past.length) return '';
+      const rows = past.map(function (r) {
+        const chip = r.summary ? `<span class="chip ${r.summary.indexOf('+') > -1 ? 'pos' : 'neg'}">${r.summary}</span>` : '';
+        return `<div class="past-row" data-id="${r.id}"><div><div class="rl">${r.label}</div><div class="rd">${r.week}</div></div><div class="right">${chip}<span class="arrow">›</span></div></div>`;
+      }).join('');
+      return `<div class="past-toggle" id="pastToggle"><span class="pt-l">📂 Past tips</span><span class="chev">▾</span></div><div class="past-list" id="pastList">${rows}</div>`;
+    }
+    function wirePast(reopen) {
+      const t = document.getElementById('pastToggle');
+      if (!t) return;
+      const list = document.getElementById('pastList');
+      if (reopen) { t.classList.add('open'); list.classList.add('open'); }
+      t.addEventListener('click', function () { t.classList.toggle('open'); list.classList.toggle('open'); });
+      document.querySelectorAll('.past-row').forEach(function (row) {
+        row.addEventListener('click', function () { openRound(row.getAttribute('data-id')); });
+      });
+    }
+
+    function renderHome(reopenPast) {
+      let html = `<div class="signpost">🗓 <b>Next tips drop Wednesday</b> — we'll text you the moment they're up. Games run Thursday to Sunday.</div>`;
+      html += ctaHTML();
+      html += tipsBlock(current.tips);
+      html += pastSection();
+      show(html);
+      wireDayFilter();
+      wirePast(reopenPast);
+    }
+    function openRound(id) {
+      const r = rounds.find(function (x) { return x.id === id; });
+      if (!r) return;
+      let html = `<button class="back-link" id="back1">← Back to your tips</button>`;
+      html += `<div class="round-title">${r.label}</div><div class="round-sub">${r.week}</div>`;
+      html += `<div class="past-banner">📂 These are the tips exactly as they were sent. <a href="results.html">See how they landed on the Scoreboard →</a></div>`;
+      html += tipsBlock(r.tips);
+      html += `<button class="back-link" id="back2" style="margin-top:18px;">← Back to your tips</button>`;
+      show(html);
+      document.getElementById('back1').addEventListener('click', goHome);
+      document.getElementById('back2').addEventListener('click', goHome);
+      wireDayFilter();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function goHome() { renderHome(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+    renderHome(false);
   } catch (err) {
     show(`<div class="state"><div class="big">Something went wrong</div><p>Couldn't load your tips right now. Please try again shortly, or <a href="/">head back to the site</a>.</p></div>`);
   }
