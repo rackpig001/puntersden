@@ -107,7 +107,10 @@
   .trust { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 1.45; color: var(--muted); max-width: 520px; }
   .trust .ic { flex-shrink: 0; font-size: 15px; line-height: 1.4; }
   .trust b { color: var(--text); }
-  .hero-cards { display: flex; flex-direction: column; gap: 16px; }
+  .hero-cards { display: flex; flex-direction: column; gap: 12px; }
+  .tip-card .cmeta { font-size: 12px; color: var(--muted); margin-bottom: 16px; margin-top: -2px; }
+  .landed-link { display: block; text-align: center; font-size: 13px; font-weight: 700; color: var(--gold); text-decoration: none; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 13px; transition: border-color .15s, background .15s; }
+  .landed-link:hover { border-color: rgba(245,197,66,0.45); background: var(--panel-2); }
   .result-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
   .result-card .rc-top { font-family: 'Anton'; font-size: 13px; letter-spacing: 1px; color: var(--muted); text-align: center; margin-bottom: 12px; }
   .result-card .rc-score { display: flex; justify-content: space-around; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
@@ -394,13 +397,14 @@
       <div class="trust"><span class="ic">🔍</span><span>Every tip tracked. <b>Win or lose.</b> Full transparency.</span></div>
     </div>
     <div class="hero-cards">
-      <!-- CARD 1: the tip we sent -->
+      <!-- Single SGM tip card; round + date; result lives on the Scoreboard -->
       <div class="tip-card acc-green">
         <div class="tc-head">
           <span class="sport">🏉 NRL · Same Game Multi</span>
           <span class="badge" style="color:var(--green); border-color:rgba(47,210,122,0.4);">✓ Won</span>
         </div>
-        <div class="match">Wests Tigers v Penrith · R14</div>
+        <div class="match">Wests Tigers v Penrith</div>
+        <div class="cmeta">Round 14 · Sun 7 Jun</div>
         <div class="pick">📌 <b>3-Leg Same Game Multi</b></div>
         <div class="sgm-legs">
           <div class="leg"><span class="lc" style="color:var(--green);">✓</span> Penrith Panthers to Win</div>
@@ -413,28 +417,7 @@
         </div>
         <div class="blur-note">🔒 This week's multis + full reasoning for members</div>
       </div>
-
-      <!-- CARD 2: the real result, match-centre style -->
-      <div class="result-card">
-        <div class="rc-top">ROUND 14 · FULL TIME</div>
-        <div class="rc-score">
-          <div class="rc-team"><span class="rc-name">Wests Tigers</span><span class="rc-pts">0</span></div>
-          <div class="rc-team rc-win"><span class="rc-name">Panthers</span><span class="rc-pts">68</span></div>
-        </div>
-        <div class="rc-tries-h">🏉 Tryscorers</div>
-        <div class="rc-tries">
-          <span class="rt">Paul Alamoti</span>
-          <span class="rt">Nathan Cleary</span>
-          <span class="rt">Freddy Lussick ×2</span>
-          <span class="rt">Thomas Jenkins ×2</span>
-          <span class="rt hit">Isaah Yeo ✓</span>
-          <span class="rt hit">Brian To'o ×2 ✓</span>
-          <span class="rt">Jack Cogger</span>
-          <span class="rt">Izack Tago</span>
-          <span class="rt">Lindsay Smith</span>
-        </div>
-        <a href="results.html" class="rc-link">See every tip — win or lose →</a>
-      </div>
+      <a href="results.html" class="landed-link">📊 See how it landed — and every other tip →</a>
     </div>
   </div>
 </header>
