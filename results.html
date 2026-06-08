@@ -235,6 +235,7 @@
   .tile .t { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
   .tile .v { font-family:'Anton'; font-size:20px; margin-top:4px; }
   .tiles-hint { text-align:center; font-size:11px; color:var(--muted); margin:6px 0 16px; }
+  .rounds { display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-bottom:16px; }
   .dayh { font-family:'Anton'; font-size:13px; letter-spacing:1px; color:var(--muted); margin:18px 0 8px; text-transform:uppercase; }
   .codeh { font-family:'Anton'; font-size:16px; letter-spacing:.5px; margin:22px 0 2px; color:var(--text); }
   .roundh { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin:6px 0 8px; }
@@ -317,6 +318,11 @@
   <div class="tiles-hint" id="tilesHint" style="display:none;">👆 tap a tile to filter by type · tap again to clear</div>
 
   <!-- Feed -->
+  <!-- Round filter (narrows the feed; P&L + tiles stay whole) -->
+  <div class="rounds" id="rounds" style="display:none;">
+    <span class="filter-label">Round</span>
+    <div class="filter-group" id="roundGroup"></div>
+  </div>
   <div id="feed"></div>
 
   <div class="note" style="border-left-color: var(--gold); margin-top: 30px;">
@@ -487,21 +493,44 @@
       +'<div class="notetext" style="margin-top:8px">📋 '+(HERO.note||'')+'</div></div>';
   }
 
-  // ── feed (filter: null | single | multi | hero) ──
+  // ── round filter (narrows the feed; P&L, tiles + chart stay whole) ──
+  function roundKey(t){ return t.wk || t.rd; }
+  var ROUND = null;
+  (function(){
+    var rounds=[], seen={};
+    TIPS.forEach(function(t){ var k=roundKey(t); if(k&&!seen[k]){ seen[k]=1; rounds.push(k); } });
+    if (HERO){ var hk=roundKey(HERO); if(hk&&!seen[hk]){ seen[hk]=1; rounds.push(hk); } }
+    if (rounds.length < 2) return;   // only appears once there's more than one round to filter
+    document.getElementById('roundGroup').innerHTML =
+      '<button class="chip active" data-r="__all" onclick="setRound(null)">All rounds</button>'
+      + rounds.map(function(r){ return '<button class="chip" data-r="'+r.replace(/"/g,'&quot;')+'" onclick="setRound(this.getAttribute(\'data-r\'))">'+r+'</button>'; }).join('');
+    document.getElementById('rounds').style.display = 'flex';
+  })();
+  window.setRound = function(r){
+    ROUND = (ROUND === r) ? null : r;
+    document.querySelectorAll('#roundGroup .chip').forEach(function(el){
+      el.classList.toggle('active', (ROUND===null && el.getAttribute('data-r')==='__all') || el.getAttribute('data-r')===ROUND);
+    });
+    renderFeed();
+  };
+
+  // ── feed (type filter: null | single | multi | hero) ──
   var FILTER = null;
   function renderFeed(){
+    var vt = ROUND ? TIPS.filter(function(t){ return roundKey(t)===ROUND; }) : TIPS;
+    var h  = (HERO && (!ROUND || roundKey(HERO)===ROUND)) ? HERO : null;
     if (FILTER === null) {
       var days=[], seen={};
-      TIPS.forEach(function(t){ if(!seen[t.day]){ seen[t.day]=1; days.push(t.day); } });
+      vt.forEach(function(t){ if(!seen[t.day]){ seen[t.day]=1; days.push(t.day); } });
       var html = "";
-      days.forEach(function(d){ html += '<div class="dayh">'+d+'</div>'; TIPS.filter(function(t){return t.day===d;}).forEach(function(t){ html += exTip(t); }); });
-      if (HERO) html += '<div class="dayh">🚀 Hero Multi</div>' + heroBox();
-      feed.innerHTML = html;
+      days.forEach(function(d){ html += '<div class="dayh">'+d+'</div>'; vt.filter(function(t){return t.day===d;}).forEach(function(t){ html += exTip(t); }); });
+      if (h) html += '<div class="dayh">🚀 Hero Multi</div>' + heroBox();
+      feed.innerHTML = html || '<div class="sbempty">No tips in this round.</div>';
       return;
     }
-    if (FILTER === 'hero') { feed.innerHTML = '<div class="codeh">🚀 Hero Multi</div>' + (heroBox() || '<div class="sbempty">No Hero multis logged yet.</div>'); return; }
+    if (FILTER === 'hero') { feed.innerHTML = '<div class="codeh">🚀 Hero Multi</div>' + (h ? heroBox() : '<div class="sbempty">No Hero multis in this selection.</div>'); return; }
     var wantType = FILTER === 'single' ? 'H2H' : 'SGM';
-    var set = TIPS.filter(function(t){ return t.type === wantType; });
+    var set = vt.filter(function(t){ return t.type === wantType; });
     var codeOrder = ['NRL','AFL','CROSS'], codeLabel = { NRL:'🏉 NRL', AFL:'🏉 AFL', CROSS:'🔀 Cross-Sport' };
     var html = '';
     codeOrder.forEach(function(code){
@@ -512,7 +541,7 @@
       inCode.forEach(function(t){ if(!rs[t.rd]){ rs[t.rd]=1; rounds.push(t.rd); } });
       rounds.forEach(function(r){ html += '<div class="roundh">'+r+'</div>'; inCode.filter(function(t){return t.rd===r;}).forEach(function(t){ html += exTip(t); }); });
     });
-    feed.innerHTML = html || '<div class="sbempty">No '+FILTER+' tips yet — check back after this round.</div>';
+    feed.innerHTML = html || '<div class="sbempty">No '+FILTER+' tips in this selection.</div>';
   }
   window.setFilter = function(f){
     FILTER = (FILTER === f) ? null : f;
