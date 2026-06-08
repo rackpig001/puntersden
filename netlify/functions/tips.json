@@ -5,7 +5,8 @@
       "id": "r14-afl13",
       "label": "NRL R14 · AFL R13",
       "week": "Round 14 NRL / Round 13 AFL",
-      "live": true,
+      "live": false,
+      "summary": "3W–5L · +9.55u",
       "bronze": [
         {
           "day": "Thu",
