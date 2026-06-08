@@ -319,17 +319,6 @@
   <!-- Feed -->
   <div id="feed"></div>
 
-  <!-- Season Totals (kept lower while we build a sample) -->
-  <div class="stat-head">📊 Season Totals</div>
-  <div class="statbar">
-    <div class="stat"><div class="sv green" id="s-winrate">—</div><div class="sl">Win Rate</div></div>
-    <div class="stat"><div class="sv" id="s-total">—</div><div class="sl">Total Tips</div></div>
-    <div class="stat"><div class="sv" id="s-avg">—</div><div class="sl">Avg Odds Taken</div></div>
-    <div class="stat"><div class="sv green" id="s-roi">—</div><div class="sl">Return on Investment</div></div>
-  </div>
-  <div class="note" id="statsNote" style="border-left-color: var(--gold); margin-bottom: 20px;">
-    📊 <b>Strike rate &amp; ROI go live once we've logged enough tips</b> for the numbers to mean something. Until then, every individual result is shown above — nothing hidden.
-  </div>
   <div class="note" style="border-left-color: var(--gold); margin-top: 30px;">
     <b>🔧 Building our track record.</b> We log every tip here as it runs — real selections, real results, win or lose. A live work-in-progress, not a finished record, so the sample's still small. Nothing here is hidden: every pick shows up, exactly as it lands.
   </div>
@@ -453,20 +442,22 @@
     svg+='<text x="'+padL+'" y="'+(H-6)+'" fill="#9aa69c" font-size="10">tip 1</text>';
     svg+='<text x="'+(W-padR)+'" y="'+(H-6)+'" fill="#9aa69c" font-size="10" text-anchor="end">tip '+n+' (latest)</text>';
     svg+='</svg>';
-    svg+='<div id="sbChartTip" style="margin-top:10px;font-size:12.5px;color:var(--muted);text-align:center;min-height:18px;">👆 tap a dot to see the tip · 1 unit = $'+UNIT+'</div>';
+    svg+='<div style="margin-top:10px;font-size:11px;color:var(--muted);text-align:center;">running profit · 1 unit = $'+UNIT+' per tip</div>';
     return svg;
   }
+  /* Dot tap-to-reveal is disabled for now — kept here in case we bring it back.
   function wireChartDots(){
     var el=document.getElementById('chartWrap'), tip=document.getElementById('sbChartTip');
     function label(i){ var t=chrono[i]; var kind=t.type==="SGM"?(t.code==="CROSS"?"Cross-Sport multi":t.code+" SGM"):t.code+" single"; tip.innerHTML='<b style="color:var(--text)">'+t.sel+'</b> — '+kind+' · '+(t.result==="win"?"won":"lost")+' · running '+(PNL[i]>=0?'+':'')+PNL[i].toFixed(2)+'u'; }
     el.querySelectorAll('circle.cdot').forEach(function(c){ c.addEventListener('click',function(){ el.querySelectorAll('circle.cdot').forEach(function(d){ d.setAttribute('r','4'); }); c.setAttribute('r','6'); label(+c.dataset.i); }); });
     label(PNL.length-1);
   }
+  */
   var chartOpen = false;
   window.toggleChart = function(){
     var el = document.getElementById('chartWrap');
     chartOpen = !chartOpen;
-    if (chartOpen) { if (!el.innerHTML) { el.innerHTML = buildChart(); wireChartDots(); } el.style.maxHeight = '270px'; document.getElementById('pnlHint').textContent = 'hide chart ▴'; }
+    if (chartOpen) { if (!el.innerHTML) { el.innerHTML = buildChart(); } el.style.maxHeight = '240px'; document.getElementById('pnlHint').textContent = 'hide chart ▴'; }
     else { el.style.maxHeight = '0'; document.getElementById('pnlHint').textContent = 'tap for chart ▾'; }
   };
 
@@ -529,21 +520,6 @@
     renderFeed();
   };
   renderFeed();
-
-  // ── season totals (gated until STATS_MIN) ──
-  document.getElementById('s-total').textContent = TIPS.length;
-  if (TIPS.length >= STATS_MIN) {
-    var dec = TIPS.filter(function(t){ return t.result !== "push"; });
-    var wins = dec.filter(function(t){ return t.result === "win"; }).length;
-    var wr = dec.length ? Math.round(wins / dec.length * 100) : 0;
-    var avg = dec.length ? (dec.reduce(function(a,t){ return a + (+t.odds); }, 0) / dec.length) : 0;
-    var profit = dec.reduce(function(a,t){ return a + unitPL(t); }, 0);
-    var roi = dec.length ? Math.round(profit / dec.length * 100) : 0;
-    document.getElementById('s-winrate').textContent = wr + '%';
-    document.getElementById('s-avg').textContent = '$' + avg.toFixed(2);
-    document.getElementById('s-roi').textContent = (roi >= 0 ? '+' : '') + roi + '%';
-    var sn = document.getElementById('statsNote'); if (sn) sn.style.display = 'none';
-  }
 })();
 </script>
 
