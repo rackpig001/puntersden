@@ -220,6 +220,57 @@
     .logo { font-size: 16px; gap: 6px; }
     .logo .paw { font-size: 19px; }
   }
+
+  /* ===== Scoreboard · Card Feed ===== */
+  .sbwrap { max-width: 620px; margin: 0 auto; }
+  .pnl-chip { display:flex; align-items:center; gap:12px; background:linear-gradient(165deg,var(--panel-2),var(--panel)); border:1px solid var(--line); border-radius:14px; padding:14px 18px; margin-bottom:14px; cursor:pointer; }
+  .pnl-chip .big { font-family:'Anton'; font-size:30px; color:var(--green); line-height:1; }
+  .pnl-chip .big.neg { color:var(--loss); }
+  .pnl-chip .cap { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+  .chart-wrap { overflow:hidden; transition:max-height .3s ease; }
+  .chart-wrap svg { display:block; width:100%; }
+  .tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:6px; }
+  .tile { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 8px; text-align:center; cursor:pointer; transition:border-color .15s, background .15s; }
+  .tile.on { border-color:var(--gold); background:var(--panel-2); }
+  .tile .t { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+  .tile .v { font-family:'Anton'; font-size:20px; margin-top:4px; }
+  .tiles-hint { text-align:center; font-size:11px; color:var(--muted); margin:6px 0 16px; }
+  .dayh { font-family:'Anton'; font-size:13px; letter-spacing:1px; color:var(--muted); margin:18px 0 8px; text-transform:uppercase; }
+  .codeh { font-family:'Anton'; font-size:16px; letter-spacing:.5px; margin:22px 0 2px; color:var(--text); }
+  .roundh { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin:6px 0 8px; }
+  .sbpill { display:inline-block; font-size:11px; padding:2px 8px; border-radius:6px; border:1px solid var(--line); color:var(--muted); background:var(--panel-2); }
+  .sbpill.w { color:#0a140f; background:var(--green); border-color:var(--green); font-weight:800; }
+  .sbpill.l { color:#fff; background:rgba(230,88,78,.25); border-color:rgba(230,88,78,.5); }
+  .sbtag { font-size:9.5px; letter-spacing:.5px; padding:2px 6px; border-radius:5px; font-weight:800; }
+  .sbtag.strong { color:#0a140f; background:var(--green); }
+  .sbtag.value { color:#0a140f; background:var(--gold); }
+  .sbdot { display:inline-block; width:9px; height:9px; border-radius:50%; flex:0 0 auto; }
+  .sbdot.w { background:var(--green); }
+  .sbdot.l { background:var(--loss); }
+  .ex { background:var(--panel); border:1px solid var(--line); border-radius:12px; margin-bottom:8px; overflow:hidden; }
+  .ex .hd { display:flex; align-items:center; gap:10px; padding:13px 15px; cursor:pointer; }
+  .ex .hd .mid { flex:1; min-width:0; }
+  .ex .hd .selt { font-weight:700; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ex .hd .meta { font-size:11.5px; color:var(--muted); margin-top:1px; }
+  .ex .hd .od { font-family:'Anton'; font-size:16px; }
+  .ex .hd .od.w { color:var(--green); }
+  .ex .hd .chev { color:var(--muted); transition:transform .2s; font-size:12px; }
+  .ex.open .chev { transform:rotate(180deg); }
+  .ex .body { max-height:0; overflow:hidden; transition:max-height .28s ease; }
+  .ex .body .inner { padding:12px 15px 14px; border-top:1px dashed var(--line); }
+  .ex .matchln { font-size:11.5px; color:var(--muted); margin-bottom:8px; }
+  .topline { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .legrow { display:flex; align-items:center; gap:9px; padding:5px 0; font-size:13.5px; }
+  .legrow .lx { font-weight:800; width:14px; text-align:center; flex:0 0 auto; }
+  .legrow .ln { color:var(--text); }
+  .legrow.miss .ln { color:var(--muted); }
+  .legrow .sc { font-size:11.5px; color:var(--muted); margin-left:4px; }
+  .notetext { font-size:12.5px; color:var(--muted); line-height:1.6; }
+  .herobox { background:linear-gradient(165deg,rgba(245,197,66,.08),var(--panel)); border:1px solid rgba(245,197,66,.3); border-radius:14px; padding:16px; margin:8px 0 18px; }
+  .herobox .ht { font-family:'Anton'; font-size:16px; color:var(--gold); }
+  .herobox .hs { font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+  .sbempty { text-align:center; color:var(--muted); font-size:13px; padding:24px; }
+  .stat-head { font-family:'Anton'; font-size:22px; letter-spacing:.5px; margin:38px 0 14px; text-align:center; }
 </style>
 </head>
 <body>
@@ -246,75 +297,30 @@
   </div>
 </header>
 
-<div class="wrap">
-  <div class="demo-banner" id="demoBanner" style="display:none;">👁 PREVIEW MODE — the results below are SAMPLE data for layout testing only. These are NOT real tips or results. Remove before launch.</div>
-  <!-- BREAKDOWN: Singles / Multis / Hero (tap to jump) -->
-  <div class="breakdown" id="breakdown" style="display:none;">
-    <div class="bd-card" data-bucket="singles" role="button" tabindex="0">
-      <div class="bd-title">🎯 Singles</div>
-      <div class="bd-row" id="bd-singles-main">—</div>
-      <div class="bd-sub" id="bd-singles-sub">—</div>
-    </div>
-    <div class="bd-card" data-bucket="multis" role="button" tabindex="0">
-      <div class="bd-title">🔗 Multis</div>
-      <div class="bd-row" id="bd-multis-main">—</div>
-      <div class="bd-sub" id="bd-multis-sub">—</div>
-    </div>
-    <div class="bd-card hero" data-bucket="hero" role="button" tabindex="0">
-      <div class="bd-title">🚀 Hero <span class="bd-fun">just for fun</span></div>
-      <div class="bd-row" id="bd-hero-main">—</div>
-      <div class="bd-sub" id="bd-hero-sub">small stake · not in ROI</div>
-    </div>
+<div class="wrap"><div class="sbwrap">
+  <div class="demo-banner" id="demoBanner" style="display:none;">👁 PREVIEW MODE — sample data for layout testing only. These are NOT real tips or results.</div>
+
+  <!-- Season P&L · tap to reveal chart -->
+  <div class="pnl-chip" id="pnlChip" onclick="toggleChart()" style="display:none;">
+    <div><div class="cap">Season P&amp;L · 1u flat</div><div class="big" id="pnlBig">—</div></div>
+    <div style="flex:1"></div>
+    <div class="cap" id="pnlHint">tap for chart ▾</div>
   </div>
+  <div class="chart-wrap" id="chartWrap" style="max-height:0; margin-bottom:14px;"></div>
 
-  <!-- CHART -->
-  <div class="chart-card" id="chartCard" style="display:none;">
-    <div class="chart-head">
-      <h3>📈 Running P&amp;L <span id="chartScope" style="color:var(--muted);font-size:15px;font-weight:500;"></span></h3>
-      <span class="sub">(1 unit = $10 per tip)</span>
-      <span class="profit-total" id="profitTotal"></span>
-    </div>
-    <canvas id="pnlChart"></canvas>
+  <!-- Filter tiles -->
+  <div class="tiles" id="tiles" style="display:none;">
+    <div class="tile" data-f="single" onclick="setFilter('single')"><div class="t">🎯 Singles</div><div class="v" id="tileSingle">—</div></div>
+    <div class="tile" data-f="multi" onclick="setFilter('multi')"><div class="t">🔗 Multis</div><div class="v" id="tileMulti">—</div></div>
+    <div class="tile" data-f="hero" onclick="setFilter('hero')"><div class="t">🚀 Hero</div><div class="v" id="tileHero" style="color:var(--muted)">—</div></div>
   </div>
+  <div class="tiles-hint" id="tilesHint" style="display:none;">👆 tap a tile to filter by type · tap again to clear</div>
 
-  <!-- FILTERS -->
-  <div class="filters" id="filters" style="display:none;">
-    <span class="filter-label">⚙ Filter Record</span>
-    <div class="filter-group" data-filter="code">
-      <span class="fg-label">Sport</span>
-      <button class="chip active" data-val="all">All</button>
-      <button class="chip" data-val="NRL">NRL</button>
-      <button class="chip" data-val="AFL">AFL</button>
-    </div>
-    <div class="filter-group" data-filter="type">
-      <span class="fg-label">Type</span>
-      <button class="chip active" data-val="all">All</button>
-      <button class="chip" data-val="singles">Singles</button>
-      <button class="chip" data-val="SGM">SGM</button>
-    </div>
-    <div class="filter-group" data-filter="result">
-      <span class="fg-label">Result</span>
-      <button class="chip active" data-val="all">All</button>
-      <button class="chip" data-val="win">Win</button>
-      <button class="chip" data-val="loss">Loss</button>
-    </div>
-  </div>
-  <div class="showing" id="showing" style="display:none;"></div>
+  <!-- Feed -->
+  <div id="feed"></div>
 
-  <!-- TIP LIST -->
-  <div id="tips"></div>
-
-  <!-- HERO LOG — every Hero Multi, win or lose; segregated, not in ROI -->
-  <div class="hero-log" id="heroLog" style="display:none;">
-    <div class="hero-log-head">
-      <h3>🚀 Hero Multi log</h3>
-      <p>Every long-shot we've run — win or lose. Small stakes, just for fun. <b>Not counted</b> in our official win-rate or ROI.</p>
-    </div>
-    <div id="heroLogList"></div>
-  </div>
-
-  <!-- SEASON TOTALS (kept lower while we build a sample) -->
-  <div class="stat-head" style="font-family:'Anton'; font-size:22px; letter-spacing:0.5px; margin:38px 0 14px; text-align:center;">📊 Season Totals</div>
+  <!-- Season Totals (kept lower while we build a sample) -->
+  <div class="stat-head">📊 Season Totals</div>
   <div class="statbar">
     <div class="stat"><div class="sv green" id="s-winrate">—</div><div class="sl">Win Rate</div></div>
     <div class="stat"><div class="sv" id="s-total">—</div><div class="sl">Total Tips</div></div>
@@ -324,11 +330,11 @@
   <div class="note" id="statsNote" style="border-left-color: var(--gold); margin-bottom: 20px;">
     📊 <b>Strike rate &amp; ROI go live once we've logged enough tips</b> for the numbers to mean something. Until then, every individual result is shown above — nothing hidden.
   </div>
-
   <div class="note" style="border-left-color: var(--gold); margin-top: 30px;">
-    <b>🔧 Building our track record.</b> We're in the lead-up to launch and logging every tip here as it runs — real selections, real results, win or lose. This is a live work-in-progress, not a finished record, so the sample's still small. Full launch and weekly tips for members are coming soon. Nothing here is hidden: every pick we make shows up, exactly as it lands.
+    <b>🔧 Building our track record.</b> We log every tip here as it runs — real selections, real results, win or lose. A live work-in-progress, not a finished record, so the sample's still small. Nothing here is hidden: every pick shows up, exactly as it lands.
   </div>
-</div>
+</div></div>
+
 
 <!-- HOW THE SCOREBOARD WORKS -->
 <section class="howsb" id="how-scoreboard">
@@ -357,7 +363,7 @@
       <div class="howsb-card">
         <div class="hn">04</div>
         <h3>Filter it yourself</h3>
-        <p>Sort the whole record by code (NRL / AFL), bet type (H2H / Line / SGM / Prop) or result (win / loss). Check our SGM strike rate, or how the AFL tips have gone — nothing's hidden.</p>
+        <p>Tap a tile — 🎯 Singles, 🔗 Multis or 🚀 Hero — to filter the whole record by type, broken down by sport and round. Check our SGM strike rate, or how the AFL tips have gone — nothing's hidden.</p>
       </div>
     </div>
     <div class="note" style="margin-top:30px;">
@@ -393,300 +399,139 @@
 
 <script src="track-record.js"></script>
 <script>
-  // ════════════════════════════════════════════════════════════════
-  //  EDIT YOUR RESULTS HERE — add each tip as you grade it every week.
-  //  result: "win" | "loss" | "push"   (push = refunded/void, 0 units)
-  //  code:   "NRL" | "AFL"
-  //  type:   "H2H" | "Line" | "SGM" | "Prop"
-  //  odds:   the price you tipped at (number)
-  //  Staking is FLAT — 1 unit per tip. A win returns (odds - 1) units,
-  //  a loss is -1 unit, a push is 0. The stats + graph auto-calculate.
-  //  Add newest at the TOP. Keep it REAL — only enter tips that actually ran.
-  // ════════════════════════════════════════════════════════════════
-  // Record comes from the shared track-record.js (single source of truth, shared with the landing page).
-  const TIPS = (window.TRACK_RECORD || []);
+(function () {
+  var TIPS = (window.TRACK_RECORD || []);
+  var HERO = (window.HERO_RECORD || [])[0] || null;
+  var UNIT = 10;          // 1 unit = $10
+  var STATS_MIN = 20;     // hide headline win-rate / avg / ROI until the sample is fair
+  function unitPL(t){ return t.result === "win" ? +(t.odds - 1).toFixed(2) : (t.result === "loss" ? -1 : 0); }
 
-  // ── staking: flat 1 unit per tip; 1 unit = $10 ──
-  const UNIT = 10;
-  // Hide headline win-rate / ROI / chart until the sample is fair.
-  const STATS_MIN = 20;
-  // Each breakdown bucket shows its own strike-rate only once it has a fair sample of its own.
-  const BUCKET_MIN = 10;
-  // The P&L chart is raw running data (not an extrapolated %), so it can show on a smaller/filtered sample.
-  const CHART_MIN = 3;
+  if (window.DEMO_DATA) { var db = document.getElementById('demoBanner'); if (db) db.style.display = 'block'; }
 
-  // ── compute P&L per tip (in units) ──
-  function unitPL(t) {
-    if (t.result === "win")  return +(t.odds - 1).toFixed(2);
-    if (t.result === "loss") return -1;
-    return 0; // push
+  var feed = document.getElementById('feed');
+  if (!TIPS.length && !HERO) {
+    feed.innerHTML = '<div class="sbempty"><b>Results drop soon 🐕</b><br>Our first week\'s tips will appear here, graded win or lose.</div>';
+    return;
   }
 
-  const tipsEl    = document.getElementById('tips');
-  const filtersEl = document.getElementById('filters');
-  const showingEl = document.getElementById('showing');
-  const chartCard = document.getElementById('chartCard');
+  document.getElementById('pnlChip').style.display = 'flex';
+  document.getElementById('tiles').style.display = 'grid';
+  document.getElementById('tilesHint').style.display = 'block';
 
-  const state = { code: 'all', type: 'all', result: 'all' };
+  // ── running P&L (oldest → newest) ──
+  var chrono = TIPS.slice().reverse(), run = 0;
+  var PNL = chrono.map(function (t) { run += unitPL(t); return +run.toFixed(2); });
+  var total = PNL.length ? PNL[PNL.length - 1] : 0;
+  var big = document.getElementById('pnlBig');
+  big.textContent = (total >= 0 ? '+' : '') + total.toFixed(2) + 'u';
+  big.className = 'big' + (total < 0 ? ' neg' : '');
 
-  function typeMatch(t) {
-    if (state.type === 'all') return true;
-    if (state.type === 'singles') return t.type === 'H2H';
-    return t.type === state.type;
+  // ── tile counts (derived from data, never hard-coded) ──
+  function tileNum(arr){ var w = arr.filter(function(t){return t.result==="win";}).length; return w + '<span style="color:var(--muted);font-size:14px">/' + arr.length + '</span>'; }
+  document.getElementById('tileSingle').innerHTML = tileNum(TIPS.filter(function(t){return t.type==="H2H";}));
+  document.getElementById('tileMulti').innerHTML  = tileNum(TIPS.filter(function(t){return t.type==="SGM";}));
+  document.getElementById('tileHero').textContent = HERO ? ((HERO.result==="win"?1:0) + '/1') : '0/0';
+
+  // ── chart (inline SVG sparkline) ──
+  function chartSVG(){
+    var w=480,H=130,pad=10, ys=PNL.slice(), min=Math.min(0,Math.min.apply(null,ys)), max=Math.max(0,Math.max.apply(null,ys)), rng=(max-min)||1;
+    var step = PNL.length>1 ? (w-pad*2)/(PNL.length-1) : 0;
+    var pts = PNL.map(function(p,i){ return [pad+i*step, H-pad-((p-min)/rng)*(H-pad*2)]; });
+    var zeroY = H-pad-((0-min)/rng)*(H-pad*2);
+    var line = pts.map(function(p,i){ return (i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1); }).join(" ");
+    var area = line+" L"+pts[pts.length-1][0].toFixed(1)+" "+zeroY+" L"+pts[0][0]+" "+zeroY+" Z";
+    return '<svg viewBox="0 0 '+w+' '+H+'" preserveAspectRatio="none" style="height:130px">'
+      +'<line x1="'+pad+'" y1="'+zeroY+'" x2="'+(w-pad)+'" y2="'+zeroY+'" stroke="rgba(255,255,255,.15)" stroke-dasharray="4 4"/>'
+      +'<path d="'+area+'" fill="rgba(47,210,122,.12)"/>'
+      +'<path d="'+line+'" fill="none" stroke="#2fd27a" stroke-width="2.5" stroke-linejoin="round"/>'
+      +pts.map(function(p){ return '<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="3" fill="#2fd27a"/>'; }).join('')
+      +'</svg><div style="text-align:center;font-size:11px;color:var(--muted);padding:6px 0 2px;">running profit · 1 unit = $'+UNIT+' per tip</div>';
   }
-  function passes(t) {
-    return (state.code === 'all'   || t.code === state.code) &&
-           typeMatch(t) &&
-           (state.result === 'all' || t.result === state.result);
+  var chartOpen = false;
+  window.toggleChart = function(){
+    var el = document.getElementById('chartWrap');
+    chartOpen = !chartOpen;
+    if (chartOpen) { if (!el.innerHTML) el.innerHTML = chartSVG(); el.style.maxHeight = '180px'; document.getElementById('pnlHint').textContent = 'hide chart ▴'; }
+    else { el.style.maxHeight = '0'; document.getElementById('pnlHint').textContent = 'tap for chart ▾'; }
+  };
+
+  // ── render helpers ──
+  function badge(t){ return t.result==="win" ? '<span class="sbpill w">WON</span>' : (t.result==="push" ? '<span class="sbpill">Void</span>' : '<span class="sbpill l">Lost</span>'); }
+  function tagHTML(t){ return t.tag ? '<span class="sbtag '+(t.tag==="STRONG"?"strong":"value")+'">'+t.tag+'</span>' : ''; }
+  function legList(legs){ return legs.map(function(l){ return '<div class="legrow '+(l.ok?'':'miss')+'"><span class="lx" style="color:'+(l.ok?'var(--green)':'var(--loss)')+'">'+(l.ok?'✓':'✗')+'</span><span class="ln">'+l.n+(l.sc?' <span class="sc">('+l.sc+')</span>':'')+'</span></div>'; }).join(''); }
+  function typeLabel(t){ return t.type==="SGM" ? (t.code==="CROSS"?"Cross-Sport":"SGM") : "Single"; }
+  function exTip(t){
+    var inner = (t.match ? '<div class="matchln">'+t.match+'</div>' : '') + '<div class="topline">'+tagHTML(t)+badge(t)+'</div>';
+    if (t.legs && t.legs.length) inner += legList(t.legs);
+    else inner += '<div class="notetext">📋 '+(t.note||'')+'</div>';
+    var odc = t.result==="win" ? 'od w' : 'od';
+    return '<div class="ex" onclick="var o=this.classList.toggle(\'open\');var b=this.querySelector(\'.body\');b.style.maxHeight=o?b.querySelector(\'.inner\').scrollHeight+24+\'px\':0;">'
+      +'<div class="hd"><span class="sbdot '+(t.result==="win"?"w":"l")+'"></span>'
+      +'<div class="mid"><div class="selt">'+t.sel+'</div><div class="meta">'+t.code+' · '+typeLabel(t)+' · '+t.rd+' · '+t.date+'</div></div>'
+      +'<div class="'+odc+'">$'+(+t.odds).toFixed(2)+'</div><span class="chev">▾</span></div>'
+      +'<div class="body"><div class="inner">'+inner+'</div></div></div>';
+  }
+  function heroBox(){
+    if (!HERO) return '';
+    var od = '$'+(+HERO.odds).toFixed(2);
+    var lab = HERO.result==="win" ? '<span class="sbpill w">Won</span>' : '<span class="sbpill l">Lost</span>';
+    return '<div class="herobox"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div class="ht">'+HERO.sel+'</div>'
+      +'<div style="display:flex;align-items:center;gap:8px"><span style="font-family:\'Anton\';font-size:16px;color:var(--muted)">'+od+'</span>'+lab+'</div></div>'
+      +'<div class="hs">'+HERO.legs.length+' legs · small stake · not in ROI</div>'+legList(HERO.legs)
+      +'<div class="notetext" style="margin-top:8px">📋 '+(HERO.note||'')+'</div></div>';
   }
 
-  // Stats + chart follow the SPORT filter only (all / NRL / AFL), not Win/Loss.
-  function sportSet() {
-    return TIPS.filter(t => state.code === 'all' || t.code === state.code);
-  }
-
-  function renderStats() {
-    const set = sportSet();
-    const scopeEl = document.getElementById('chartScope');
-    if (scopeEl) scopeEl.textContent = state.code === 'all' ? '· All sports' : '· ' + state.code + ' only';
-    let wins = 0, decided = 0, oddsSum = 0, staked = 0, ret = 0;
-    set.forEach(t => {
-      staked += 1;
-      oddsSum += t.odds;
-      if (t.result === 'win')  { wins++; decided++; ret += t.odds; }
-      else if (t.result === 'loss') { decided++; }
-      else { ret += 1; } // push refunds the unit
-    });
-    const avg = set.length ? (oddsSum / set.length) : 0;
-    document.getElementById('s-total').textContent = set.length;
-    document.getElementById('s-avg').textContent   = '$' + avg.toFixed(2);
-
-    const ready = decided >= STATS_MIN;
-    const noteEl = document.getElementById('statsNote');
-    if (noteEl) noteEl.style.display = ready ? 'none' : 'block';
-
-    const wrEl  = document.getElementById('s-winrate');
-    const roiEl = document.getElementById('s-roi');
-    const ptEl  = document.getElementById('profitTotal');
-
-    // Running P&L reflects the current filter — it's a raw tally shown with the chart, so always set it.
-    const profitUnits = ret - staked;
-    const profitDollars = profitUnits * UNIT;
-    if (ptEl) {
-      ptEl.textContent = (profitUnits >= 0 ? '+' : '') + profitUnits.toFixed(2) + ' units  (' + (profitDollars >= 0 ? '+$' : '-$') + Math.abs(profitDollars).toFixed(0) + ')';
-      ptEl.style.color = profitUnits < 0 ? 'var(--loss)' : 'var(--green)';
-    }
-
-    if (!ready) {
-      // small sample — don't publish a misleading headline win-rate / ROI yet (chart still shows the raw curve)
-      wrEl.textContent = '—';
-      roiEl.textContent = '—';
-      roiEl.style.color = 'var(--muted)';
+  // ── feed (filter: null | single | multi | hero) ──
+  var FILTER = null;
+  function renderFeed(){
+    if (FILTER === null) {
+      var days=[], seen={};
+      TIPS.forEach(function(t){ if(!seen[t.day]){ seen[t.day]=1; days.push(t.day); } });
+      var html = "";
+      days.forEach(function(d){ html += '<div class="dayh">'+d+'</div>'; TIPS.filter(function(t){return t.day===d;}).forEach(function(t){ html += exTip(t); }); });
+      if (HERO) html += '<div class="dayh">🚀 Hero Multi</div>' + heroBox();
+      feed.innerHTML = html;
       return;
     }
-    const wr  = decided ? Math.round(wins / decided * 100) : 0;
-    const roi = staked ? Math.round((ret - staked) / staked * 100) : 0;
-    wrEl.textContent = wr + '%';
-    roiEl.textContent = (roi >= 0 ? '+' : '') + roi + '%';
-    roiEl.classList.toggle('green', roi >= 0);
-    roiEl.style.color = roi < 0 ? 'var(--loss)' : 'var(--green)';
-  }
-
-  function renderBreakdown() {
-    const set = sportSet();
-    const singles = set.filter(t => t.type === 'H2H');
-    const multis  = set.filter(t => t.type === 'SGM');   // includes the cross-sport multi (code CROSS)
-    const hero    = (window.HERO_RECORD || []);
-
-    function stats(arr) {
-      let wins = 0, losses = 0, oddsSum = 0, n = 0;
-      arr.forEach(t => { n++; oddsSum += t.odds; if (t.result === 'win') wins++; else if (t.result === 'loss') losses++; });
-      return { n: n, wins: wins, losses: losses, decided: wins + losses, avg: n ? oddsSum / n : 0 };
-    }
-
-    function fill(prefix, s, isHero) {
-      const main = document.getElementById('bd-' + prefix + '-main');
-      const sub  = document.getElementById('bd-' + prefix + '-sub');
-      if (!main || !sub) return;
-      if (s.n === 0) { main.textContent = '—'; sub.textContent = isHero ? 'none run yet' : 'no results yet'; return; }
-      // W in green, L in red; strike rate + avg odds on the sub line
-      main.innerHTML = '<span class="w">' + s.wins + 'W</span> / <span class="l">' + s.losses + 'L</span>';
-      if (isHero) {
-        sub.textContent = s.n + ' run · small stake · not in ROI';
-      } else if (s.decided >= BUCKET_MIN) {
-        sub.textContent = Math.round(s.wins / s.decided * 100) + '% strike rate · avg $' + s.avg.toFixed(2);
-      } else {
-        sub.textContent = 'building (' + s.decided + '/' + BUCKET_MIN + ') · avg $' + s.avg.toFixed(2);
-      }
-    }
-
-    fill('singles', stats(singles), false);
-    fill('multis',  stats(multis),  false);
-    fill('hero',    stats(hero),    true);
-  }
-
-  function renderHeroLog() {
-    const hero = (window.HERO_RECORD || []);
-    const wrap = document.getElementById('heroLog');
-    const list = document.getElementById('heroLogList');
-    if (!wrap || !list) return;
-    if (!hero.length) { wrap.style.display = 'none'; return; }
-    wrap.style.display = 'block';
-    list.innerHTML = hero.map(function (h) {
-      const pl = h.result === 'win' ? +(h.odds - 1).toFixed(2) : (h.result === 'loss' ? -1 : 0);
-      const plClass = pl > 0 ? 'pos' : (pl < 0 ? 'neg' : 'zero');
-      const dollars = pl * UNIT;
-      const plTxt = (pl > 0 ? '+' : '') + (dollars >= 0 ? '$' + dollars.toFixed(0) : '-$' + Math.abs(dollars).toFixed(0));
-      return '<div class="hlog-row">'
-        + '<span class="hl-rd">' + h.rd + '</span>'
-        + '<span class="hl-sel">' + (h.sel || 'Hero Multi') + '</span>'
-        + '<span class="hl-odds">$' + h.odds.toFixed(2) + '</span>'
-        + '<span class="hl-res"><span class="res-pill ' + h.result + '">' + h.result + '</span></span>'
-        + '<span class="hl-pl ' + plClass + '">' + plTxt + '</span>'
-        + '</div>';
-    }).join('');
-  }
-
-  function renderTips() {
-    const shown = TIPS.filter(passes);
-    showingEl.innerHTML = 'Showing <b>' + shown.length + '</b> tip' + (shown.length === 1 ? '' : 's');
-    if (!shown.length) {
-      tipsEl.innerHTML = '<div class="empty"><div class="big">No tips match those filters</div>Try widening your selection.</div>';
-      return;
-    }
-    tipsEl.innerHTML = shown.map(t => {
-      const pl = unitPL(t);
-      const plClass = pl > 0 ? 'pos' : (pl < 0 ? 'neg' : 'zero');
-      const dollars = pl * UNIT;
-      const plTxt = (pl > 0 ? '+' : '') + (dollars >= 0 ? '$' + dollars.toFixed(0) : '-$' + Math.abs(dollars).toFixed(0));
-      const noteHtml = t.note ? `<div class="tip-note">📋 ${t.note}</div>` : '';
-      return `<div class="tipw ${t.note ? 'has-note' : ''}">
-        <div class="tip ${t.result}">
-        <span class="rd">${t.rd}</span>
-        <span class="codecell"><span class="tag ${t.code.toLowerCase()}">${t.code}</span></span>
-        <span class="match">${t.match}</span>
-        <span class="typecell"><span class="tag ${t.type.toLowerCase()}">${t.type}</span></span>
-        <span class="sel">${t.sel}</span>
-        <span class="odds">$${t.odds.toFixed(2)}</span>
-        <span class="result"><span class="res-pill ${t.result}">${t.result}</span></span>
-        <span class="pl ${plClass}">${plTxt}</span>
-        </div>${noteHtml}
-      </div>`;
-    }).join('');
-  }
-
-  function drawChart() {
-    const set = sportSet();
-    if (set.length < CHART_MIN) { chartCard.style.display = 'none'; return; }
-    chartCard.style.display = 'block';
-    const canvas = document.getElementById('pnlChart');
-    const dpr = window.devicePixelRatio || 1;
-    const W = canvas.clientWidth, H = 320;
-    canvas.width = W * dpr; canvas.height = H * dpr;
-    const ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
-
-    // build cumulative curve (oldest → newest, so reverse the display order)
-    const chrono = [...set].reverse();
-    let cum = 0; const pts = [0];
-    chrono.forEach(t => { cum += unitPL(t); pts.push(+cum.toFixed(2)); });
-    const max = Math.max(...pts, 1), min = Math.min(...pts, 0);
-    const padL = 44, padR = 16, padT = 18, padB = 28;
-    const plotW = W - padL - padR, plotH = H - padT - padB;
-    const x = i => padL + (plotW * i / (pts.length - 1));
-    const y = v => padT + plotH * (1 - (v - min) / (max - min || 1));
-
-    // gridlines + labels
-    ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1;
-    ctx.fillStyle = 'rgba(154,166,156,0.8)'; ctx.font = '11px Archivo';
-    const steps = 4;
-    for (let s = 0; s <= steps; s++) {
-      const v = min + (max - min) * s / steps;
-      const yy = y(v);
-      ctx.beginPath(); ctx.moveTo(padL, yy); ctx.lineTo(W - padR, yy); ctx.stroke();
-      ctx.fillText((v >= 0 ? '+' : '') + v.toFixed(0), 6, yy + 4);
-    }
-
-    // area fill
-    const grad = ctx.createLinearGradient(0, padT, 0, padT + plotH);
-    grad.addColorStop(0, 'rgba(240,193,75,0.35)');
-    grad.addColorStop(1, 'rgba(240,193,75,0.02)');
-    ctx.beginPath(); ctx.moveTo(x(0), y(pts[0]));
-    pts.forEach((p, i) => ctx.lineTo(x(i), y(p)));
-    ctx.lineTo(x(pts.length - 1), padT + plotH); ctx.lineTo(x(0), padT + plotH);
-    ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
-
-    // line
-    ctx.beginPath(); ctx.moveTo(x(0), y(pts[0]));
-    pts.forEach((p, i) => ctx.lineTo(x(i), y(p)));
-    ctx.strokeStyle = '#f0c14b'; ctx.lineWidth = 2.5;
-    ctx.lineJoin = 'round'; ctx.stroke();
-
-    // end dot
-    const lx = x(pts.length - 1), ly = y(pts[pts.length - 1]);
-    ctx.beginPath(); ctx.arc(lx, ly, 4, 0, Math.PI * 2);
-    ctx.fillStyle = '#f5c542'; ctx.fill();
-  }
-
-  // ── filter wiring ──
-  document.querySelectorAll('.filter-group').forEach(group => {
-    const key = group.dataset.filter;
-    group.querySelectorAll('.chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        state[key] = chip.dataset.val;
-        renderTips();
-        // stats + chart follow the sport filter — refresh them when sport changes
-        if (key === 'code') { renderStats(); renderBreakdown(); drawChart(); }
-      });
+    if (FILTER === 'hero') { feed.innerHTML = '<div class="codeh">🚀 Hero Multi</div>' + (heroBox() || '<div class="sbempty">No Hero multis logged yet.</div>'); return; }
+    var wantType = FILTER === 'single' ? 'H2H' : 'SGM';
+    var set = TIPS.filter(function(t){ return t.type === wantType; });
+    var codeOrder = ['NRL','AFL','CROSS'], codeLabel = { NRL:'🏉 NRL', AFL:'🏉 AFL', CROSS:'🔀 Cross-Sport' };
+    var html = '';
+    codeOrder.forEach(function(code){
+      var inCode = set.filter(function(t){ return t.code === code; });
+      if (!inCode.length) return;
+      html += '<div class="codeh">'+codeLabel[code]+'</div>';
+      var rounds=[], rs={};
+      inCode.forEach(function(t){ if(!rs[t.rd]){ rs[t.rd]=1; rounds.push(t.rd); } });
+      rounds.forEach(function(r){ html += '<div class="roundh">'+r+'</div>'; inCode.filter(function(t){return t.rd===r;}).forEach(function(t){ html += exTip(t); }); });
     });
-  });
-
-  // ── breakdown cards: tap to jump to that slice of the record ──
-  function activateTypeChip(val) {
-    const grp = document.querySelector('.filter-group[data-filter="type"]');
-    if (!grp) return;
-    let matched = false;
-    grp.querySelectorAll('.chip').forEach(c => { const on = c.dataset.val === val; c.classList.toggle('active', on); if (on) matched = true; });
-    state.type = matched ? val : 'all';
-    if (!matched) grp.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.val === 'all'));
-    renderTips();
+    feed.innerHTML = html || '<div class="sbempty">No '+FILTER+' tips yet — check back after this round.</div>';
   }
-  document.querySelectorAll('.bd-card[data-bucket]').forEach(card => {
-    const go = () => {
-      const b = card.dataset.bucket;
-      if (b === 'hero') {
-        const hl = document.getElementById('heroLog');
-        if (hl && hl.style.display !== 'none') hl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        return;
-      }
-      activateTypeChip(b === 'singles' ? 'singles' : 'SGM');
-      const anchor = document.getElementById('filters');
-      if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    };
-    card.addEventListener('click', go);
-    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
-  });
+  window.setFilter = function(f){
+    FILTER = (FILTER === f) ? null : f;
+    document.querySelectorAll('.tile').forEach(function(el){ el.classList.toggle('on', el.dataset.f === FILTER); });
+    renderFeed();
+  };
+  renderFeed();
 
-  // ── init ──
-  if (window.DEMO_DATA) { const db = document.getElementById('demoBanner'); if (db) db.style.display = 'block'; }
-  const hasHero = (window.HERO_RECORD || []).length > 0;
-  if (TIPS.length === 0 && !hasHero) {
-    tipsEl.innerHTML = '<div class="empty"><div class="big">Results drop soon 🐕</div>Our first week\'s tips will appear here, graded win or lose. Check back Monday after the round.</div>';
-  } else {
-    document.getElementById('breakdown').style.display = 'grid';
-    renderBreakdown();
-    renderHeroLog();
-    if (TIPS.length) {
-      filtersEl.style.display = 'flex';
-      showingEl.style.display = 'block';
-      renderStats();
-      renderTips();
-      drawChart();
-      window.addEventListener('resize', drawChart);
-    }
+  // ── season totals (gated until STATS_MIN) ──
+  document.getElementById('s-total').textContent = TIPS.length;
+  if (TIPS.length >= STATS_MIN) {
+    var dec = TIPS.filter(function(t){ return t.result !== "push"; });
+    var wins = dec.filter(function(t){ return t.result === "win"; }).length;
+    var wr = dec.length ? Math.round(wins / dec.length * 100) : 0;
+    var avg = dec.length ? (dec.reduce(function(a,t){ return a + (+t.odds); }, 0) / dec.length) : 0;
+    var profit = dec.reduce(function(a,t){ return a + unitPL(t); }, 0);
+    var roi = dec.length ? Math.round(profit / dec.length * 100) : 0;
+    document.getElementById('s-winrate').textContent = wr + '%';
+    document.getElementById('s-avg').textContent = '$' + avg.toFixed(2);
+    document.getElementById('s-roi').textContent = (roi >= 0 ? '+' : '') + roi + '%';
+    var sn = document.getElementById('statsNote'); if (sn) sn.style.display = 'none';
   }
+})();
 </script>
+
 
 <script>
 /* 🎯 My Tips smart links — see index.html for the full note */

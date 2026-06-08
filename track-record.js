@@ -1,37 +1,58 @@
-// track-record.js — THE single source of truth for our tipping record.
-// Both the Scoreboard (results.html) and the landing page (index.html) read from this,
-// so you only update it in ONE place and both pages stay in sync.
-//
-// Add newest tips at the TOP. One object per tip:
-//   { rd: "R14 · Jun 6", code: "NRL", match: "Storm v Knights", type: "H2H", sel: "Storm", odds: 1.70, result: "win", tag: "STRONG" }
-//   result: "win" | "loss" | "push" | "void"   (push/void = refunded, 0 units, not counted as win or loss)
-//   type:   "H2H" | "Line" | "SGM" | "Prop"      ·   code: "NRL" | "AFL" | "CROSS"
-//   tag:    "STRONG" | "VALUE"  — SINGLES only (H2H/Line/Prop). Omit on multis (SGM/CROSS).
-//   odds:   SINGLES = the published average we tipped. MULTIS = the LOW END of the published range (conservative).
-//   note:   OPTIONAL short result detail shown under the tip (e.g. "Amiss 2 goals, needed 3 — one short"). Keep it honest.
-//
-// (Started fresh for a clean, verified live record — Jun 2026.)
+/* ════════════════════════════════════════════════════════════════
+   THE PUNTERS DEN — TRACK RECORD  (single source of truth)
+   Read by results.html (the Scoreboard) and index.html (landing stats).
 
-// Preview switch: set to true ONLY when filling the arrays with sample data to
-// test layout. It shows a red "PREVIEW MODE" banner on the Scoreboard. LIVE = false.
+   Add each tip as you grade it after a round. NEWEST AT THE TOP.
+   Staking is FLAT — 1 unit per tip. Win = (odds − 1), loss = −1, push = 0.
+
+   ── ROW FORMAT ──────────────────────────────────────────────────
+   {
+     rd:     "Round 14",                // round label (NRL & AFL differ!)
+     code:   "NRL" | "AFL" | "CROSS",   // CROSS = cross-sport multi
+     match:  "Wests Tigers v Penrith",  // the fixture
+     type:   "H2H" | "SGM",             // H2H = single, SGM = multi
+     sel:    "short selection text",
+     odds:   8.00,                      // price tipped (SGM = low end of range)
+     result: "win" | "loss" | "push",
+     day:    "Sunday 7 June",           // group header on the Scoreboard
+     date:   "Sun 7 Jun",               // shown on the card
+     tag:    "STRONG" | "VALUE",        // SINGLES ONLY (optional)
+     note:   "plain-English result",    // SINGLES use this in the dropdown
+     legs:   [ {n,ok,sc}, ... ]         // MULTIS use this (ticked breakdown)
+   }
+   For multis, each leg: { n:"leg name", ok:true|false, sc:"what happened" }
+   ════════════════════════════════════════════════════════════════ */
+
 window.DEMO_DATA = false;
 
 window.TRACK_RECORD = [
-  { rd: "R14 · Jun 8", code: "NRL", match: "Wests Tigers v Penrith", type: "SGM", sel: "Penrith Win + To'o Try + Yeo Try", odds: 8.00, note: "Panthers 68–0. To'o crossed twice, Yeo in the 26th — all three legs home.", result: "win" },
-  { rd: "R14 · Jun 8", code: "AFL", match: "Essendon v Carlton", type: "SGM", sel: "Carlton Win + McKay 2+ + Over ~177", odds: 3.00, note: "Carlton won and McKay kicked 3 ✓, but a low-scoring game (139 total) fell short of the Over ~177.", result: "loss" },
-  { rd: "R14 · Jun 8", code: "CROSS", match: "NRL + AFL · 4 legs", type: "SGM", sel: "Dolphins + Gold Coast + Fremantle + Carlton", odds: 3.55, note: "Three of four home — Dolphins, Fremantle and Carlton all won. Gold Coast was the only leg to fall.", result: "loss" },
-  { rd: "R14 · Jun 7", code: "NRL", match: "Cronulla v St George Illawarra", type: "SGM", sel: "Sharks Win + Kennedy Try + Nikora Try", odds: 8.00, note: "Sharks 34–12. Kennedy and Nikora both crossed — clean sweep.", result: "win" },
-  { rd: "R14 · Jun 7", code: "AFL", match: "North Melbourne v Fremantle", type: "SGM", sel: "Fremantle Win + Amiss 3+ + Under 178.5", odds: 3.50, note: "Freo won by 124, but two legs missed — Amiss kicked 2 (needed 3), and the points blew past the Under 178.5 (186 total).", result: "loss" },
-  { rd: "R14 · Jun 7", code: "AFL", match: "Gold Coast v Brisbane", type: "H2H", sel: "Gold Coast Suns", odds: 1.54, note: "QClash boilover — Brisbane ran out 106–75.", result: "loss", tag: "STRONG" },
-  { rd: "R14 · Jun 6", code: "NRL", match: "Cowboys v Dolphins", type: "H2H", sel: "Dolphins", odds: 1.55, note: "Comfortable in Townsville, 40–14.", result: "win", tag: "STRONG" },
-  { rd: "R14 · Jun 4", code: "AFL", match: "Adelaide v Geelong", type: "H2H", sel: "Geelong Cats", odds: 1.54, note: "Heartbreaker — Adelaide by a single point, 75–74.", result: "loss", tag: "STRONG" },
+  { rd:"Round 14", code:"NRL", match:"Wests Tigers v Penrith", type:"SGM", sel:"Penrith Win + To'o + Yeo", odds:8.00, result:"win", day:"Sunday 7 June", date:"Sun 7 Jun",
+    legs:[ {n:"Penrith Panthers to Win",ok:true,sc:"won 68–0"}, {n:"Brian To'o — Anytime Try",ok:true,sc:"scored 2 tries"}, {n:"Isaah Yeo — Anytime Try",ok:true,sc:"scored"} ] },
 
+  { rd:"Round 14", code:"NRL", match:"Cronulla v St George Illawarra", type:"SGM", sel:"Sharks Win + Kennedy + Nikora", odds:8.00, result:"win", day:"Sunday 7 June", date:"Sun 7 Jun",
+    legs:[ {n:"Cronulla Sharks to Win",ok:true,sc:"won 34–12"}, {n:"William Kennedy — Anytime Try",ok:true,sc:"scored"}, {n:"Briton Nikora — Anytime Try",ok:true,sc:"scored"} ] },
+
+  { rd:"Round 13", code:"AFL", match:"Essendon v Carlton", type:"SGM", sel:"Carlton Win + McKay 2+ + Over", odds:3.00, result:"loss", day:"Sunday 7 June", date:"Sun 7 Jun",
+    legs:[ {n:"Carlton Blues to Win",ok:true,sc:"won 72–67"}, {n:"Harry McKay 2+ Goals",ok:true,sc:"kicked 3 — cleared 2+"}, {n:"Over 177 Total Points",ok:false,sc:"only 139 — went under"} ] },
+
+  { rd:"NRL R14 + AFL R13", code:"CROSS", match:"4-leg cross-sport multi", type:"SGM", sel:"4-Leg Cross-Sport Multi", odds:3.55, result:"loss", day:"Sunday 7 June", date:"Sat–Sun 6–7 Jun",
+    legs:[ {n:"Dolphins to Win",ok:true,sc:"won 40–14"}, {n:"Gold Coast Suns to Win",ok:false,sc:"lost — Brisbane by 31"}, {n:"Fremantle to Win",ok:true,sc:"won by 124"}, {n:"Carlton to Win",ok:true,sc:"won 72–67"} ] },
+
+  { rd:"Round 14", code:"NRL", match:"Cowboys v Dolphins", type:"H2H", sel:"Dolphins", odds:1.55, result:"win", day:"Saturday 6 June", date:"Sat 6 Jun", tag:"STRONG",
+    note:"Comfortable in Townsville, 40–14 — a full-strength Dolphins were too good." },
+
+  { rd:"Round 13", code:"AFL", match:"North Melbourne v Fremantle", type:"SGM", sel:"Fremantle Win + Amiss 3+ + Under", odds:3.50, result:"loss", day:"Saturday 6 June", date:"Sat 6 Jun",
+    legs:[ {n:"Fremantle Dockers to Win",ok:true,sc:"won by 124"}, {n:"Jye Amiss 3+ Goals",ok:false,sc:"kicked 2 — needed 3"}, {n:"Under 178.5 Total Points",ok:false,sc:"186 scored — went over"} ] },
+
+  { rd:"Round 13", code:"AFL", match:"Gold Coast v Brisbane", type:"H2H", sel:"Gold Coast Suns", odds:1.54, result:"loss", day:"Saturday 6 June", date:"Sat 6 Jun", tag:"STRONG",
+    note:"QClash boilover — Brisbane ran out 106–75 on the road." },
+
+  { rd:"Round 13", code:"AFL", match:"Adelaide v Geelong", type:"H2H", sel:"Geelong Cats", odds:1.54, result:"loss", day:"Thursday 4 June", date:"Thu 4 Jun", tag:"STRONG",
+    note:"Heartbreaker — Adelaide by a single point, 75–74." }
 ];
 
-// HERO_RECORD — the weekly Hero Multi results, kept SEPARATE from the official record.
-// The Hero is a deliberate small-stake long-shot, so it is shown only as a fun line and is
-// NEVER mixed into the win-rate or ROI. Same row shape (result: "win" | "loss" | "void").
 window.HERO_RECORD = [
-  { rd: "R14 · Jun 8", code: "CROSS", match: "NRL + AFL · 5 legs", type: "SGM", sel: "Dolphins + To'o + Kennedy + Amiss 3+ + Waterman 3+", odds: 30.00, note: "Four of five landed — only Amiss's 3rd goal missed. So close.", result: "loss" },
-
+  { rd:"NRL R14 + AFL R13", code:"CROSS", match:"5-leg hero multi", type:"SGM", sel:"5-Leg Hero Multi 🚀", odds:30.00, result:"loss", day:"Sunday 7 June", date:"Sat–Sun 6–7 Jun",
+    note:"Four of five landed — only Amiss's third goal got away. So close.",
+    legs:[ {n:"Dolphins to Win",ok:true,sc:"won 40–14"}, {n:"Brian To'o — Try",ok:true,sc:"scored 2 tries"}, {n:"William Kennedy — Try",ok:true,sc:"scored"}, {n:"Jake Waterman — 3+ Goals",ok:true,sc:"kicked 3 — cleared"}, {n:"Jye Amiss — 3+ Goals",ok:false,sc:"kicked 2 — needed 3"} ] }
 ];
