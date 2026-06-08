@@ -1,126 +1,134 @@
 {
-  "week": "Round 14 NRL / Round 13 AFL",
-  "bronze": [
+  "_note": "Each week, PREPEND a new round object at the top of 'rounds' and commit. Set the previous round's live=false and add a 'summary' (e.g. '3W-5L · +9.55u'). Never delete old rounds; the function shows the most recent 8. Tier arrays (bronze/silver/gold) are cumulative — higher tiers also receive lower-tier tips.",
+  "rounds": [
     {
-      "day": "Thu",
-      "code": "AFL",
-      "type": "Head to Head",
-      "match": "Adelaide Crows vs Geelong Cats",
-      "sel": "Geelong Cats to Win",
-      "tag": "STRONG",
-      "avg": "1.54",
-      "reason": "Geelong have won 9 of their last 10 against Adelaide, and the Crows are without Rankine (calf) and Thilthorpe (suspended) — both key forwards out at once. All five of our rules fire; the strongest single of the round. ⚠️ TONIGHT 7:30pm AEST — get set early and check it hasn't started. Line has crept from -8.5 toward -9.5 as money comes for the Cats."
-    },
-    {
-      "day": "Sat",
-      "code": "NRL",
-      "type": "Head to Head",
-      "match": "North QLD Cowboys vs Dolphins",
-      "sel": "Dolphins to Win",
-      "tag": "STRONG",
-      "avg": "1.56",
-      "reason": "The Dolphins get a swag of key players back in one hit — Tabuai-Fidow, Farnworth and Nikorima all return, several off Origin duty — at full strength for the first time in weeks against a largely unchanged Cowboys side. Saturday 5:30pm AEST in Townsville."
-    },
-    {
-      "day": "Sat",
-      "code": "AFL",
-      "type": "Head to Head",
-      "match": "Gold Coast Suns vs Brisbane Lions",
-      "sel": "Gold Coast Suns to Win",
-      "tag": "STRONG",
-      "avg": "1.54",
-      "reason": "QClash at home against a Brisbane side missing Coleman (~6 weeks) and Lester. Gold Coast sit 5th with top-four ambitions; home ground plus a depleted Brisbane backline is the case. Saturday 5:15pm AEST."
-    }
-  ],
-  "silver": [
-    {
-      "day": "Sun",
-      "code": "NRL",
-      "type": "Same Game Multi",
-      "match": "Cronulla Sharks vs St George Illawarra",
-      "sel": "3-Leg Multi",
-      "range": "8–12.50",
-      "legs": [
-        "Cronulla Sharks to Win ($1.27)",
-        "William Kennedy Anytime Try ($2.50)",
-        "Briton Nikora Anytime Try ($4.00)"
+      "id": "r14-afl13",
+      "label": "NRL R14 · AFL R13",
+      "week": "Round 14 NRL / Round 13 AFL",
+      "live": true,
+      "bronze": [
+        {
+          "day": "Thu",
+          "code": "AFL",
+          "type": "Head to Head",
+          "match": "Adelaide Crows vs Geelong Cats",
+          "sel": "Geelong Cats to Win",
+          "tag": "STRONG",
+          "avg": "1.54",
+          "reason": "Geelong have won 9 of their last 10 against Adelaide, and the Crows are without Rankine (calf) and Thilthorpe (suspended) — both key forwards out at once. All five of our rules fire; the strongest single of the round. ⚠️ TONIGHT 7:30pm AEST — get set early and check it hasn't started. Line has crept from -8.5 toward -9.5 as money comes for the Cats."
+        },
+        {
+          "day": "Sat",
+          "code": "NRL",
+          "type": "Head to Head",
+          "match": "North QLD Cowboys vs Dolphins",
+          "sel": "Dolphins to Win",
+          "tag": "STRONG",
+          "avg": "1.56",
+          "reason": "The Dolphins get a swag of key players back in one hit — Tabuai-Fidow, Farnworth and Nikorima all return, several off Origin duty — at full strength for the first time in weeks against a largely unchanged Cowboys side. Saturday 5:30pm AEST in Townsville."
+        },
+        {
+          "day": "Sat",
+          "code": "AFL",
+          "type": "Head to Head",
+          "match": "Gold Coast Suns vs Brisbane Lions",
+          "sel": "Gold Coast Suns to Win",
+          "tag": "STRONG",
+          "avg": "1.54",
+          "reason": "QClash at home against a Brisbane side missing Coleman (~6 weeks) and Lester. Gold Coast sit 5th with top-four ambitions; home ground plus a depleted Brisbane backline is the case. Saturday 5:15pm AEST."
+        }
       ],
-      "reason": "Sharks strong home favourites. With Hynes and Brailey both out, fullback Kennedy is even more central to the attack and is a proven scorer; Nikora a running back-rower who adds a third scorer in a winning side."
-    },
-    {
-      "day": "Sat",
-      "code": "AFL",
-      "type": "Same Game Multi",
-      "match": "North Melbourne vs Fremantle",
-      "sel": "3-Leg Multi",
-      "range": "3.50–4.70",
-      "legs": [
-        "Fremantle Dockers to Win ($1.23)",
-        "Jye Amiss 3+ Goals ($2.00)",
-        "Under 178.5 Total Points ($1.90)"
+      "silver": [
+        {
+          "day": "Sun",
+          "code": "NRL",
+          "type": "Same Game Multi",
+          "match": "Cronulla Sharks vs St George Illawarra",
+          "sel": "3-Leg Multi",
+          "range": "8–12.50",
+          "legs": [
+            "Cronulla Sharks to Win ($1.27)",
+            "William Kennedy Anytime Try ($2.50)",
+            "Briton Nikora Anytime Try ($4.00)"
+          ],
+          "reason": "Sharks strong home favourites. With Hynes and Brailey both out, fullback Kennedy is even more central to the attack and is a proven scorer; Nikora a running back-rower who adds a third scorer in a winning side."
+        },
+        {
+          "day": "Sat",
+          "code": "AFL",
+          "type": "Same Game Multi",
+          "match": "North Melbourne vs Fremantle",
+          "sel": "3-Leg Multi",
+          "range": "3.50–4.70",
+          "legs": [
+            "Fremantle Dockers to Win ($1.23)",
+            "Jye Amiss 3+ Goals ($2.00)",
+            "Under 178.5 Total Points ($1.90)"
+          ],
+          "reason": "Comp's top side heading to Bunbury against a North side outside the eight. Amiss has kicked four goals in each of his last two games. When Freo win big and North struggle to score, the total stays suppressed — the legs line up directionally."
+        }
       ],
-      "reason": "Comp's top side heading to Bunbury against a North side outside the eight. Amiss has kicked four goals in each of his last two games. When Freo win big and North struggle to score, the total stays suppressed — the legs line up directionally."
-    }
-  ],
-  "gold": [
-    {
-      "day": "Sun",
-      "code": "NRL",
-      "type": "Same Game Multi",
-      "match": "Wests Tigers vs Penrith Panthers",
-      "sel": "3-Leg Multi",
-      "range": "8–11.50",
-      "legs": [
-        "Penrith Panthers to Win ($1.16)",
-        "Brian To'o Anytime Try ($2.20)",
-        "Isaah Yeo Anytime Try ($4.50)"
-      ],
-      "reason": "Gold exclusive. Penrith back at full strength — Cleary, Yeo and To'o all return — while the Tigers have multiple changes. To'o is a high-volume tryscorer in a likely blowout, with Yeo a longer-odds second scorer to lift the multi."
-    },
-    {
-      "day": "Sun",
-      "code": "AFL",
-      "type": "Same Game Multi",
-      "match": "Essendon vs Carlton",
-      "sel": "3-Leg Multi",
-      "range": "3–4",
-      "legs": [
-        "Carlton Blues to Win ($1.20)",
-        "Harry McKay 2+ Goals ($1.73)",
-        "Over ~177 Total Points ($1.90)"
-      ],
-      "reason": "Gold exclusive. Carlton carry real momentum against a struggling Essendon. McKay is primed after a couple of quieter weeks, and with Carlton expected to win comfortably the total should climb. Confirm the Over line in your builder."
-    },
-    {
-      "special": true,
-      "code": "MULTI",
-      "type": "Cross-Sport Multi",
-      "match": "NRL + AFL · 4 legs",
-      "sel": "4-Leg Cross-Sport Multi",
-      "legs": [
-        "NRL · Dolphins to Win ($1.56)",
-        "AFL · Gold Coast Suns to Win ($1.54)",
-        "AFL · Fremantle Dockers to Win ($1.23)",
-        "AFL · Carlton Blues to Win ($1.20)"
-      ],
-      "reason": "Gold exclusive. Four of the round's cleanest win plays across both codes, all different games on Sat/Sun — no correlation. Fremantle and Carlton are short anchors; the Dolphins and Suns add the meat. A quality multi, not a long-shot.",
-      "odds": "3.55"
-    },
-    {
-      "special": true,
-      "code": "MULTI",
-      "type": "Hero Multi",
-      "match": "NRL + AFL · the weekly long-shot",
-      "sel": "5-Leg Hero Multi 🚀",
-      "range": "30–40",
-      "legs": [
-        "NRL · Dolphins to Win — Cowboys v Dolphins ($1.56)",
-        "NRL · Brian To'o Anytime Try — Tigers v Panthers ($2.20)",
-        "NRL · William Kennedy Anytime Try — Sharks v Dragons ($2.50)",
-        "AFL · Jye Amiss 3+ Goals — North v Fremantle ($2.00)",
-        "AFL · Jake Waterman 3+ Goals — West Coast v Port Adelaide ($2.05)"
-      ],
-      "reason": "Five legs, five games, both codes. Dolphins at full strength, To'o in a likely Panthers blowout, Kennedy central to the Sharks' attack, plus two in-form key forwards in Amiss and Waterman. It almost certainly won't land — that's the point. Small stake only, one unit max."
+      "gold": [
+        {
+          "day": "Sun",
+          "code": "NRL",
+          "type": "Same Game Multi",
+          "match": "Wests Tigers vs Penrith Panthers",
+          "sel": "3-Leg Multi",
+          "range": "8–11.50",
+          "legs": [
+            "Penrith Panthers to Win ($1.16)",
+            "Brian To'o Anytime Try ($2.20)",
+            "Isaah Yeo Anytime Try ($4.50)"
+          ],
+          "reason": "Gold exclusive. Penrith back at full strength — Cleary, Yeo and To'o all return — while the Tigers have multiple changes. To'o is a high-volume tryscorer in a likely blowout, with Yeo a longer-odds second scorer to lift the multi."
+        },
+        {
+          "day": "Sun",
+          "code": "AFL",
+          "type": "Same Game Multi",
+          "match": "Essendon vs Carlton",
+          "sel": "3-Leg Multi",
+          "range": "3–4",
+          "legs": [
+            "Carlton Blues to Win ($1.20)",
+            "Harry McKay 2+ Goals ($1.73)",
+            "Over ~177 Total Points ($1.90)"
+          ],
+          "reason": "Gold exclusive. Carlton carry real momentum against a struggling Essendon. McKay is primed after a couple of quieter weeks, and with Carlton expected to win comfortably the total should climb. Confirm the Over line in your builder."
+        },
+        {
+          "special": true,
+          "code": "MULTI",
+          "type": "Cross-Sport Multi",
+          "match": "NRL + AFL · 4 legs",
+          "sel": "4-Leg Cross-Sport Multi",
+          "legs": [
+            "NRL · Dolphins to Win ($1.56)",
+            "AFL · Gold Coast Suns to Win ($1.54)",
+            "AFL · Fremantle Dockers to Win ($1.23)",
+            "AFL · Carlton Blues to Win ($1.20)"
+          ],
+          "reason": "Gold exclusive. Four of the round's cleanest win plays across both codes, all different games on Sat/Sun — no correlation. Fremantle and Carlton are short anchors; the Dolphins and Suns add the meat. A quality multi, not a long-shot.",
+          "odds": "3.55"
+        },
+        {
+          "special": true,
+          "code": "MULTI",
+          "type": "Hero Multi",
+          "match": "NRL + AFL · the weekly long-shot",
+          "sel": "5-Leg Hero Multi 🚀",
+          "range": "30–40",
+          "legs": [
+            "NRL · Dolphins to Win — Cowboys v Dolphins ($1.56)",
+            "NRL · Brian To'o Anytime Try — Tigers v Panthers ($2.20)",
+            "NRL · William Kennedy Anytime Try — Sharks v Dragons ($2.50)",
+            "AFL · Jye Amiss 3+ Goals — North v Fremantle ($2.00)",
+            "AFL · Jake Waterman 3+ Goals — West Coast v Port Adelaide ($2.05)"
+          ],
+          "reason": "Five legs, five games, both codes. Dolphins at full strength, To'o in a likely Panthers blowout, Kennedy central to the Sharks' attack, plus two in-form key forwards in Amiss and Waterman. It almost certainly won't land — that's the point. Small stake only, one unit max."
+        }
+      ]
     }
   ]
 }
