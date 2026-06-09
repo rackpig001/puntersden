@@ -653,8 +653,7 @@
         </ul>
         <a href="#" class="btn" data-plan="bronze">Start Bronze — Free Week</a>
       </div>
-      <div class="plan silver pop reveal">
-        <div class="poptag">Most Popular</div>
+      <div class="plan silver reveal">
         <div class="pname">Silver</div>
         <div class="price">$10<span>/week</span></div>
         <div class="ptag" style="font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:700;margin:2px 0 16px;">Only our strongest calls</div>
@@ -667,7 +666,8 @@
         </ul>
         <a href="#" class="btn" data-plan="silver">Start Silver — Free Week</a>
       </div>
-      <div class="plan gold reveal">
+      <div class="plan gold pop reveal">
+        <div class="poptag">Most Popular</div>
         <div class="pname">Gold</div>
         <div class="price">$20<span>/week</span></div>
         <div class="ptag" style="font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:700;margin:2px 0 16px;">The full arsenal</div>
@@ -776,6 +776,15 @@
     obs.observe(el);
   });
 
+  // ── Referral capture: remember ?ref=CODE so it survives navigation to checkout ──
+  (function () {
+    try {
+      var rc = new URLSearchParams(window.location.search).get('ref');
+      if (rc) localStorage.setItem('pd_ref', rc.trim().slice(0, 40));
+    } catch (e) {}
+  })();
+  function pdRef() { try { return localStorage.getItem('pd_ref') || null; } catch (e) { return null; } }
+
   // ── Stripe HOSTED checkout — redirects to Stripe's mobile-friendly checkout page ──
   // Apple Pay / Google Pay one-tap; trusted UX; no embed gotchas.
   async function startCheckout(tier, btn) {
@@ -786,7 +795,7 @@
       const res = await fetch('/.netlify/functions/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier })
+        body: JSON.stringify({ tier, ref: pdRef() })
       });
       const data = await res.json();
 
