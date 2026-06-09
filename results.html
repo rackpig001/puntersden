@@ -472,12 +472,13 @@
   function tagHTML(t){ return t.tag ? '<span class="sbtag '+(t.tag==="STRONG"?"strong":"value")+'">'+t.tag+'</span>' : ''; }
   function legList(legs){ return legs.map(function(l){ return '<div class="legrow '+(l.ok?'':'miss')+'"><span class="lx" style="color:'+(l.ok?'var(--green)':'var(--loss)')+'">'+(l.ok?'✓':'✗')+'</span><span class="ln">'+l.n+(l.sc?' <span class="sc">('+l.sc+')</span>':'')+'</span></div>'; }).join(''); }
   function typeLabel(t){ return t.type==="SGM" ? (t.code==="CROSS"?"Cross-Sport":"SGM") : "Single"; }
+  function tipSlug(t){ return 'tip-' + (String(t.match||'') + ' ' + typeLabel(t)).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
   function exTip(t){
     var inner = (t.match ? '<div class="matchln">'+t.match+'</div>' : '') + '<div class="topline">'+tagHTML(t)+badge(t)+'</div>';
     if (t.legs && t.legs.length) inner += legList(t.legs);
     else inner += '<div class="notetext">📋 '+(t.note||'')+'</div>';
     var odc = t.result==="win" ? 'od w' : 'od';
-    return '<div class="ex" onclick="var o=this.classList.toggle(\'open\');var b=this.querySelector(\'.body\');b.style.maxHeight=o?b.querySelector(\'.inner\').scrollHeight+24+\'px\':0;">'
+    return '<div class="ex" id="'+tipSlug(t)+'" onclick="var o=this.classList.toggle(\'open\');var b=this.querySelector(\'.body\');b.style.maxHeight=o?b.querySelector(\'.inner\').scrollHeight+24+\'px\':0;">'
       +'<div class="hd"><span class="sbdot '+(t.result==="win"?"w":"l")+'"></span>'
       +'<div class="mid"><div class="selt">'+t.sel+'</div><div class="meta">'+t.code+' · '+typeLabel(t)+' · '+t.rd+' · '+t.date+'</div></div>'
       +'<div class="'+odc+'">$'+(+t.odds).toFixed(2)+'</div><span class="chev">▾</span></div>'
@@ -549,6 +550,20 @@
     renderFeed();
   };
   renderFeed();
+
+  // Deep-link: if the URL points at a specific tip (e.g. #tip-wests-tigers-v-penrith-sgm),
+  // open its dropdown and scroll to it.
+  function openFromHash(){
+    var id = (location.hash || '').replace('#','');
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el || !el.classList.contains('ex')) return;
+    el.classList.add('open');
+    var b = el.querySelector('.body'), inner = b && b.querySelector('.inner');
+    if (b && inner) b.style.maxHeight = (inner.scrollHeight + 24) + 'px';
+    setTimeout(function(){ el.scrollIntoView({ behavior:'smooth', block:'center' }); }, 120);
+  }
+  openFromHash();
 })();
 </script>
 
