@@ -17,7 +17,8 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { tier } = JSON.parse(event.body || '{}');
+    const { tier, ref } = JSON.parse(event.body || '{}');
+    const refCode = ref ? String(ref).trim().slice(0, 40) : null;
     const priceId = PRICE_IDS[tier];
 
     if (!priceId) {
@@ -33,9 +34,11 @@ exports.handler = async (event) => {
       phone_number_collection: { enabled: true },
       // Store the tier on the session so the webhook knows what they bought
       metadata: { tier },
+      // Referral: carry the referrer's code through so the webhook can attribute it
+      ...(refCode ? { client_reference_id: refCode } : {}),
       subscription_data: {
-        metadata: { tier },
-        trial_period_days: 7,
+        metadata: refCode ? { tier, ref: refCode } : { tier },
+        trial_period_days: 7,   // 7-day free trial on every tier (card required)
       },
       success_url: `${siteUrl}/checkout-complete?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/#pricing`,

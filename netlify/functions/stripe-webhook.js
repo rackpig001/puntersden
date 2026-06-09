@@ -34,6 +34,17 @@ function store(name) {
   });
 }
 
+// ── Referral helpers ─────────────────────────────────────────────────────
+// A member's shareable code: DEN-XXXX, derived deterministically from their
+// customer id (stable, and uses an unambiguous alphabet - no 0/O/1/I).
+const REFCODE_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+function genRefCode(seed) {
+  const h = crypto.createHash('sha256').update(String(seed)).digest();
+  let code = '';
+  for (let i = 0; i < 4; i++) code += REFCODE_ALPHABET[h[i] % REFCODE_ALPHABET.length];
+  return 'DEN-' + code;
+}
+
 // ── Mobile Message helpers ───────────────────────────────────────────────
 function mmConfigured() {
   return !!(process.env.MOBILE_MESSAGE_API_USERNAME && process.env.MOBILE_MESSAGE_API_PASSWORD && process.env.SMS_SENDER);
@@ -132,6 +143,7 @@ exports.handler = async (event) => {
 
   const members = store('members');        // token -> member record
   const byCustomer = store('by-customer'); // customerId -> token (so we can revoke on cancel)
+  const byRefcode = store('by-refcode');   // referralCode -> token (find a referrer by their code)
 
   try {
     switch (stripeEvent.type) {
@@ -145,16 +157,30 @@ exports.handler = async (event) => {
         const token = crypto.randomBytes(24).toString('hex');
         const link = `${SITE_URL}/tips?key=${token}`;
 
+        // Referral: the referrer's code rides in on client_reference_id (or sub metadata).
+        const referredBy = (session.client_reference_id || session.metadata?.ref || '').trim() || null;
+        const referralCode = genRefCode(customerId || token); // this member's OWN code to share
+
         const record = {
           customerId,
           tier,
           phone,
           createdAt: new Date().toISOString(),
           welcomeSmsSent: false,
+          // ── loyalty / referral ──
+          referralCode,             // DEN-XXXX they share
+          referredBy,               // referrer's code, if they were referred
+          referralCredited: false,  // true once their trial converts and their referrer is credited
+          referrals: { allTime: 0, season: 0 },
+          points: 0,
+          handle: null,
         };
 
         await members.setJSON(token, record);
         if (customerId) await byCustomer.setJSON(customerId, { token });
+        // Index their referral code so a future conversion can find them as a referrer.
+        try { await byRefcode.setJSON(referralCode, { token }); }
+        catch (e) { console.error('Could not index referral code (member still created):', e.message); }
         console.log(`New ${tier} member. Token: ${token}. Phone: ${phone || 'none captured'}`);
 
         // ── Welcome SMS + contact list (best-effort: NEVER blocks the member record) ──
@@ -196,6 +222,37 @@ exports.handler = async (event) => {
             try { await removeMemberContact(record.phone); }
             catch (e) { console.error('Could not remove member from SMS list:', e.message); }
           }
+        }
+        break;
+      }
+
+      case 'invoice.paid': {
+        // Referral credit: when a REFERRED member's trial converts to a paid week,
+        // give their referrer +1. Fully guarded: never credits twice, never blocks anything.
+        try {
+          const invoice = stripeEvent.data.object;
+          if (invoice.amount_paid && invoice.amount_paid > 0) {   // skip $0 trial invoices
+            const customerId = invoice.customer;
+            const map = customerId ? await byCustomer.get(customerId, { type: 'json' }).catch(() => null) : null;
+            const rec = map?.token ? await members.get(map.token, { type: 'json' }).catch(() => null) : null;
+            if (rec && !rec.referralCredited && rec.referredBy) {
+              const refMap = await byRefcode.get(rec.referredBy, { type: 'json' }).catch(() => null);
+              if (refMap?.token) {
+                const referrer = await members.get(refMap.token, { type: 'json' }).catch(() => null);
+                if (referrer) {
+                  referrer.referrals = referrer.referrals || { allTime: 0, season: 0 };
+                  referrer.referrals.allTime += 1;
+                  referrer.referrals.season += 1;
+                  await members.setJSON(refMap.token, referrer);
+                  console.log(`Referral credited to ${rec.referredBy}: ${referrer.referrals.allTime} all-time`);
+                }
+              }
+              rec.referralCredited = true;            // never double-credit this member
+              await members.setJSON(map.token, rec);
+            }
+          }
+        } catch (e) {
+          console.error('Referral credit failed (non-blocking):', e.message);
         }
         break;
       }
