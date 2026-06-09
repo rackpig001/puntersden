@@ -14,9 +14,20 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const { getStore } = require('@netlify/blobs');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const MAX_ROUNDS = 8;                       // how many recent rounds the member page can browse
 const TIER_ORDER = ['bronze', 'silver', 'gold'];
+
+// Same DEN-XXXX code generator as the webhook, so a member who predates the
+// referral system gets the SAME code generated here (deterministic from customer id).
+const REFCODE_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+function genRefCode(seed) {
+  const h = crypto.createHash('sha256').update(String(seed)).digest();
+  let code = '';
+  for (let i = 0; i < 4; i++) code += REFCODE_ALPHABET[h[i] % REFCODE_ALPHABET.length];
+  return 'DEN-' + code;
+}
 
 function store(name) {
   return getStore({
@@ -84,6 +95,21 @@ exports.handler = async (event) => {
     }
 
     const tier = record.tier;
+
+    // Backfill: members created before the referral system have no code yet.
+    // Generate it on the fly (deterministic), save it, and index it - once.
+    if (!record.referralCode) {
+      try {
+        record.referralCode = genRefCode(record.customerId || token);
+        if (record.referrals == null) record.referrals = { allTime: 0, season: 0 };
+        if (record.points == null) record.points = 0;
+        await members.setJSON(token, record);
+        await store('by-refcode').setJSON(record.referralCode, { token });
+      } catch (e) {
+        console.error('Referral-code backfill failed (non-blocking):', e.message);
+      }
+    }
+
     const data = loadData();
 
     // Most recent rounds, each filtered to the member's tier.
@@ -99,7 +125,12 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tier, rounds }),
+      body: JSON.stringify({
+        tier,
+        rounds,
+        referralCode: record.referralCode || null,
+        referrals: record.referrals || { allTime: 0, season: 0 },
+      }),
     };
   } catch (err) {
     console.error('get-tips error:', err);
