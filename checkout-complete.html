@@ -112,7 +112,7 @@ function copyLink() {
 
     content.innerHTML = `
       <div class="hero">
-        <div class="pup">🐕</div>
+        <img src="logo.png" alt="The Punters Den" class="pup-img">
         <div class="kick">You're in</div>
         <h1>Welcome to<br>The Punters Den</h1>
         <p class="lead">Your free week starts now. Card on file — no charge for 7 days. Cancel anytime in the trial and you won't pay a cent.</p>
@@ -177,7 +177,7 @@ function copyLink() {
   function renderPending() {
     content.innerHTML = `
       <div class="hero" style="padding-bottom:0;">
-        <div class="pup">🐕</div>
+        <img src="logo.png" alt="The Punters Den" class="pup-img">
         <div class="kick">Almost there</div>
         <h1>Setting things up…</h1>
         <p class="lead">Your payment went through — just sorting your tips access. This usually takes a few seconds.</p>
@@ -189,7 +189,7 @@ function copyLink() {
   function renderError(msg) {
     content.innerHTML = `
       <div class="hero">
-        <div class="pup">🐕</div>
+        <img src="logo.png" alt="The Punters Den" class="pup-img">
         <h1>Hmm — something's off</h1>
         <p class="lead">${msg}</p>
         <a href="/" style="display:inline-block;margin-top:24px;color:var(--gold);">← Back to the site</a>
