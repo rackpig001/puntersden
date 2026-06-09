@@ -51,6 +51,17 @@
   .inv-btns { display:flex; gap:8px; }
   .inv-btn { flex:1; padding:12px; border-radius:9px; border:1px solid var(--gold); background:var(--gold); color:#1a1400; font-family:'Archivo'; font-weight:800; font-size:13px; cursor:pointer; }
   .inv-btn.alt { background:transparent; color:var(--gold); }
+  .inv-stat { font-size:13px; color:var(--muted); margin:10px 0 0; }
+  .inv-stat b { color:var(--gold); }
+  .inv-stat a { color:var(--gold); text-decoration:none; font-weight:600; }
+  .inv-div { border:none; border-top:1px solid var(--line); margin:16px 0; }
+  .prof-have { font-size:14px; }
+  .prof-have b { color:var(--gold); }
+  .prof-edit { background:none; border:none; color:var(--muted); text-decoration:underline; font-size:12px; cursor:pointer; margin-left:8px; font-family:'Archivo'; }
+  .prof-set { display:flex; gap:8px; }
+  .prof-set input { flex:1; min-width:0; background:var(--panel-2); border:1px solid var(--line); border-radius:9px; padding:11px 12px; color:var(--text); font-family:'Archivo'; font-size:14px; }
+  .prof-set input:focus { outline:none; border-color:var(--gold); }
+  .prof-msg { font-size:12px; color:var(--muted); margin-top:7px; }
   .kick { font-family:'Anton'; color:var(--gold); letter-spacing:1px; text-transform:uppercase; font-size:13px; }
   h1 { font-family:'Anton'; font-size:36px; letter-spacing:1px; margin:6px 0; }
   .tier-badge { display:inline-block; background:var(--panel); border:1px solid var(--line); border-radius:50px; padding:5px 14px; font-size:13px; color:var(--muted); }
@@ -195,6 +206,8 @@
     const tier = data.tier || '';
     const referralCode = data.referralCode || null;
     const refLink = referralCode ? ('https://thepuntersden.com/?ref=' + encodeURIComponent(referralCode)) : null;
+    const referrals = data.referrals || { allTime: 0, season: 0 };
+    let handle = data.handle || null;
     const medal = { bronze:'🥉', silver:'🥈', gold:'🥇' }[tier] || '';
     const tierName = tier.charAt(0).toUpperCase() + tier.slice(1);
     document.getElementById('tierBadge').textContent = (medal ? medal + ' ' : '') + tierName + ' member';
@@ -295,15 +308,51 @@
       });
     }
 
-    // ── invite mates (referral link + copy + native share) ──
+    // ── leaderboard club (username + referral tally + invite link) ──
+    function escapeHtml(x){ return String(x).replace(/[&<>"\']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"\'":'&#39;'}[c]; }); }
     function inviteHTML() {
       if (!refLink) return '';
       return '<div class="invite">'
-        + '<div class="inv-h">🎁 Bring your mates to the Den</div>'
-        + '<p class="inv-p">Share your link. When a mate joins and their free trial turns into a paid week, it counts toward your rewards.</p>'
+        + '<div class="inv-h">🏆 The Den Leaderboard</div>'
+        + '<div id="profileRow"></div>'
+        + '<div class="inv-stat" id="refStat"></div>'
+        + '<hr class="inv-div">'
+        + '<p class="inv-p">Share your link. When a mate joins and their free trial turns into a paid week, it counts toward your spot on the board.</p>'
         + '<div class="inv-link" id="invLink">' + refLink + '</div>'
         + '<div class="inv-btns"><button type="button" class="inv-btn" id="invCopy">📋 Copy link</button><button type="button" class="inv-btn alt" id="invShare">📤 Share</button></div>'
         + '</div>';
+    }
+    function refStatHTML() {
+      var n = referrals.allTime || 0;
+      var mates = n === 1 ? 'mate' : 'mates';
+      return "You've brought in <b>" + n + "</b> " + mates + ' &nbsp;·&nbsp; <a href="leaderboard.html">see the board →</a>';
+    }
+    function profileViewHTML() {
+      if (handle) return '<div class="prof-have">On the board as <b>' + escapeHtml(handle) + '</b> <button type="button" class="prof-edit" id="profEdit">edit</button></div>';
+      return '<div class="prof-set"><input id="handleInput" maxlength="20" placeholder="Pick your leaderboard name" autocomplete="off"><button type="button" class="inv-btn" id="handleSave" style="flex:0 0 auto;">Save</button></div><div class="prof-msg" id="profMsg">Claim your spot — pick a name to show on the public board.</div>';
+    }
+    function paintProfile() {
+      var pr = document.getElementById('profileRow');
+      if (!pr) return;
+      pr.innerHTML = profileViewHTML();
+      var edit = document.getElementById('profEdit');
+      if (edit) edit.addEventListener('click', function(){ handle = null; paintProfile(); });
+      var save = document.getElementById('handleSave');
+      if (save) save.addEventListener('click', saveHandle);
+      var input = document.getElementById('handleInput');
+      if (input) { input.value = handle || ''; input.addEventListener('keydown', function(e){ if (e.key === 'Enter') saveHandle(); }); }
+    }
+    async function saveHandle() {
+      var input = document.getElementById('handleInput'), msg = document.getElementById('profMsg'), save = document.getElementById('handleSave');
+      var val = (input && input.value || '').trim();
+      if (!val) { if (msg) msg.textContent = 'Type a name first.'; return; }
+      if (save) { save.disabled = true; save.textContent = 'Saving…'; }
+      try {
+        var res = await fetch('/.netlify/functions/set-profile', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ key: key, handle: val }) });
+        var d = await res.json();
+        if (d.ok) { handle = d.handle; paintProfile(); }
+        else { if (msg) msg.textContent = d.error || 'Try another name.'; if (save) { save.disabled = false; save.textContent = 'Save'; } }
+      } catch (e) { if (msg) msg.textContent = 'Something went wrong — try again.'; if (save) { save.disabled = false; save.textContent = 'Save'; } }
     }
     function wireInvite() {
       var c = document.getElementById('invCopy'), sh = document.getElementById('invShare');
@@ -317,6 +366,8 @@
         if (navigator.share) { navigator.share({ title:'The Punters Den', text:'Get on the Den with me — AI-powered NRL & AFL tips. First week free:', url:refLink }).catch(function(){}); }
         else if (c) c.click();
       });
+      var rs = document.getElementById('refStat'); if (rs) rs.innerHTML = refStatHTML();
+      paintProfile();
     }
 
     // ── track-record CTA (uses the latest past round's summary if available) ──
