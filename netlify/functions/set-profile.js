@@ -53,6 +53,11 @@ exports.handler = async (event) => {
       return { statusCode: 403, body: JSON.stringify({ ok: false, error: 'Your membership link isn\'t active.' }) };
     }
 
+    // LOCKED: a leaderboard name can only be set once. If one already exists, refuse changes.
+    if (rec.handle) {
+      return { statusCode: 200, body: JSON.stringify({ ok: false, locked: true, handle: rec.handle, error: "Your leaderboard name is locked in and can't be changed." }) };
+    }
+
     const err = handleError(handle);
     if (err) return { statusCode: 200, body: JSON.stringify({ ok: false, error: err }) };
 
@@ -61,11 +66,6 @@ exports.handler = async (event) => {
     const existing = await byHandle.get(lower, { type: 'json' }).catch(() => null);
     if (existing && existing.token !== token) {
       return { statusCode: 200, body: JSON.stringify({ ok: false, error: "That name's taken — try another." }) };
-    }
-
-    // If they're changing an existing handle, free up the old one.
-    if (rec.handle && rec.handle.toLowerCase() !== lower) {
-      try { await byHandle.delete(rec.handle.toLowerCase()); } catch (e) {}
     }
 
     rec.handle = handle;
