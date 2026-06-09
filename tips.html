@@ -3,23 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Punters Den — Your Tips</title>
+<title>The Punters Den — Your Den</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="robots" content="noindex, follow">
-<meta name="description" content="Your private weekly NRL & AFL tips from The Punters Den.">
+<meta name="description" content="Your private members hub at The Punters Den — tips, leaderboard and rewards.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Punters Den">
-<meta property="og:title" content="The Punters Den — Your Tips">
-<meta property="og:description" content="Your private weekly NRL & AFL tips from The Punters Den.">
+<meta property="og:title" content="The Punters Den — Your Den">
+<meta property="og:description" content="Your private members hub — weekly NRL & AFL tips, the leaderboard and rewards.">
 <meta property="og:url" content="https://thepuntersden.com/tips.html">
 <meta property="og:image" content="https://thepuntersden.com/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The Punters Den — Your Tips">
-<meta name="twitter:description" content="Your private weekly NRL & AFL tips from The Punters Den.">
-<meta name="twitter:image" content="https://thepuntersden.com/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -30,79 +25,57 @@
   nav { border-bottom:1px solid var(--line); background:rgba(10,10,12,0.72); backdrop-filter:blur(14px); position:sticky; top:0; z-index:20; }
   .nav-inner { display:flex; align-items:center; height:64px; max-width:760px; margin:0 auto; padding:0 22px; }
   .logo { display:flex; align-items:center; gap:10px; font-family:'Anton'; font-size:20px; letter-spacing:1px; text-transform:uppercase; text-decoration:none; color:inherit; }
-  .logo .paw { font-size:24px; }
-  .logo img.paw{height:28px;width:auto;vertical-align:middle;}
+  .logo img.paw { height:28px; width:auto; vertical-align:middle; }
   .logo .den { color:var(--gold); }
   .nav-links { margin-left:auto; display:flex; gap:16px; align-items:center; }
   .nav-links a { color:var(--muted); text-decoration:none; font-size:13px; font-weight:600; white-space:nowrap; }
   .nav-links a:hover { color:var(--text); }
   .nav-links a.sb { color:var(--gold); }
-  .wrap { max-width:760px; margin:0 auto; padding:34px 22px 80px; }
-  .head { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; margin-bottom:18px; }
+  .wrap { max-width:760px; margin:0 auto; padding:30px 22px 80px; }
+  .head { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; margin-bottom:16px; }
   .head-l { min-width:0; }
-  .tier-badge { flex:0 0 auto; align-self:center; }
+  .kick { font-family:'Anton'; color:var(--gold); letter-spacing:1px; text-transform:uppercase; font-size:13px; }
+  h1 { font-family:'Anton'; font-size:34px; letter-spacing:1px; margin:6px 0 2px; }
+  .welcome { font-size:14px; color:var(--muted); }
+  .welcome b { color:var(--gold); }
+  .welcome a { color:var(--gold); text-decoration:none; font-weight:600; cursor:pointer; }
+  .tier-badge { flex:0 0 auto; align-self:center; background:var(--panel); border:1px solid var(--line); border-radius:50px; padding:5px 14px; font-size:13px; color:var(--muted); white-space:nowrap; }
+
+  /* tab pills (round-selector style) */
+  .tabs { display:flex; gap:8px; overflow-x:auto; padding-bottom:6px; margin:18px 0 22px; scrollbar-width:none; }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab { flex:0 0 auto; font-size:14px; font-weight:700; font-family:'Archivo'; padding:11px 18px; border-radius:999px; border:1.5px solid var(--line); background:var(--panel-2); color:var(--muted); cursor:pointer; white-space:nowrap; transition:all .15s; }
+  .tab:hover { border-color:var(--gold); color:var(--text); }
+  .tab.on { background:var(--gold); color:#0a140f; border-color:var(--gold); }
+  .panel { display:none; } .panel.on { display:block; }
+
+  .odds-guide { text-align:center; font-size:13px; color:var(--muted); margin:0 0 18px; line-height:1.5; }
+  .signpost { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:11px 15px; font-size:13.5px; color:var(--muted); margin:0 0 14px; }
+  .signpost b { color:var(--text); }
   .between { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:28px 22px; text-align:center; margin-bottom:6px; }
   .between .b-big { font-family:'Anton'; font-size:22px; margin-bottom:8px; }
   .between p { color:var(--muted); font-size:14px; max-width:440px; margin:0 auto; }
-  .invite { background:linear-gradient(165deg,rgba(245,197,66,0.08),var(--panel)); border:1px solid rgba(245,197,66,0.3); border-radius:14px; padding:18px 18px 20px; margin-top:30px; }
-  .invite .inv-h { font-family:'Anton'; font-size:18px; letter-spacing:.5px; }
-  .invite .inv-p { font-size:13px; color:var(--muted); margin:6px 0 12px; line-height:1.5; }
-  .inv-link { background:var(--panel-2); border:1px solid var(--line); border-radius:9px; padding:11px 13px; font-size:13px; color:var(--text); word-break:break-all; margin-bottom:10px; }
-  .inv-btns { display:flex; gap:8px; }
-  .inv-btn { flex:1; padding:12px; border-radius:9px; border:1px solid var(--gold); background:var(--gold); color:#1a1400; font-family:'Archivo'; font-weight:800; font-size:13px; cursor:pointer; }
-  .inv-btn.alt { background:transparent; color:var(--gold); }
-  .inv-stat { font-size:13px; color:var(--muted); margin:10px 0 0; }
-  .inv-stat b { color:var(--gold); }
-  .inv-stat a { color:var(--gold); text-decoration:none; font-weight:600; }
-  .inv-div { border:none; border-top:1px solid var(--line); margin:16px 0; }
-  .prof-have { font-size:14px; }
-  .prof-have b { color:var(--gold); }
-  .prof-edit { background:none; border:none; color:var(--muted); text-decoration:underline; font-size:12px; cursor:pointer; margin-left:8px; font-family:'Archivo'; }
-  .prof-set { display:flex; gap:8px; }
-  .prof-set input { flex:1; min-width:0; background:var(--panel-2); border:1px solid var(--line); border-radius:9px; padding:11px 12px; color:var(--text); font-family:'Archivo'; font-size:14px; }
-  .prof-set input:focus { outline:none; border-color:var(--gold); }
-  .prof-msg { font-size:12px; color:var(--muted); margin-top:7px; }
-  .kick { font-family:'Anton'; color:var(--gold); letter-spacing:1px; text-transform:uppercase; font-size:13px; }
-  h1 { font-family:'Anton'; font-size:36px; letter-spacing:1px; margin:6px 0; }
-  .tier-badge { display:inline-block; background:var(--panel); border:1px solid var(--line); border-radius:50px; padding:5px 14px; font-size:13px; color:var(--muted); }
-  .odds-guide { text-align:center; font-size:13px; color:var(--muted); margin:0 0 18px; line-height:1.5; }
-
-  .signpost { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:11px 15px; font-size:13.5px; color:var(--muted); margin:0 0 14px; }
-  .signpost b { color:var(--text); }
-  .tr-cta { display:flex; align-items:center; justify-content:space-between; gap:12px; background:linear-gradient(165deg,rgba(47,210,122,0.08),var(--panel)); border:1px solid rgba(47,210,122,0.3); border-radius:14px; padding:15px 18px; margin-bottom:24px; text-decoration:none; color:inherit; }
-  .tr-cta .lft .big { font-family:'Anton'; font-size:22px; color:var(--green); line-height:1.1; }
-  .tr-cta .lft .sub { font-size:12.5px; color:var(--muted); margin-top:3px; }
-  .tr-cta .go { color:var(--gold); font-weight:700; font-size:13px; white-space:nowrap; }
 
   .tip { background:linear-gradient(165deg,var(--panel-2),var(--panel)); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:14px; position:relative; }
   .tip::before { content:""; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),#ffe08a); border-radius:14px 14px 0 0; }
   .tip .sport { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
   .tip .match { font-family:'Anton'; font-size:20px; margin:6px 0; }
-  .tip .sel { font-size:16px; }
-  .tip .sel b { color:var(--green); }
+  .tip .sel { font-size:16px; } .tip .sel b { color:var(--green); }
   .tip .odds { font-family:'Anton'; color:var(--gold); font-size:20px; }
   .tip .odds-note { font-size:11px; color:var(--muted); font-weight:600; letter-spacing:.3px; display:inline-block; margin-left:6px; }
   .tip .play-tag { font-size:10px; font-weight:800; letter-spacing:.5px; padding:2px 7px; border-radius:5px; vertical-align:middle; }
   .tip .play-tag.strong { background:#0d2a14; color:#4ade80; border:1px solid #2d5a2d; }
   .tip .play-tag.value { background:#2a1f00; color:#f0c14b; border:1px solid #6b5418; }
-  .day-filter { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:0 0 22px; padding:12px; background:var(--panel); border:1px solid var(--line); border-radius:14px; position:sticky; top:74px; z-index:5; }
-  .day-btn { font-size:15px; font-weight:700; font-family:'Archivo',sans-serif; padding:11px 17px; border-radius:999px; border:1.5px solid var(--line); background:var(--panel-2); color:var(--muted); cursor:pointer; transition:all .15s; min-height:46px; }
+  .day-filter { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:0 0 22px; padding:12px; background:var(--panel); border:1px solid var(--line); border-radius:14px; }
+  .day-btn { font-size:15px; font-weight:700; font-family:'Archivo',sans-serif; padding:11px 17px; border-radius:999px; border:1.5px solid var(--line); background:var(--panel-2); color:var(--muted); cursor:pointer; min-height:46px; }
   .day-btn:hover { border-color:var(--gold); color:var(--text); }
   .day-btn.active { background:var(--gold); color:#0a140f; border-color:var(--gold); }
   .day-btn .cnt { opacity:.6; margin-left:5px; font-weight:600; }
-  .day-btn.active .cnt { opacity:.85; }
   .tip .reason { color:var(--muted); font-size:14px; margin-top:8px; }
   .legs { margin-top:10px; }
   .leg { background:rgba(0,0,0,0.2); border:1px solid var(--line); border-radius:8px; padding:8px 12px; margin-bottom:6px; font-size:14px; }
   .leg .c { color:var(--green); margin-right:6px; }
-  .state { text-align:center; padding:60px 20px; }
-  .state .big { font-family:'Anton'; font-size:26px; margin-bottom:10px; }
-  .state p { color:var(--muted); }
-  .state a { color:var(--gold); }
-  .rg { text-align:center; color:var(--muted); font-size:12px; margin-top:30px; padding-top:20px; border-top:1px solid var(--line); }
-  .spinner { width:34px; height:34px; border:3px solid var(--line); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 16px; }
-  @keyframes spin { to { transform:rotate(360deg); } }
-  .day-head { font-family:'Anton'; font-size:15px; letter-spacing:1px; text-transform:uppercase; color:var(--gold); margin:30px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--line); }
+  .day-head { font-family:'Anton'; font-size:15px; letter-spacing:1px; text-transform:uppercase; color:var(--gold); margin:26px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--line); }
   .day-head:first-of-type { margin-top:0; }
   .tier-tag { display:inline-block; font-size:11px; font-weight:700; letter-spacing:0.4px; padding:2px 9px; border-radius:50px; margin-left:6px; vertical-align:middle; }
   .tier-tag.bronze { background:rgba(205,127,74,0.16); color:#e0a06a; border:1px solid rgba(205,127,74,0.45); }
@@ -113,14 +86,12 @@
   .specials-head { font-family:'Anton'; font-size:15px; letter-spacing:1px; text-transform:uppercase; color:#2fd2c4; margin:34px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--line); }
   .code-head { font-family:'Archivo'; font-weight:800; font-size:13px; letter-spacing:0.5px; text-transform:uppercase; color:var(--muted); margin:16px 0 10px; }
 
-  /* Past tips */
-  .past-toggle { width:100%; display:flex; align-items:center; justify-content:space-between; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; cursor:pointer; margin-top:34px; }
+  .past-toggle { width:100%; display:flex; align-items:center; justify-content:space-between; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; cursor:pointer; margin-top:30px; }
   .past-toggle .pt-l { font-family:'Anton'; font-size:16px; letter-spacing:.5px; }
   .past-toggle .chev { transition:transform .2s; color:var(--muted); }
   .past-toggle.open .chev { transform:rotate(180deg); }
-  .past-list { margin-top:10px; display:none; }
-  .past-list.open { display:block; }
-  .past-row { display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:8px; cursor:pointer; transition:border-color .15s; }
+  .past-list { margin-top:10px; display:none; } .past-list.open { display:block; }
+  .past-row { display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:8px; cursor:pointer; }
   .past-row:hover { border-color:var(--gold); }
   .past-row .rl { font-weight:700; font-size:14.5px; }
   .past-row .rd { font-size:12px; color:var(--muted); margin-top:2px; }
@@ -135,7 +106,41 @@
   .past-banner { background:var(--panel-2); border:1px dashed var(--line); border-radius:10px; padding:11px 15px; font-size:13px; color:var(--muted); margin-bottom:20px; }
   .past-banner a { color:var(--gold); text-decoration:none; font-weight:600; }
 
-  @media (max-width:540px){ h1{font-size:30px;} .logo{font-size:16px; gap:6px;} .logo .paw{font-size:19px;} .nav-links{gap:12px;} .nav-links a{font-size:12px;} }
+  /* board + rewards cards */
+  .card { background:linear-gradient(165deg,var(--panel-2),var(--panel)); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:14px; }
+  .card.gold { border-color:rgba(245,197,66,0.3); }
+  .card h3 { font-family:'Anton'; font-size:18px; letter-spacing:.5px; margin-bottom:4px; }
+  .card p { color:var(--muted); font-size:13.5px; }
+  .prof-have { font-size:14px; margin-top:6px; } .prof-have b { color:var(--gold); }
+  .prof-edit { background:none; border:none; color:var(--muted); text-decoration:underline; font-size:12px; cursor:pointer; margin-left:8px; font-family:'Archivo'; }
+  .prof-set { display:flex; gap:8px; margin-top:10px; }
+  .prof-set input { flex:1; min-width:0; background:var(--panel-2); border:1px solid var(--line); border-radius:9px; padding:11px 12px; color:var(--text); font-family:'Archivo'; font-size:14px; }
+  .prof-set input:focus { outline:none; border-color:var(--gold); }
+  .prof-msg { font-size:12px; color:var(--muted); margin-top:8px; }
+  .yourspot { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:14px; }
+  .yourspot .big { font-family:'Anton'; font-size:30px; line-height:1; }
+  .yourspot .big.gold { color:var(--gold); } .yourspot .big.green { color:var(--green); }
+  .yourspot .sub { font-size:12px; color:var(--muted); margin-top:2px; }
+  .seeboard { display:block; text-align:center; margin-top:16px; color:var(--gold); text-decoration:none; font-weight:700; font-size:14px; }
+  .inv-link { background:var(--panel-2); border:1px solid var(--line); border-radius:9px; padding:11px 13px; font-size:13px; color:var(--text); word-break:break-all; margin:12px 0 10px; }
+  .inv-btns { display:flex; gap:8px; }
+  .inv-btn { flex:1; padding:12px; border-radius:9px; border:1px solid var(--gold); background:var(--gold); color:#1a1400; font-family:'Archivo'; font-weight:800; font-size:13px; cursor:pointer; }
+  .inv-btn.alt { background:transparent; color:var(--gold); }
+  .soon { background:rgba(245,197,66,0.1); border:1px solid rgba(245,197,66,0.35); color:var(--gold); border-radius:10px; padding:11px 15px; font-size:13.5px; font-weight:700; text-align:center; margin-bottom:16px; }
+  .ladder { display:flex; flex-direction:column; gap:8px; }
+  .rung { display:flex; align-items:center; gap:14px; background:var(--panel-2); border:1px solid var(--line); border-radius:11px; padding:14px 16px; }
+  .rung .pts { font-family:'Anton'; font-size:18px; color:var(--gold); min-width:54px; }
+  .rung .rw { font-weight:700; font-size:14.5px; } .rung .rdsc { font-size:12px; color:var(--muted); }
+  .rung.top { border-color:rgba(245,197,66,0.45); background:linear-gradient(165deg,rgba(245,197,66,0.08),var(--panel-2)); }
+  .laddernote { font-size:12.5px; color:var(--muted); margin-top:14px; text-align:center; line-height:1.6; }
+
+  .state { text-align:center; padding:60px 20px; }
+  .state .big { font-family:'Anton'; font-size:26px; margin-bottom:10px; }
+  .state p { color:var(--muted); } .state a { color:var(--gold); }
+  .spinner { width:34px; height:34px; border:3px solid var(--line); border-top-color:var(--gold); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 16px; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .rg { text-align:center; color:var(--muted); font-size:12px; margin-top:30px; padding-top:20px; border-top:1px solid var(--line); }
+  @media (max-width:540px){ h1{font-size:28px;} .logo{font-size:16px; gap:6px;} .logo .paw{font-size:19px;} .nav-links{gap:12px;} .nav-links a{font-size:12px;} }
 </style>
 </head>
 <body>
@@ -154,14 +159,15 @@
 <div class="wrap">
   <div class="head" id="head" style="display:none;">
     <div class="head-l">
-      <div class="kick">Members Only</div>
-      <h1>Your Tips</h1>
+      <div class="kick">Members</div>
+      <h1>Your Den</h1>
+      <div class="welcome" id="welcomeLine"></div>
     </div>
     <span class="tier-badge" id="tierBadge"></span>
   </div>
 
   <div id="content">
-    <div class="state"><div class="spinner"></div><p>Loading your tips…</p></div>
+    <div class="state"><div class="spinner"></div><p>Loading your den…</p></div>
   </div>
 
   <p style="text-align:center; font-size:14px; color:var(--muted); margin-top:24px; line-height:1.5;">Lost this link? Get it back anytime — go to <a href="/find" style="color:var(--gold); text-decoration:none; font-weight:600;">thepuntersden.com/find</a> and enter your mobile number.</p>
@@ -179,12 +185,14 @@
   const params = new URLSearchParams(window.location.search);
   const key = params.get('key');
   function show(html) { content.innerHTML = html; }
+  function escapeHtml(x){ return String(x).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 
   if (!key) {
     show(`<div class="state"><div class="big">No access key</div><p>Please use your personal link. Lost it? <a href="/find">Get your tips with your phone number</a>. Not a member? <a href="/">Back to site</a></p></div>`);
     return;
   }
 
+  let data;
   try {
     const res = await fetch('/.netlify/functions/get-tips?key=' + encodeURIComponent(key));
     if (res.status === 403) {
@@ -193,250 +201,248 @@
       return;
     }
     if (!res.ok) throw new Error('server');
-    const data = await res.json();
+    data = await res.json();
     try { localStorage.setItem('pd_tips_key', key); } catch (e) {}
-
-    const rounds = (data.rounds || []);
-    if (!rounds.length) {
-      show(`<div class="state"><div class="big">No tips posted yet</div><p>This week's tips aren't up just yet — check back here soon, they'll appear the moment they're posted. 🐕</p></div>`);
-      return;
-    }
-
-    // header
-    const tier = data.tier || '';
-    const referralCode = data.referralCode || null;
-    const refLink = referralCode ? ('https://thepuntersden.com/?ref=' + encodeURIComponent(referralCode)) : null;
-    const referrals = data.referrals || { allTime: 0, season: 0 };
-    let handle = data.handle || null;
-    const medal = { bronze:'🥉', silver:'🥈', gold:'🥇' }[tier] || '';
-    const tierName = tier.charAt(0).toUpperCase() + tier.slice(1);
-    document.getElementById('tierBadge').textContent = (medal ? medal + ' ' : '') + tierName + ' member';
-    document.getElementById('head').style.display = 'block';
-
-    // The round flagged live is "current". Between rounds (none live), there are no
-    // current tips — every round sits in Past tips until the next slate is published.
-    const current = rounds.find(function (r) { return r.live; }) || null;
-    const past = current ? rounds.filter(function (r) { return r !== current; }) : rounds.slice();
-
-    // ── render helpers (day / code / specials grouping) ──
-    const DAY_ORDER = ['Thu','Fri','Sat','Sun','Mon'];
-    const DAY_LABEL = { Thu:'Thursday', Fri:'Friday', Sat:'Saturday', Sun:'Sunday', Mon:'Monday' };
-    const tierLabel = { bronze:'🥉 Bronze', silver:'🥈 Silver', gold:'🥇 Gold' };
-    const CODE_ORDER = ['NRL','AFL'];
-    const CODE_LABEL = { NRL:'🏉 NRL', AFL:'🏈 AFL' };
-    function sportIcon(code) { return code === 'NRL' ? '🏉' : code === 'AFL' ? '🏈' : '🔀'; }
-
-    function renderTip(t) {
-      const isMulti = t.legs && t.legs.length;
-      const cls = 'tip' + (t.special ? ' special' : (isMulti ? ' sgm' : ''));
-      let h = `<div class="${cls}">`;
-      let line = `${sportIcon(t.code)} ${t.code || ''} · ${t.type || ''}`;
-      if (t.tier && tierLabel[t.tier]) line += `<span class="tier-tag ${t.tier}">${tierLabel[t.tier]}</span>`;
-      h += `<div class="sport">${line}</div>`;
-      h += `<div class="match">${t.match || ''}</div>`;
-      const priced = t.range ? `~$${t.range}` : (t.odds ? `~$${t.odds}` : '');
-      if (isMulti) {
-        const isSGM = (t.type || '').indexOf('Same Game') !== -1;
-        const note = isSGM ? 'confirm in your builder' : 'cross-game multi';
-        h += `<div class="sel"><span class="sgm-tag">🎯 ${t.type || 'Same Game Multi'}</span></div>`;
-        h += `<div class="sel"><b>${t.sel || ''}</b> <span class="odds">${priced}</span></div>`;
-        if (priced) h += `<div class="odds-note">${note}</div>`;
-        h += `<div class="legs">`;
-        t.legs.forEach(function (l) { h += `<div class="leg"><span class="c">✓</span>${l}</div>`; });
-        h += `</div>`;
-      } else {
-        const head = t.avg ? `~$${t.avg}` : priced;
-        const note = t.avg ? 'avg' : '';
-        const badge = t.tag ? `<span class="play-tag ${String(t.tag).toLowerCase()}">${t.tag}</span>` : '';
-        h += `<div class="sel"><b>${t.sel || ''}</b> ${badge} <span class="odds">${head}</span>${note ? ` <span class="odds-note">${note}</span>` : ''}</div>`;
-      }
-      if (t.reason) h += `<div class="reason">${t.reason}</div>`;
-      h += `</div>`;
-      return h;
-    }
-    function renderDayBlock(dayTips) {
-      const codes = CODE_ORDER.slice();
-      dayTips.forEach(function (t) { if (codes.indexOf(t.code) === -1) codes.push(t.code); });
-      let s = '';
-      codes.forEach(function (code) {
-        const codeTips = dayTips.filter(function (t) { return t.code === code; });
-        if (!codeTips.length) return;
-        codeTips.sort(function (a, b) { return ((a.legs && a.legs.length) ? 1 : 0) - ((b.legs && b.legs.length) ? 1 : 0); });
-        s += `<div class="code-head">${CODE_LABEL[code] || code}</div>`;
-        codeTips.forEach(function (t) { s += renderTip(t); });
-      });
-      return s;
-    }
-    function tipsBlock(tips) {
-      if (!tips || !tips.length) return `<div class="state" style="padding:30px 20px;"><p>This round's tips aren't up just yet — check back soon. 🐕</p></div>`;
-      const specials = tips.filter(function (t) { return t.special; });
-      const dated = tips.filter(function (t) { return !t.special; });
-      const undated = dated.filter(function (t) { return DAY_ORDER.indexOf(t.day) === -1; });
-      const presentDays = DAY_ORDER.filter(function (day) { return dated.some(function (t) { return t.day === day; }); });
-      const groupCount = presentDays.length + (undated.length ? 1 : 0) + (specials.length ? 1 : 0);
-      let html = `<div class="odds-guide">💡 Odds shown are a guide — always confirm the exact price in your own account before betting.</div>`;
-      if (groupCount > 1) {
-        html += '<div class="day-filter"><button class="day-btn active" data-filter="all">All</button>';
-        presentDays.forEach(function (day) {
-          const n = dated.filter(function (t) { return t.day === day; }).length;
-          html += '<button class="day-btn" data-filter="' + day + '">' + day + '<span class="cnt">' + n + '</span></button>';
-        });
-        if (undated.length) html += '<button class="day-btn" data-filter="__week">This week<span class="cnt">' + undated.length + '</span></button>';
-        if (specials.length) html += '<button class="day-btn" data-filter="__specials">⭐ Specials<span class="cnt">' + specials.length + '</span></button>';
-        html += '</div>';
-      }
-      DAY_ORDER.forEach(function (day) {
-        const dayTips = dated.filter(function (t) { return t.day === day; });
-        if (!dayTips.length) return;
-        html += '<div class="day-group" data-day="' + day + '"><div class="day-head">🗓 ' + DAY_LABEL[day] + '</div>' + renderDayBlock(dayTips) + '</div>';
-      });
-      if (undated.length) html += '<div class="day-group" data-day="__week"><div class="day-head">🗓 This week</div>' + renderDayBlock(undated) + '</div>';
-      if (specials.length) html += '<div class="day-group" data-day="__specials"><div class="specials-head">⭐ Specials</div>' + specials.map(renderTip).join('') + '</div>';
-      return html;
-    }
-    function wireDayFilter() {
-      const bar = document.querySelector('.day-filter');
-      if (!bar) return;
-      bar.addEventListener('click', function (e) {
-        const btn = e.target.closest('.day-btn');
-        if (!btn) return;
-        const f = btn.getAttribute('data-filter');
-        bar.querySelectorAll('.day-btn').forEach(function (b) { b.classList.toggle('active', b === btn); });
-        document.querySelectorAll('.day-group').forEach(function (g) {
-          g.style.display = (f === 'all' || g.getAttribute('data-day') === f) ? '' : 'none';
-        });
-      });
-    }
-
-    // ── leaderboard club (username + referral tally + invite link) ──
-    function escapeHtml(x){ return String(x).replace(/[&<>"\']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"\'":'&#39;'}[c]; }); }
-    function inviteHTML() {
-      if (!refLink) return '';
-      return '<div class="invite">'
-        + '<div class="inv-h">🏆 The Den Leaderboard</div>'
-        + '<div id="profileRow"></div>'
-        + '<div class="inv-stat" id="refStat"></div>'
-        + '<hr class="inv-div">'
-        + '<p class="inv-p">Share your link. When a mate joins and their free trial turns into a paid week, it counts toward your spot on the board.</p>'
-        + '<div class="inv-link" id="invLink">' + refLink + '</div>'
-        + '<div class="inv-btns"><button type="button" class="inv-btn" id="invCopy">📋 Copy link</button><button type="button" class="inv-btn alt" id="invShare">📤 Share</button></div>'
-        + '</div>';
-    }
-    function refStatHTML() {
-      var n = referrals.allTime || 0;
-      var mates = n === 1 ? 'mate' : 'mates';
-      return "You've brought in <b>" + n + "</b> " + mates + ' &nbsp;·&nbsp; <a href="leaderboard.html">see the board →</a>';
-    }
-    function profileViewHTML() {
-      if (handle) return '<div class="prof-have">On the board as <b>' + escapeHtml(handle) + '</b> <button type="button" class="prof-edit" id="profEdit">edit</button></div>';
-      return '<div class="prof-set"><input id="handleInput" maxlength="20" placeholder="Pick your leaderboard name" autocomplete="off"><button type="button" class="inv-btn" id="handleSave" style="flex:0 0 auto;">Save</button></div><div class="prof-msg" id="profMsg">Claim your spot — pick a name to show on the public board.</div>';
-    }
-    function paintProfile() {
-      var pr = document.getElementById('profileRow');
-      if (!pr) return;
-      pr.innerHTML = profileViewHTML();
-      var edit = document.getElementById('profEdit');
-      if (edit) edit.addEventListener('click', function(){ handle = null; paintProfile(); });
-      var save = document.getElementById('handleSave');
-      if (save) save.addEventListener('click', saveHandle);
-      var input = document.getElementById('handleInput');
-      if (input) { input.value = handle || ''; input.addEventListener('keydown', function(e){ if (e.key === 'Enter') saveHandle(); }); }
-    }
-    async function saveHandle() {
-      var input = document.getElementById('handleInput'), msg = document.getElementById('profMsg'), save = document.getElementById('handleSave');
-      var val = (input && input.value || '').trim();
-      if (!val) { if (msg) msg.textContent = 'Type a name first.'; return; }
-      if (save) { save.disabled = true; save.textContent = 'Saving…'; }
-      try {
-        var res = await fetch('/.netlify/functions/set-profile', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ key: key, handle: val }) });
-        var d = await res.json();
-        if (d.ok) { handle = d.handle; paintProfile(); }
-        else { if (msg) msg.textContent = d.error || 'Try another name.'; if (save) { save.disabled = false; save.textContent = 'Save'; } }
-      } catch (e) { if (msg) msg.textContent = 'Something went wrong — try again.'; if (save) { save.disabled = false; save.textContent = 'Save'; } }
-    }
-    function wireInvite() {
-      var c = document.getElementById('invCopy'), sh = document.getElementById('invShare');
-      function done(){ if(!c) return; c.textContent = '✅ Copied!'; setTimeout(function(){ c.textContent = '📋 Copy link'; }, 1800); }
-      function fallbackCopy(){ try { var t=document.getElementById('invLink'), r=document.createRange(); r.selectNode(t); var sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(r); document.execCommand('copy'); sel.removeAllRanges(); } catch(e){} done(); }
-      if (c) c.addEventListener('click', function(){
-        if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(refLink).then(done).catch(fallbackCopy); }
-        else fallbackCopy();
-      });
-      if (sh) sh.addEventListener('click', function(){
-        if (navigator.share) { navigator.share({ title:'The Punters Den', text:'Get on the Den with me — AI-powered NRL & AFL tips. First week free:', url:refLink }).catch(function(){}); }
-        else if (c) c.click();
-      });
-      var rs = document.getElementById('refStat'); if (rs) rs.innerHTML = refStatHTML();
-      paintProfile();
-    }
-
-    // ── track-record CTA (uses the latest past round's summary if available) ──
-    function ctaHTML() {
-      const s = (past.length && past[0].summary) ? past[0].summary : null;
-      if (s) {
-        return `<a href="results.html" class="tr-cta"><div class="lft"><div class="big">Last round: ${s}</div><div class="sub">See every tip we send, win or lose</div></div><div class="go">📊 Scoreboard →</div></a>`;
-      }
-      return `<a href="results.html" class="tr-cta"><div class="lft"><div class="big" style="font-size:18px;">How are we tracking?</div><div class="sub">Every tip we send, graded in the open — win or lose</div></div><div class="go">📊 Scoreboard →</div></a>`;
-    }
-
-    // ── past tips section ──
-    function pastSection() {
-      if (!past.length) return '';
-      const rows = past.map(function (r) {
-        const chip = r.summary ? `<span class="chip ${r.summary.indexOf('+') > -1 ? 'pos' : 'neg'}">${r.summary}</span>` : '';
-        return `<div class="past-row" data-id="${r.id}"><div><div class="rl">${r.label}</div><div class="rd">${r.week}</div></div><div class="right">${chip}<span class="arrow">›</span></div></div>`;
-      }).join('');
-      return `<div class="past-toggle" id="pastToggle"><span class="pt-l">📂 Past tips</span><span class="chev">▾</span></div><div class="past-list" id="pastList">${rows}</div>`;
-    }
-    function wirePast(reopen) {
-      const t = document.getElementById('pastToggle');
-      if (!t) return;
-      const list = document.getElementById('pastList');
-      if (reopen) { t.classList.add('open'); list.classList.add('open'); }
-      t.addEventListener('click', function () { t.classList.toggle('open'); list.classList.toggle('open'); });
-      document.querySelectorAll('.past-row').forEach(function (row) {
-        row.addEventListener('click', function () { openRound(row.getAttribute('data-id')); });
-      });
-    }
-
-    function renderHome(reopenPast) {
-      let html = '';
-      if (current) {
-        html += `<div class="signpost">🗓 <b>Next tips drop Wednesday</b> — we'll text you the moment they're up. Games run Thursday to Sunday.</div>`;
-      }
-      html += ctaHTML();
-      if (current) {
-        html += tipsBlock(current.tips);
-      } else {
-        html += `<div class="between"><div class="b-big">🏁 That round's a wrap</div><p>Next week's tips aren't up just yet — they drop Wednesday and we'll text you the moment they're live. Your last round's tips are below. 🐕</p></div>`;
-      }
-      html += inviteHTML();
-      html += pastSection();
-      show(html);
-      wireDayFilter();
-      wireInvite();
-      wirePast(current ? reopenPast : true);
-    }
-    function openRound(id) {
-      const r = rounds.find(function (x) { return x.id === id; });
-      if (!r) return;
-      let html = `<button class="back-link" id="back1">← Back to your tips</button>`;
-      html += `<div class="round-title">${r.label}</div><div class="round-sub">${r.week}</div>`;
-      html += `<div class="past-banner">📂 These are the tips exactly as they were sent. <a href="results.html">See how they landed on the Scoreboard →</a></div>`;
-      html += tipsBlock(r.tips);
-      html += `<button class="back-link" id="back2" style="margin-top:18px;">← Back to your tips</button>`;
-      show(html);
-      document.getElementById('back1').addEventListener('click', goHome);
-      document.getElementById('back2').addEventListener('click', goHome);
-      wireDayFilter();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    function goHome() { renderHome(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
-    renderHome(false);
   } catch (err) {
-    show(`<div class="state"><div class="big">Something went wrong</div><p>Couldn't load your tips right now. Please try again shortly, or <a href="/">head back to the site</a>.</p></div>`);
+    show(`<div class="state"><div class="big">Something went wrong</div><p>Couldn't load your den right now. Please try again shortly, or <a href="/">head back to the site</a>.</p></div>`);
+    return;
   }
+
+  const rounds = data.rounds || [];
+  const tier = data.tier || '';
+  const referralCode = data.referralCode || null;
+  const refLink = referralCode ? ('https://thepuntersden.com/?ref=' + encodeURIComponent(referralCode)) : null;
+  const referrals = data.referrals || { allTime: 0, season: 0 };
+  let handle = data.handle || null;
+
+  // ── header ──
+  const medal = { bronze:'🥉', silver:'🥈', gold:'🥇' }[tier] || '';
+  document.getElementById('tierBadge').textContent = (medal ? medal + ' ' : '') + (tier.charAt(0).toUpperCase() + tier.slice(1)) + ' member';
+  function setWelcome(){
+    const w = document.getElementById('welcomeLine');
+    if (handle) w.innerHTML = 'Welcome back, <b>' + escapeHtml(handle) + '</b>';
+    else w.innerHTML = '<a id="pickName">Pick your leaderboard name →</a>';
+    const pn = document.getElementById('pickName');
+    if (pn) pn.addEventListener('click', function(){ go('board'); });
+  }
+  document.getElementById('head').style.display = 'flex';
+  setWelcome();
+
+  const current = rounds.find(function (r) { return r.live; }) || null;
+  const past = current ? rounds.filter(function (r) { return r !== current; }) : rounds.slice();
+
+  // ===== TAB SHELL =====
+  show('<div class="tabs">'
+    + '<button class="tab on" data-t="tips" type="button">🎯 Tips</button>'
+    + '<button class="tab" data-t="board" type="button">🏆 Leaderboard</button>'
+    + '<button class="tab" data-t="rewards" type="button">🎁 Rewards</button>'
+    + '</div>'
+    + '<div class="panel on" id="p-tips"></div>'
+    + '<div class="panel" id="p-board"></div>'
+    + '<div class="panel" id="p-rewards"></div>');
+  let boardLoaded = false;
+  window.go = function (t) {
+    document.querySelectorAll('.tab').forEach(function (b) { b.classList.toggle('on', b.dataset.t === t); });
+    document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('on'); });
+    document.getElementById('p-' + t).classList.add('on');
+    if (t === 'board' && !boardLoaded) { boardLoaded = true; loadRank(); }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  document.querySelectorAll('.tab').forEach(function (b) { b.addEventListener('click', function () { go(b.dataset.t); }); });
+
+  // ===== TIPS TAB =====
+  const DAY_ORDER = ['Thu','Fri','Sat','Sun','Mon'];
+  const DAY_LABEL = { Thu:'Thursday', Fri:'Friday', Sat:'Saturday', Sun:'Sunday', Mon:'Monday' };
+  const tierLabel = { bronze:'🥉 Bronze', silver:'🥈 Silver', gold:'🥇 Gold' };
+  const CODE_ORDER = ['NRL','AFL'];
+  const CODE_LABEL = { NRL:'🏉 NRL', AFL:'🏈 AFL' };
+  function sportIcon(code) { return code === 'NRL' ? '🏉' : code === 'AFL' ? '🏈' : '🔀'; }
+  function renderTip(t) {
+    const isMulti = t.legs && t.legs.length;
+    const cls = 'tip' + (t.special ? ' special' : (isMulti ? ' sgm' : ''));
+    let h = '<div class="' + cls + '">';
+    let line = sportIcon(t.code) + ' ' + (t.code || '') + ' · ' + (t.type || '');
+    if (t.tier && tierLabel[t.tier]) line += '<span class="tier-tag ' + t.tier + '">' + tierLabel[t.tier] + '</span>';
+    h += '<div class="sport">' + line + '</div>';
+    h += '<div class="match">' + (t.match || '') + '</div>';
+    const priced = t.range ? ('~$' + t.range) : (t.odds ? ('~$' + t.odds) : '');
+    if (isMulti) {
+      const isSGM = (t.type || '').indexOf('Same Game') !== -1;
+      const note = isSGM ? 'confirm in your builder' : 'cross-game multi';
+      h += '<div class="sel"><span class="sgm-tag">🎯 ' + (t.type || 'Same Game Multi') + '</span></div>';
+      h += '<div class="sel"><b>' + (t.sel || '') + '</b> <span class="odds">' + priced + '</span></div>';
+      if (priced) h += '<div class="odds-note">' + note + '</div>';
+      h += '<div class="legs">';
+      t.legs.forEach(function (l) { h += '<div class="leg"><span class="c">✓</span>' + l + '</div>'; });
+      h += '</div>';
+    } else {
+      const head = t.avg ? ('~$' + t.avg) : priced;
+      const note = t.avg ? 'avg' : '';
+      const badge = t.tag ? '<span class="play-tag ' + String(t.tag).toLowerCase() + '">' + t.tag + '</span>' : '';
+      h += '<div class="sel"><b>' + (t.sel || '') + '</b> ' + badge + ' <span class="odds">' + head + '</span>' + (note ? ' <span class="odds-note">' + note + '</span>' : '') + '</div>';
+    }
+    if (t.reason) h += '<div class="reason">' + t.reason + '</div>';
+    h += '</div>';
+    return h;
+  }
+  function renderDayBlock(dayTips) {
+    const codes = CODE_ORDER.slice();
+    dayTips.forEach(function (t) { if (codes.indexOf(t.code) === -1) codes.push(t.code); });
+    let s = '';
+    codes.forEach(function (code) {
+      const codeTips = dayTips.filter(function (t) { return t.code === code; });
+      if (!codeTips.length) return;
+      codeTips.sort(function (a, b) { return ((a.legs && a.legs.length) ? 1 : 0) - ((b.legs && b.legs.length) ? 1 : 0); });
+      s += '<div class="code-head">' + (CODE_LABEL[code] || code) + '</div>';
+      codeTips.forEach(function (t) { s += renderTip(t); });
+    });
+    return s;
+  }
+  function tipsBlock(tips) {
+    if (!tips || !tips.length) return '<div class="state" style="padding:30px 20px;"><p>This round\'s tips aren\'t up just yet — check back soon. 🐕</p></div>';
+    const specials = tips.filter(function (t) { return t.special; });
+    const dated = tips.filter(function (t) { return !t.special; });
+    const undated = dated.filter(function (t) { return DAY_ORDER.indexOf(t.day) === -1; });
+    const presentDays = DAY_ORDER.filter(function (day) { return dated.some(function (t) { return t.day === day; }); });
+    const groupCount = presentDays.length + (undated.length ? 1 : 0) + (specials.length ? 1 : 0);
+    let html = '<div class="odds-guide">💡 Odds shown are a guide — always confirm the exact price in your own account before betting.</div>';
+    if (groupCount > 1) {
+      html += '<div class="day-filter"><button class="day-btn active" data-filter="all">All</button>';
+      presentDays.forEach(function (day) { const n = dated.filter(function (t) { return t.day === day; }).length; html += '<button class="day-btn" data-filter="' + day + '">' + day + '<span class="cnt">' + n + '</span></button>'; });
+      if (undated.length) html += '<button class="day-btn" data-filter="__week">This week<span class="cnt">' + undated.length + '</span></button>';
+      if (specials.length) html += '<button class="day-btn" data-filter="__specials">⭐ Specials<span class="cnt">' + specials.length + '</span></button>';
+      html += '</div>';
+    }
+    DAY_ORDER.forEach(function (day) {
+      const dayTips = dated.filter(function (t) { return t.day === day; });
+      if (!dayTips.length) return;
+      html += '<div class="day-group" data-day="' + day + '"><div class="day-head">🗓 ' + DAY_LABEL[day] + '</div>' + renderDayBlock(dayTips) + '</div>';
+    });
+    if (undated.length) html += '<div class="day-group" data-day="__week"><div class="day-head">🗓 This week</div>' + renderDayBlock(undated) + '</div>';
+    if (specials.length) html += '<div class="day-group" data-day="__specials"><div class="specials-head">⭐ Specials</div>' + specials.map(renderTip).join('') + '</div>';
+    return html;
+  }
+  function wireDayFilter(root) {
+    const bar = root.querySelector('.day-filter');
+    if (!bar) return;
+    bar.addEventListener('click', function (e) {
+      const btn = e.target.closest('.day-btn'); if (!btn) return;
+      const f = btn.getAttribute('data-filter');
+      bar.querySelectorAll('.day-btn').forEach(function (b) { b.classList.toggle('active', b === btn); });
+      root.querySelectorAll('.day-group').forEach(function (g) { g.style.display = (f === 'all' || g.getAttribute('data-day') === f) ? '' : 'none'; });
+    });
+  }
+  function pastSection() {
+    if (!past.length) return '';
+    const rows = past.map(function (r) {
+      const chip = r.summary ? '<span class="chip ' + (r.summary.indexOf('+') > -1 ? 'pos' : 'neg') + '">' + r.summary + '</span>' : '';
+      return '<div class="past-row" data-id="' + r.id + '"><div><div class="rl">' + r.label + '</div><div class="rd">' + r.week + '</div></div><div class="right">' + chip + '<span class="arrow">›</span></div></div>';
+    }).join('');
+    return '<div class="past-toggle" id="pastToggle"><span class="pt-l">📂 Past tips</span><span class="chev">▾</span></div><div class="past-list" id="pastList">' + rows + '</div>';
+  }
+  function renderTipsPanel(reopenPast) {
+    let html = '';
+    if (current) html += '<div class="signpost">🗓 <b>Next tips drop Wednesday</b> — we\'ll text you the moment they\'re up. Games run Thursday to Sunday.</div>';
+    if (current) html += tipsBlock(current.tips);
+    else html += '<div class="between"><div class="b-big">🏁 That round\'s a wrap</div><p>Next week\'s tips aren\'t up just yet — they drop Wednesday and we\'ll text you the moment they\'re live. Your last round\'s tips are below. 🐕</p></div>';
+    html += pastSection();
+    const panel = document.getElementById('p-tips');
+    panel.innerHTML = html;
+    wireDayFilter(panel);
+    const tog = document.getElementById('pastToggle');
+    if (tog) {
+      const list = document.getElementById('pastList');
+      if (reopenPast) { tog.classList.add('open'); list.classList.add('open'); }
+      tog.addEventListener('click', function () { tog.classList.toggle('open'); list.classList.toggle('open'); });
+      panel.querySelectorAll('.past-row').forEach(function (row) { row.addEventListener('click', function () { openRound(row.getAttribute('data-id')); }); });
+    }
+  }
+  function openRound(id) {
+    const r = rounds.find(function (x) { return x.id === id; });
+    if (!r) return;
+    const panel = document.getElementById('p-tips');
+    panel.innerHTML = '<button class="back-link" id="back1">← Back to your tips</button>'
+      + '<div class="round-title">' + r.label + '</div><div class="round-sub">' + r.week + '</div>'
+      + '<div class="past-banner">📂 These are the tips exactly as they were sent. <a href="results.html">See how they landed on the Scoreboard →</a></div>'
+      + tipsBlock(r.tips)
+      + '<button class="back-link" id="back2" style="margin-top:18px;">← Back to your tips</button>';
+    wireDayFilter(panel);
+    document.getElementById('back1').addEventListener('click', function(){ renderTipsPanel(true); window.scrollTo({top:0,behavior:'smooth'}); });
+    document.getElementById('back2').addEventListener('click', function(){ renderTipsPanel(true); window.scrollTo({top:0,behavior:'smooth'}); });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  renderTipsPanel(false);
+
+  // ===== LEADERBOARD TAB =====
+  function profileViewHTML() {
+    if (handle) return '<div class="prof-have">On the board as <b>' + escapeHtml(handle) + '</b> <button type="button" class="prof-edit" id="profEdit">edit</button></div>';
+    return '<div class="prof-set"><input id="handleInput" maxlength="20" placeholder="Pick your leaderboard name" autocomplete="off"><button type="button" class="inv-btn" id="handleSave" style="flex:0 0 auto;">Save</button></div><div class="prof-msg" id="profMsg">Claim your spot — pick a name to show on the public board.</div>';
+  }
+  function spotHTML() {
+    const n = referrals.allTime || 0;
+    return '<div class="yourspot"><div><div class="big gold" id="rankBig">—</div><div class="sub" id="rankSub">your rank</div></div>'
+      + '<div style="text-align:right"><div class="big green">' + n + '</div><div class="sub">mate' + (n === 1 ? '' : 's') + ' brought in</div></div></div>';
+  }
+  function renderBoardPanel() {
+    const html = '<div class="card gold"><h3>🏆 Your spot on the board</h3><div id="profileRow">' + profileViewHTML() + '</div>'
+      + spotHTML()
+      + '<a href="leaderboard.html" class="seeboard">See the full leaderboard →</a></div>'
+      + (refLink ? ('<div class="card"><h3>🎁 Bring your mates</h3><p>Share your link. When a mate joins and their free trial turns into a paid week, you climb the board.</p>'
+        + '<div class="inv-link" id="invLink">' + refLink + '</div>'
+        + '<div class="inv-btns"><button type="button" class="inv-btn" id="invCopy">📋 Copy link</button><button type="button" class="inv-btn alt" id="invShare">📤 Share</button></div></div>') : '');
+    document.getElementById('p-board').innerHTML = html;
+    wireProfile();
+    wireInvite();
+    if (boardLoaded) loadRank();
+  }
+  function wireProfile() {
+    const edit = document.getElementById('profEdit');
+    if (edit) edit.addEventListener('click', function () { handle = null; document.getElementById('profileRow').innerHTML = profileViewHTML(); wireProfile(); });
+    const save = document.getElementById('handleSave');
+    if (save) save.addEventListener('click', saveHandle);
+    const input = document.getElementById('handleInput');
+    if (input) { input.value = handle || ''; input.addEventListener('keydown', function (e) { if (e.key === 'Enter') saveHandle(); }); }
+  }
+  async function saveHandle() {
+    const input = document.getElementById('handleInput'), msg = document.getElementById('profMsg'), save = document.getElementById('handleSave');
+    const val = (input && input.value || '').trim();
+    if (!val) { if (msg) msg.textContent = 'Type a name first.'; return; }
+    if (save) { save.disabled = true; save.textContent = 'Saving…'; }
+    try {
+      const res = await fetch('/.netlify/functions/set-profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: key, handle: val }) });
+      const d = await res.json();
+      if (d.ok) { handle = d.handle; document.getElementById('profileRow').innerHTML = profileViewHTML(); wireProfile(); setWelcome(); boardLoaded = false; loadRank(); }
+      else { if (msg) msg.textContent = d.error || 'Try another name.'; if (save) { save.disabled = false; save.textContent = 'Save'; } }
+    } catch (e) { if (msg) msg.textContent = 'Something went wrong — try again.'; if (save) { save.disabled = false; save.textContent = 'Save'; } }
+  }
+  function wireInvite() {
+    const c = document.getElementById('invCopy'), sh = document.getElementById('invShare');
+    function done(){ if(!c) return; c.textContent = '✅ Copied!'; setTimeout(function(){ c.textContent = '📋 Copy link'; }, 1800); }
+    function fallbackCopy(){ try { const t=document.getElementById('invLink'), r=document.createRange(); r.selectNode(t); const sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(r); document.execCommand('copy'); sel.removeAllRanges(); } catch(e){} done(); }
+    if (c) c.addEventListener('click', function(){ if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(refLink).then(done).catch(fallbackCopy); else fallbackCopy(); });
+    if (sh) sh.addEventListener('click', function(){ if (navigator.share) navigator.share({ title:'The Punters Den', text:'Get on the Den with me — AI-powered NRL & AFL tips. First week free:', url:refLink }).catch(function(){}); else if (c) c.click(); });
+  }
+  async function loadRank() {
+    const big = document.getElementById('rankBig'), sub = document.getElementById('rankSub');
+    if (!big) return;
+    if (!handle) { big.textContent = '—'; sub.textContent = 'pick a name to rank'; boardLoaded = false; return; }
+    boardLoaded = true;
+    try {
+      const res = await fetch('/.netlify/functions/leaderboard');
+      const d = await res.json();
+      const list = (d && d.members ? d.members : []).slice().sort(function (a, b) { return (b.allTime || 0) - (a.allTime || 0); });
+      const idx = list.findIndex(function (m) { return (m.handle || '').toLowerCase() === handle.toLowerCase(); });
+      if (idx >= 0) { big.textContent = '#' + (idx + 1); sub.textContent = 'of ' + list.length + ' recruiter' + (list.length === 1 ? '' : 's'); }
+      else { big.textContent = '—'; sub.textContent = 'not ranked yet'; }
+    } catch (e) { big.textContent = '—'; sub.textContent = 'rank unavailable'; }
+  }
+  renderBoardPanel();
+
+  // ===== REWARDS TAB =====
+  (function renderRewards() {
+    document.getElementById('p-rewards').innerHTML = '<div class="between"><div class="b-big">🎁 Rewards — coming soon</div><p>We\'re putting together a rewards program for Den members. Keep an eye on this tab — it\'s on the way. 🐕</p></div>';
+  })();
+
 })();
 </script>
 
