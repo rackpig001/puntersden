@@ -130,6 +130,7 @@ exports.handler = async (event) => {
         rounds,
         referralCode: record.referralCode || null,
         referrals: record.referrals || { allTime: 0, season: 0 },
+        handle: record.handle || null,
       }),
     };
   } catch (err) {
