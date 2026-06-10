@@ -2,6 +2,70 @@
   "_note": "Each week, PREPEND a new round object at the top of 'rounds' and commit. Set the previous round's live=false and add a 'summary' (e.g. '3W-5L · +9.55u'). Never delete old rounds; the function shows the most recent 8. Tier arrays (bronze/silver/gold) are cumulative — higher tiers also receive lower-tier tips.",
   "rounds": [
     {
+      "id": "r15-afl14",
+      "label": "NRL R15 · AFL R14",
+      "week": "Round 15 NRL / Round 14 AFL",
+      "live": true,
+      "bronze": [
+        {
+          "day": "Sat",
+          "code": "NRL",
+          "type": "Head to Head",
+          "match": "Parramatta Eels vs Canberra Raiders",
+          "sel": "Canberra Raiders to Win",
+          "tag": "STRONG",
+          "avg": "1.65",
+          "reason": "The Eels are without both recognised halves — Mitch Moses (confirmed out) and Jonah Pezet — running a makeshift spine against a Raiders side chasing the eight. Parramatta were already the comp's leakiest defence. Saturday 7:35pm AEST at CommBank Stadium."
+        }
+      ],
+      "silver": [
+        {
+          "day": "Fri",
+          "code": "NRL",
+          "type": "Same Game Multi",
+          "match": "Dolphins vs Sydney Roosters",
+          "sel": "3-Leg Multi",
+          "range": "ENTER COMBINED FROM BUILDER",
+          "legs": [
+            "Dolphins to Win ($1.46)",
+            "Jamayne Isaako Anytime Try ($1.65)",
+            "Herbie Farnworth Anytime Try ($1.90)"
+          ],
+          "reason": "The Roosters lose their entire spine to Origin — Tedesco, Walker, Robson and Radley all out — while the Dolphins keep their attack intact at home. Isaako and Farnworth both confirmed named. Friday 8:00pm AEST at Suncorp Stadium."
+        }
+      ],
+      "gold": [
+        {
+          "day": "Thu",
+          "code": "NRL",
+          "type": "Same Game Multi",
+          "match": "South Sydney Rabbitohs vs Brisbane Broncos",
+          "sel": "3-Leg Multi",
+          "range": "ENTER COMBINED FROM BUILDER",
+          "legs": [
+            "Rabbitohs to Win ($1.48)",
+            "Alex Johnston Anytime Try ($1.55)",
+            "David Fifita Anytime Try ($2.50)"
+          ],
+          "reason": "Gold exclusive. Broncos have dropped five straight and are without Walsh, Haas, Staggs and Carrigan. Johnston is the greatest tryscorer the game has seen and Souths are home and desperate for the points. ⚠️ Origin outs both ways — confirm the teams before backing. Thursday 7:50pm AEST at Accor Stadium."
+        },
+        {
+          "special": true,
+          "code": "MULTI",
+          "type": "Hero Multi",
+          "match": "NRL · the weekly long-shot",
+          "sel": "3-Leg Hero Multi 🚀",
+          "odds": "61.87",
+          "legs": [
+            "NRL · Alofiana Khan-Pereira 2+ Tries — Warriors v Sharks ($2.75)",
+            "NRL · Isaako + Farnworth Try Double (Same Game Multi) — Dolphins v Roosters ($3.00)",
+            "NRL · Johnston 2+ Tries + Fifita Try (Same Game Multi) — Souths v Broncos ($7.50)"
+          ],
+          "reason": "Gold exclusive. Five in-form scorers stacked across three games, with the 2+ try legs for the kick. All NRL, all confirmed players. It almost certainly won't land — that's the point. Small stake only, one unit max."
+        }
+      ]
+    },
+    {
       "id": "r14-afl13",
       "label": "NRL R14 · AFL R13",
       "week": "Round 14 NRL / Round 13 AFL",
