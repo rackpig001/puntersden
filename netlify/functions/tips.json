@@ -16,6 +16,16 @@
           "tag": "STRONG",
           "avg": "1.65",
           "reason": "The Eels are without both recognised halves — Mitch Moses (confirmed out) and Jonah Pezet — running a makeshift spine against a Raiders side chasing the eight. Parramatta were already the comp's leakiest defence. Saturday 7:35pm AEST at CommBank Stadium."
+        },
+        {
+          "day": "Sat",
+          "code": "AFL",
+          "type": "Head to Head",
+          "match": "North Melbourne vs West Coast",
+          "sel": "North Melbourne to Win",
+          "tag": "VALUE",
+          "avg": "1.59",
+          "reason": "Value on the road against a West Coast side missing Reuben Ginbey, with the Eagles short on run. ⚠️ Indicative price — confirm both teams at the Thursday drop and check your bookie. Saturday 4:15pm AEST, Optus Stadium."
         }
       ],
       "silver": [
@@ -32,6 +42,20 @@
             "Herbie Farnworth Anytime Try ($1.90)"
           ],
           "reason": "The Roosters lose their entire spine to Origin — Tedesco, Walker, Robson and Radley all out — while the Dolphins keep their attack intact at home. Isaako and Farnworth both confirmed named. Friday 8:00pm AEST at Suncorp Stadium."
+        },
+        {
+          "day": "Fri",
+          "code": "AFL",
+          "type": "Same Game Multi",
+          "match": "Geelong vs Gold Coast",
+          "sel": "3-Leg Multi",
+          "range": "3.50–5.00",
+          "legs": [
+            "Geelong Cats to Win (~$1.25)",
+            "Jack Martin Anytime Goal",
+            "Shaun Mannagh Anytime Goal"
+          ],
+          "reason": "Geelong are short favourites at home with Gold Coast among the worst in the comp at stopping small forwards. Martin has kicked a goal in 8 straight at GMHBA; Mannagh has had bags of 3, 4, 3 and 5. ⚠️ Tom Stewart out (concussion). Build it in your bookie app to confirm the price. Friday 7:40pm AEST, GMHBA Stadium."
         }
       ],
       "gold": [
@@ -48,6 +72,20 @@
             "David Fifita Anytime Try ($2.50)"
           ],
           "reason": "Gold exclusive. Broncos have dropped five straight and are without Walsh, Haas, Staggs and Carrigan. Johnston is the greatest tryscorer the game has seen and Souths are home and desperate for the points. ⚠️ Origin outs both ways — confirm the teams before backing. Thursday 7:50pm AEST at Accor Stadium."
+        },
+        {
+          "special": true,
+          "code": "MULTI",
+          "type": "Cross-Sport Multi",
+          "match": "NRL + AFL · 3 legs",
+          "sel": "3-Leg Cross-Sport Multi",
+          "range": "4.50–5.20",
+          "legs": [
+            "NRL · Dolphins to Win ($1.46)",
+            "NRL · Canberra Raiders to Win ($1.65)",
+            "AFL · GWS Giants to Win (~$2.00)"
+          ],
+          "reason": "Gold exclusive. Three win plays across both codes, three different games Friday through Sunday — no correlation, no Thursday rush. Dolphins and Raiders are confirmed; GWS is indicative until teams drop. Build it in your bookie app to confirm the combined."
         },
         {
           "special": true,
