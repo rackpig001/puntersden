@@ -155,6 +155,12 @@
   .res-pending { background:#1d160f; color:#d89a6a; border:1px solid #3a2a18; }
   .tip.graded .odds { opacity:.5; text-decoration:line-through; }
   .tip.graded .leg .c { color:#6b7670; }
+  .debrief { margin-top:10px; border-top:1px solid var(--line); padding-top:9px; }
+  .debrief summary { cursor:pointer; font-size:12.5px; font-weight:700; color:var(--gold); list-style:none; outline:none; }
+  .debrief summary::-webkit-details-marker { display:none; }
+  .debrief summary::after { content:' ▾'; color:var(--muted); }
+  .debrief[open] summary::after { content:' ▴'; }
+  .debrief-body { margin-top:8px; font-size:12.5px; color:var(--muted); line-height:1.55; }
 </style>
 </head>
 <body>
@@ -268,6 +274,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     document.querySelectorAll('.tab').forEach(function (b) { b.classList.toggle('on', b.dataset.t === t); });
     document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('on'); });
     document.getElementById('p-' + t).classList.add('on');
+    if (t === 'tips') renderTipsPanel(false);
     if (t === 'board' && !boardLoaded) { boardLoaded = true; loadRank(); }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -310,6 +317,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       h += '<div class="sel"><b>' + (t.sel || '') + '</b> ' + badge + ' <span class="odds">' + head + '</span>' + (note ? ' <span class="odds-note">' + note + '</span>' : '') + '</div>';
     }
     if (t.reason) h += '<div class="reason">' + t.reason + '</div>';
+    if (t.note) h += '<details class="debrief"><summary>📋 Debrief — how it landed</summary><div class="debrief-body">' + t.note + '</div></details>';
     h += '</div>';
     return h;
   }
@@ -326,7 +334,8 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     });
     return s;
   }
-  function tipsBlock(tips) {
+  function tipsBlock(tips, opts) {
+    opts = opts || {};
     if (!tips || !tips.length) return '<div class="state" style="padding:30px 20px;"><p>This round\'s tips aren\'t up just yet — check back soon. 🐕</p></div>';
     const specials = tips.filter(function (t) { return t.special; });
     const dated = tips.filter(function (t) { return !t.special; });
@@ -334,7 +343,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     const presentDays = DAY_ORDER.filter(function (day) { return dated.some(function (t) { return t.day === day; }); });
     const groupCount = presentDays.length + (undated.length ? 1 : 0) + (specials.length ? 1 : 0);
     let html = '<div class="odds-guide">💡 Odds shown are a guide — always confirm the exact price in your own account before betting.</div>';
-    if (groupCount > 1) {
+    if (!opts.noFilter && groupCount > 1) {
       html += '<div class="day-filter"><button class="day-btn active" data-filter="all">All</button>';
       presentDays.forEach(function (day) { const n = dated.filter(function (t) { return t.day === day; }).length; html += '<button class="day-btn" data-filter="' + day + '">' + day + '<span class="cnt">' + n + '</span></button>'; });
       if (undated.length) html += '<button class="day-btn" data-filter="__week">This week<span class="cnt">' + undated.length + '</span></button>';
@@ -396,7 +405,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     panel.innerHTML = '<button class="back-link" id="back1">← Back to your tips</button>'
       + '<div class="round-title">' + r.label + '</div><div class="round-sub">' + r.week + '</div>'
       + '<div class="past-banner">📂 These are the tips exactly as they were sent. <a href="results.html">See how they landed on the Scoreboard →</a></div>'
-      + tipsBlock(r.tips)
+      + tipsBlock(r.tips, { noFilter: true })
       + '<button class="back-link" id="back2" style="margin-top:18px;">← Back to your tips</button>';
     wireDayFilter(panel);
     document.getElementById('back1').addEventListener('click', function(){ renderTipsPanel(true); window.scrollTo({top:0,behavior:'smooth'}); });
