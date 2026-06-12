@@ -319,7 +319,8 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       h += '<div class="sel"><b>' + (t.sel || '') + '</b> ' + badge + ' <span class="odds">' + head + '</span>' + (note ? ' <span class="odds-note">' + note + '</span>' : '') + '</div>';
     }
     if (t.result) {
-      if (t.reason) h += '<details class="debrief"><summary>📋 Debrief</summary><div class="debrief-body">' + t.reason + '</div></details>';
+      var db = t.note || t.reason;
+      if (db) h += '<details class="debrief"><summary>📋 Debrief — how it landed</summary><div class="debrief-body">' + db + '</div></details>';
     } else {
       if (t.reason) h += '<div class="reason">' + t.reason + '</div>';
     }
