@@ -163,6 +163,27 @@
   .debrief summary::after { content:' ▾'; color:var(--muted); }
   .debrief[open] summary::after { content:' ▴'; }
   .debrief-body { margin-top:8px; font-size:12.5px; color:var(--text); line-height:1.55; }
+  .tabs { overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab { flex:0 0 auto; white-space:nowrap; }
+  .hx-intro { border-left:3px solid var(--gold); padding:4px 0 4px 16px; margin-bottom:20px; }
+  .hx-intro-title { font-family:'Anton',sans-serif; font-size:23px; letter-spacing:.4px; }
+  .hx-intro p { color:var(--muted); font-size:13.5px; line-height:1.55; margin-top:6px; }
+  .hx-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .hx-card { background:linear-gradient(160deg,var(--panel-2),var(--panel)); border:1px solid var(--line); border-radius:14px; padding:14px; cursor:pointer; transition:border-color .15s; }
+  .hx-card:hover { border-color:rgba(245,197,66,.5); }
+  .hx-rd { font-family:'Anton',sans-serif; font-size:18px; letter-spacing:.3px; line-height:1.12; }
+  .hx-slate { color:var(--muted); font-size:11.5px; font-weight:700; margin-top:3px; }
+  .hx-cardrow { display:flex; align-items:center; justify-content:space-between; margin-top:11px; }
+  .hx-arrow { color:var(--muted); font-size:18px; }
+  .recap-head { background:linear-gradient(160deg,var(--panel-2),var(--panel)); border:1px solid var(--line); border-radius:18px; padding:20px; margin-bottom:6px; text-align:center; }
+  .recap-title { font-family:'Anton',sans-serif; font-size:27px; letter-spacing:.5px; }
+  .recap-sub { color:var(--muted); font-size:12px; font-weight:700; margin-top:3px; letter-spacing:.4px; text-transform:uppercase; }
+  .recap-record-line { font-size:22px; font-weight:900; margin-top:12px; }
+  .recap-record-line.pos { color:var(--green); }
+  .recap-record-line.neg { color:var(--loss); }
+  .recap-line { color:var(--text); font-size:13.5px; line-height:1.55; max-width:460px; margin:10px auto 0; }
+  .recap-divider { text-align:center; color:var(--muted); font-size:11px; font-weight:800; letter-spacing:1px; margin:18px 0 10px; text-transform:uppercase; }
 </style>
 </head>
 <body>
@@ -263,11 +284,13 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   // ===== TAB SHELL =====
   show('<div class="tabs">'
     + '<button class="tab on" data-t="tips" type="button">🎯 Tips</button>'
+    + '<button class="tab" data-t="hist" type="button">📂 History</button>'
     + '<button class="tab" data-t="board" type="button">🏆 Leaderboard</button>'
     + '<button class="tab" data-t="share" type="button">📤 Share</button>'
     + '<button class="tab" data-t="rewards" type="button">🎁 Rewards</button>'
     + '</div>'
     + '<div class="panel on" id="p-tips"></div>'
+    + '<div class="panel" id="p-hist"></div>'
     + '<div class="panel" id="p-board"></div>'
     + '<div class="panel" id="p-share"></div>'
     + '<div class="panel" id="p-rewards"></div>');
@@ -277,6 +300,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('on'); });
     document.getElementById('p-' + t).classList.add('on');
     if (t === 'tips') renderTipsPanel(false);
+    if (t === 'hist') renderHistory();
     if (t === 'board' && !boardLoaded) { boardLoaded = true; loadRank(); }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -375,50 +399,57 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       root.querySelectorAll('.day-group').forEach(function (g) { g.style.display = (f === 'all' || g.getAttribute('data-day') === f) ? '' : 'none'; });
     });
   }
-  function pastSection() {
-    if (!past.length) return '';
-    const rows = past.map(function (r) {
-      const chip = r.summary ? '<span class="chip ' + (r.summary.indexOf('+') > -1 ? 'pos' : 'neg') + '">' + r.summary + '</span>' : '';
-      return '<div class="past-row" data-id="' + r.id + '"><div><div class="rl">' + r.label + '</div><div class="rd">' + r.week + '</div></div><div class="right">' + chip + '<span class="arrow">›</span></div></div>';
-    }).join('');
-    return '<div class="past-toggle" id="pastToggle"><span class="pt-l">📂 Past tips</span><span class="chev">▾</span></div><div class="past-list" id="pastList">' + rows + '</div>';
-  }
-  function renderTipsPanel(reopenPast) {
+  function renderTipsPanel() {
     let html = '';
     if (current && current.tips && current.tips.length) {
       html += tipsBlock(current.tips);
     } else if (current) {
       html += '<div class="signpost">🗓 <b>Next tips drop Wednesday</b> — we\'ll text you the moment they\'re up. Games run Thursday to Sunday.</div>';
     } else {
-      html += '<div class="between"><div class="b-big">🏁 That round\'s a wrap</div><p>Next week\'s tips aren\'t up just yet — they drop Wednesday and we\'ll text you the moment they\'re live. Your last round\'s tips are below. 🐕</p></div>';
+      html += '<div class="between"><div class="b-big">🏁 That round\'s a wrap</div><p>Next week\'s tips aren\'t up just yet — they drop Wednesday and we\'ll text you the moment they\'re live. Last round\'s results are in <b>📂 History</b>. 🐕</p></div>';
     }
-    html += pastSection();
     const panel = document.getElementById('p-tips');
     panel.innerHTML = html;
     wireDayFilter(panel);
-    const tog = document.getElementById('pastToggle');
-    if (tog) {
-      const list = document.getElementById('pastList');
-      if (reopenPast) { tog.classList.add('open'); list.classList.add('open'); }
-      tog.addEventListener('click', function () { tog.classList.toggle('open'); list.classList.toggle('open'); });
-      panel.querySelectorAll('.past-row').forEach(function (row) { row.addEventListener('click', function () { openRound(row.getAttribute('data-id')); }); });
+  }
+  function historyRounds() { return rounds.filter(function (r) { return !r.live; }); }
+  function renderHistory() {
+    const panel = document.getElementById('p-hist');
+    const hist = historyRounds();
+    let html = '<div class="hx-intro"><div class="hx-intro-title">📂 The Record</div>'
+      + '<p>Every round we\'ve run, graded in full — win or lose, it all goes on the record. Tap any round to see the tips and exactly how each one landed.</p></div>';
+    if (!hist.length) {
+      html += '<div class="state" style="padding:24px 20px;"><p>No graded rounds just yet — once a round\'s done and dusted, it lands here. 🐕</p></div>';
+      panel.innerHTML = html; return;
     }
+    html += '<div class="hx-grid">';
+    hist.forEach(function (r) {
+      const chip = r.summary ? '<span class="chip ' + (r.summary.indexOf('+') > -1 ? 'pos' : 'neg') + '">' + r.summary + '</span>' : '';
+      html += '<div class="hx-card" data-id="' + r.id + '"><div class="hx-rd">' + r.label + '</div><div class="hx-slate">' + r.week + '</div><div class="hx-cardrow">' + chip + '<span class="hx-arrow">›</span></div></div>';
+    });
+    html += '</div>';
+    panel.innerHTML = html;
+    panel.querySelectorAll('.hx-card').forEach(function (card) { card.addEventListener('click', function () { openRound(card.getAttribute('data-id')); }); });
   }
   function openRound(id) {
     const r = rounds.find(function (x) { return x.id === id; });
     if (!r) return;
-    const panel = document.getElementById('p-tips');
-    panel.innerHTML = '<button class="back-link" id="back1">← Back to your tips</button>'
-      + '<div class="round-title">' + r.label + '</div><div class="round-sub">' + r.week + '</div>'
-      + '<div class="past-banner">📂 These are the tips exactly as they were sent. <a href="results.html">See how they landed on the Scoreboard →</a></div>'
+    const panel = document.getElementById('p-hist');
+    const summ = r.summary ? '<div class="recap-record-line ' + (r.summary.indexOf('+') > -1 ? 'pos' : 'neg') + '">' + r.summary + '</div>' : '';
+    const line = r.recap ? '<div class="recap-line">' + r.recap + '</div>' : '';
+    panel.innerHTML = '<button class="back-link" id="back1">← Back to History</button>'
+      + '<div class="recap-head"><div class="recap-title">📊 How we went</div>'
+      +   '<div class="recap-sub">' + r.label + '</div>' + summ + line + '</div>'
+      + '<div class="recap-divider">— Every tip, graded —</div>'
       + tipsBlock(r.tips, { noFilter: true })
-      + '<button class="back-link" id="back2" style="margin-top:18px;">← Back to your tips</button>';
+      + '<div class="past-banner" style="margin-top:14px;">📂 These are the tips exactly as they were sent. <a href="results.html">See the full Scoreboard →</a></div>'
+      + '<button class="back-link" id="back2" style="margin-top:14px;">← Back to History</button>';
     wireDayFilter(panel);
-    document.getElementById('back1').addEventListener('click', function(){ renderTipsPanel(true); window.scrollTo({top:0,behavior:'smooth'}); });
-    document.getElementById('back2').addEventListener('click', function(){ renderTipsPanel(true); window.scrollTo({top:0,behavior:'smooth'}); });
+    document.getElementById('back1').addEventListener('click', function(){ renderHistory(); window.scrollTo({top:0,behavior:'smooth'}); });
+    document.getElementById('back2').addEventListener('click', function(){ renderHistory(); window.scrollTo({top:0,behavior:'smooth'}); });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  renderTipsPanel(false);
+  renderTipsPanel();
 
   // ===== LEADERBOARD TAB =====
   function profileViewHTML() {
