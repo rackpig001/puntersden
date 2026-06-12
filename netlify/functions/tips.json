@@ -118,7 +118,8 @@
           "sel": "Geelong Cats to Win",
           "tag": "STRONG",
           "avg": "1.54",
-          "reason": "Geelong have won 9 of their last 10 against Adelaide, and the Crows are without Rankine (calf) and Thilthorpe (suspended) — both key forwards out at once. All five of our rules fire; the strongest single of the round. ⚠️ TONIGHT 7:30pm AEST — get set early and check it hasn't started. Line has crept from -8.5 toward -9.5 as money comes for the Cats."
+          "reason": "Geelong have won 9 of their last 10 against Adelaide, and the Crows are without Rankine (calf) and Thilthorpe (suspended) — both key forwards out at once. All five of our rules fire; the strongest single of the round. ⚠️ TONIGHT 7:30pm AEST — get set early and check it hasn't started. Line has crept from -8.5 toward -9.5 as money comes for the Cats.",
+          "result": "loss"
         },
         {
           "day": "Sat",
@@ -128,7 +129,8 @@
           "sel": "Dolphins to Win",
           "tag": "STRONG",
           "avg": "1.56",
-          "reason": "The Dolphins get a swag of key players back in one hit — Tabuai-Fidow, Farnworth and Nikorima all return, several off Origin duty — at full strength for the first time in weeks against a largely unchanged Cowboys side. Saturday 5:30pm AEST in Townsville."
+          "reason": "The Dolphins get a swag of key players back in one hit — Tabuai-Fidow, Farnworth and Nikorima all return, several off Origin duty — at full strength for the first time in weeks against a largely unchanged Cowboys side. Saturday 5:30pm AEST in Townsville.",
+          "result": "win"
         },
         {
           "day": "Sat",
@@ -138,7 +140,8 @@
           "sel": "Gold Coast Suns to Win",
           "tag": "STRONG",
           "avg": "1.54",
-          "reason": "QClash at home against a Brisbane side missing Coleman (~6 weeks) and Lester. Gold Coast sit 5th with top-four ambitions; home ground plus a depleted Brisbane backline is the case. Saturday 5:15pm AEST."
+          "reason": "QClash at home against a Brisbane side missing Coleman (~6 weeks) and Lester. Gold Coast sit 5th with top-four ambitions; home ground plus a depleted Brisbane backline is the case. Saturday 5:15pm AEST.",
+          "result": "loss"
         }
       ],
       "silver": [
@@ -154,7 +157,8 @@
             "William Kennedy Anytime Try ($2.50)",
             "Briton Nikora Anytime Try ($4.00)"
           ],
-          "reason": "Sharks strong home favourites. With Hynes and Brailey both out, fullback Kennedy is even more central to the attack and is a proven scorer; Nikora a running back-rower who adds a third scorer in a winning side."
+          "reason": "Sharks strong home favourites. With Hynes and Brailey both out, fullback Kennedy is even more central to the attack and is a proven scorer; Nikora a running back-rower who adds a third scorer in a winning side.",
+          "result": "win"
         },
         {
           "day": "Sat",
@@ -168,7 +172,8 @@
             "Jye Amiss 3+ Goals ($2.00)",
             "Under 178.5 Total Points ($1.90)"
           ],
-          "reason": "Comp's top side heading to Bunbury against a North side outside the eight. Amiss has kicked four goals in each of his last two games. When Freo win big and North struggle to score, the total stays suppressed — the legs line up directionally."
+          "reason": "Comp's top side heading to Bunbury against a North side outside the eight. Amiss has kicked four goals in each of his last two games. When Freo win big and North struggle to score, the total stays suppressed — the legs line up directionally.",
+          "result": "loss"
         }
       ],
       "gold": [
@@ -184,7 +189,8 @@
             "Brian To'o Anytime Try ($2.20)",
             "Isaah Yeo Anytime Try ($4.50)"
           ],
-          "reason": "Gold exclusive. Penrith back at full strength — Cleary, Yeo and To'o all return — while the Tigers have multiple changes. To'o is a high-volume tryscorer in a likely blowout, with Yeo a longer-odds second scorer to lift the multi."
+          "reason": "Gold exclusive. Penrith back at full strength — Cleary, Yeo and To'o all return — while the Tigers have multiple changes. To'o is a high-volume tryscorer in a likely blowout, with Yeo a longer-odds second scorer to lift the multi.",
+          "result": "win"
         },
         {
           "day": "Sun",
@@ -198,7 +204,8 @@
             "Harry McKay 2+ Goals ($1.73)",
             "Over ~177 Total Points ($1.90)"
           ],
-          "reason": "Gold exclusive. Carlton carry real momentum against a struggling Essendon. McKay is primed after a couple of quieter weeks, and with Carlton expected to win comfortably the total should climb. Confirm the Over line in your builder."
+          "reason": "Gold exclusive. Carlton carry real momentum against a struggling Essendon. McKay is primed after a couple of quieter weeks, and with Carlton expected to win comfortably the total should climb. Confirm the Over line in your builder.",
+          "result": "loss"
         },
         {
           "special": true,
@@ -213,7 +220,8 @@
             "AFL · Carlton Blues to Win ($1.20)"
           ],
           "reason": "Gold exclusive. Four of the round's cleanest win plays across both codes, all different games on Sat/Sun — no correlation. Fremantle and Carlton are short anchors; the Dolphins and Suns add the meat. A quality multi, not a long-shot.",
-          "odds": "3.55"
+          "odds": "3.55",
+          "result": "loss"
         },
         {
           "special": true,
@@ -229,7 +237,8 @@
             "AFL · Jye Amiss 3+ Goals — North v Fremantle ($2.00)",
             "AFL · Jake Waterman 3+ Goals — West Coast v Port Adelaide ($2.05)"
           ],
-          "reason": "Five legs, five games, both codes. Dolphins at full strength, To'o in a likely Panthers blowout, Kennedy central to the Sharks' attack, plus two in-form key forwards in Amiss and Waterman. It almost certainly won't land — that's the point. Small stake only, one unit max."
+          "reason": "Five legs, five games, both codes. Dolphins at full strength, To'o in a likely Panthers blowout, Kennedy central to the Sharks' attack, plus two in-form key forwards in Amiss and Waterman. It almost certainly won't land — that's the point. Small stake only, one unit max.",
+          "result": "loss"
         }
       ]
     }
