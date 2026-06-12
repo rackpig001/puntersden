@@ -148,6 +148,13 @@
   .qr-cap { text-align:center; color:var(--muted); font-size:12px; letter-spacing:.5px; margin:10px 0 2px; }
   .share-note { display:flex; gap:8px; margin-top:14px; color:var(--muted); font-size:12.5px; background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
   .share-note b { color:var(--text); }
+  .res-badge { display:inline-block; font-size:11px; font-weight:800; letter-spacing:.05em; padding:3px 11px; border-radius:999px; margin-bottom:9px; }
+  .res-win { background:#143123; color:#2fd27a; border:1px solid #1f4e38; }
+  .res-loss { background:#2a1413; color:#e6584e; border:1px solid #5a2420; }
+  .res-push { background:#23262a; color:#9aa69c; border:1px solid #3a3f44; }
+  .res-pending { background:#1d160f; color:#d89a6a; border:1px solid #3a2a18; }
+  .tip.graded .odds { opacity:.5; text-decoration:line-through; }
+  .tip.graded .leg .c { color:#6b7670; }
 </style>
 </head>
 <body>
@@ -275,8 +282,13 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   function sportIcon(code) { return code === 'NRL' ? '🏉' : code === 'AFL' ? '🏈' : '🔀'; }
   function renderTip(t) {
     const isMulti = t.legs && t.legs.length;
-    const cls = 'tip' + (t.special ? ' special' : (isMulti ? ' sgm' : ''));
+    const cls = 'tip' + (t.special ? ' special' : (isMulti ? ' sgm' : '')) + (t.result ? ' graded ' + t.result : '');
     let h = '<div class="' + cls + '">';
+    if (t.result) {
+      const rmap = { win: ['✓ WON', 'res-win'], loss: ['✗ LOST', 'res-loss'], push: ['— PUSH', 'res-push'], pending: ['⏳ AWAITING RESULT', 'res-pending'] };
+      const rb = rmap[t.result] || rmap.pending;
+      h += '<div class="res-badge ' + rb[1] + '">' + rb[0] + '</div>';
+    }
     let line = sportIcon(t.code) + ' ' + (t.code || '') + ' · ' + (t.type || '');
     if (t.tier && tierLabel[t.tier]) line += '<span class="tier-tag ' + t.tier + '">' + tierLabel[t.tier] + '</span>';
     h += '<div class="sport">' + line + '</div>';
@@ -289,7 +301,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       h += '<div class="sel"><b>' + (t.sel || '') + '</b> <span class="odds">' + priced + '</span></div>';
       if (priced) h += '<div class="odds-note">' + note + '</div>';
       h += '<div class="legs">';
-      t.legs.forEach(function (l) { h += '<div class="leg"><span class="c">✓</span>' + l + '</div>'; });
+      t.legs.forEach(function (l) { h += '<div class="leg"><span class="c">' + (t.result ? '·' : '✓') + '</span>' + l + '</div>'; });
       h += '</div>';
     } else {
       const head = t.avg ? ('~$' + t.avg) : priced;
