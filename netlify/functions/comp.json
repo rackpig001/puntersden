@@ -1,0 +1,18 @@
+{
+  "_note": "WEEKLY TIPPING COMP. Replace 'round' each week. Rules: list EVERY game, both codes. 'kickoff' must be ISO 8601 with the +10:00 (AEST) offset so per-game lockout is exact. Set 'double': true on the games the Den tipped (they pay x2 and show a star to members). Leave 'result' as null until the game's played, then set it to the winning team's exact 'home'/'away' name to grade it. Ladder + bonuses recompute themselves. This starter round is sample data — swap in the real draw before launch.",
+  "round": {
+    "id": "r15-afl14",
+    "label": "NRL R15 · AFL R14",
+    "games": [
+      { "id": "n1", "code": "NRL", "day": "Thu", "home": "Broncos", "away": "Rabbitohs", "kickoff": "2026-06-18T19:50:00+10:00", "double": false, "result": null },
+      { "id": "n2", "code": "NRL", "day": "Fri", "home": "Storm", "away": "Eels", "kickoff": "2026-06-19T20:00:00+10:00", "double": false, "result": null },
+      { "id": "n3", "code": "NRL", "day": "Sat", "home": "Panthers", "away": "Roosters", "kickoff": "2026-06-20T17:30:00+10:00", "double": false, "result": null },
+      { "id": "n4", "code": "NRL", "day": "Sun", "home": "Bulldogs", "away": "Dragons", "kickoff": "2026-06-21T14:00:00+10:00", "double": false, "result": null },
+      { "id": "n5", "code": "NRL", "day": "Sun", "home": "Sharks", "away": "Cowboys", "kickoff": "2026-06-21T16:05:00+10:00", "double": true, "result": null },
+      { "id": "a1", "code": "AFL", "day": "Thu", "home": "Geelong", "away": "Adelaide", "kickoff": "2026-06-18T19:40:00+10:00", "double": false, "result": null },
+      { "id": "a2", "code": "AFL", "day": "Sat", "home": "Brisbane", "away": "Essendon", "kickoff": "2026-06-20T16:35:00+10:00", "double": false, "result": null },
+      { "id": "a3", "code": "AFL", "day": "Sat", "home": "Carlton", "away": "Collingwood", "kickoff": "2026-06-20T19:25:00+10:00", "double": true, "result": null },
+      { "id": "a4", "code": "AFL", "day": "Sun", "home": "Fremantle", "away": "West Coast", "kickoff": "2026-06-21T15:20:00+10:00", "double": false, "result": null }
+    ]
+  }
+}
