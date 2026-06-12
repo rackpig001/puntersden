@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Punters Den — Your Den</title>
+<title>The Punters Den — Members</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="robots" content="noindex, follow">
 <meta name="description" content="Your private members hub at The Punters Den — tips, leaderboard and rewards.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Punters Den">
-<meta property="og:title" content="The Punters Den — Your Den">
+<meta property="og:title" content="The Punters Den — Members">
 <meta property="og:description" content="Your private members hub — weekly NRL & AFL tips, the leaderboard and rewards.">
 <meta property="og:url" content="https://thepuntersden.com/tips.html">
 <meta property="og:image" content="https://thepuntersden.com/og-image.png">
@@ -156,7 +156,6 @@
   <div class="nav-inner">
     <a href="/" class="logo"><img src="logo.png" alt="The Punters Den" class="paw"> The Punters <span class="den">Den</span></a>
     <div class="nav-links">
-      <a href="results.html" class="sb">📊 Scoreboard</a>
       <a href="https://billing.stripe.com/p/login/dRm7sLcfd8MI9c1dxU6oo00" target="_blank" rel="noopener">Manage</a>
       <a href="mailto:thepuntersdenau@gmail.com">Help</a>
     </div>
@@ -167,18 +166,20 @@
   <div class="head" id="head" style="display:none;">
     <div class="head-l">
       <div class="kick">Members</div>
-      <h1>Your Den</h1>
+      <h1>The Den</h1>
       <div class="welcome" id="welcomeLine"></div>
     </div>
     <span class="tier-badge" id="tierBadge"></span>
   </div>
 
   <div id="content">
-    <div class="state"><div class="spinner"></div><p>Loading your den…</p></div>
+    <div class="state"><div class="spinner"></div><p>Loading the Den…</p></div>
   </div>
 
   <p style="text-align:center; font-size:14px; color:var(--muted); margin-top:24px; line-height:1.5;">Lost this link? Get it back anytime — go to <a href="/find" style="color:var(--gold); text-decoration:none; font-weight:600;">thepuntersden.com/find</a> and enter your mobile number.</p>
   <p style="text-align:center; font-size:13px; color:var(--muted); margin-top:26px; line-height:1.6;">
+    <a href="results.html" style="color:var(--muted); text-decoration:underline;">📊 Scoreboard</a>
+    &nbsp;·&nbsp;
     <a href="https://billing.stripe.com/p/login/dRm7sLcfd8MI9c1dxU6oo00" target="_blank" rel="noopener" style="color:var(--muted); text-decoration:underline;">Manage or cancel your subscription</a>
     &nbsp;·&nbsp;
     <a href="mailto:thepuntersdenau@gmail.com" style="color:var(--muted); text-decoration:underline;">Questions? Contact us</a>
@@ -217,7 +218,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     data = await res.json();
     try { localStorage.setItem('pd_tips_key', key); } catch (e) {}
   } catch (err) {
-    show(`<div class="state"><div class="big">Something went wrong</div><p>Couldn't load your den right now. Please try again shortly, or <a href="/">head back to the site</a>.</p></div>`);
+    show(`<div class="state"><div class="big">Something went wrong</div><p>Couldn't load the Den right now. Please try again shortly, or <a href="/">head back to the site</a>.</p></div>`);
     return;
   }
 
@@ -357,9 +358,13 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   }
   function renderTipsPanel(reopenPast) {
     let html = '';
-    if (current) html += '<div class="signpost">🗓 <b>Next tips drop Wednesday</b> — we\'ll text you the moment they\'re up. Games run Thursday to Sunday.</div>';
-    if (current) html += tipsBlock(current.tips);
-    else html += '<div class="between"><div class="b-big">🏁 That round\'s a wrap</div><p>Next week\'s tips aren\'t up just yet — they drop Wednesday and we\'ll text you the moment they\'re live. Your last round\'s tips are below. 🐕</p></div>';
+    if (current && current.tips && current.tips.length) {
+      html += tipsBlock(current.tips);
+    } else if (current) {
+      html += '<div class="signpost">🗓 <b>Next tips drop Wednesday</b> — we\'ll text you the moment they\'re up. Games run Thursday to Sunday.</div>';
+    } else {
+      html += '<div class="between"><div class="b-big">🏁 That round\'s a wrap</div><p>Next week\'s tips aren\'t up just yet — they drop Wednesday and we\'ll text you the moment they\'re live. Your last round\'s tips are below. 🐕</p></div>';
+    }
     html += pastSection();
     const panel = document.getElementById('p-tips');
     panel.innerHTML = html;
