@@ -184,6 +184,50 @@
   .recap-record-line.neg { color:var(--loss); }
   .recap-line { color:var(--text); font-size:13.5px; line-height:1.55; max-width:460px; margin:10px auto 0; }
   .recap-divider { text-align:center; color:var(--muted); font-size:11px; font-weight:800; letter-spacing:1px; margin:18px 0 10px; text-transform:uppercase; }
+  .comp-intro { border-left:3px solid var(--gold); padding:4px 0 4px 16px; margin-bottom:14px; }
+  .comp-intro-title { font-family:'Anton',sans-serif; font-size:23px; letter-spacing:.4px; }
+  .comp-intro p { color:var(--muted); font-size:13px; line-height:1.5; margin-top:6px; }
+  .scoring { background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:11px 14px; margin-bottom:16px; font-size:12px; color:var(--muted); line-height:1.7; }
+  .scoring b { color:var(--text); }
+  .scoring .x2 { color:var(--gold); }
+  .comp-tally { background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:12px 16px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; }
+  .comp-tally .lbl { color:var(--muted); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.4px; }
+  .comp-tally .val { font-size:22px; font-weight:900; }
+  .code-boxes { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:18px; }
+  .code-box { background:linear-gradient(160deg,var(--panel-2),var(--panel)); border:1.5px solid var(--line); border-radius:14px; padding:16px; cursor:pointer; text-align:center; transition:border-color .12s,background .12s; }
+  .code-box:hover { border-color:rgba(245,197,66,.5); }
+  .code-box.active { border-color:var(--gold); background:rgba(245,197,66,.1); }
+  .code-box-name { font-family:'Anton',sans-serif; font-size:22px; letter-spacing:.4px; }
+  .code-box-prog { color:var(--muted); font-size:12px; font-weight:700; margin-top:5px; }
+  .code-box.active .code-box-prog { color:var(--gold); }
+  .cday { font-family:'Anton',sans-serif; font-size:15px; color:var(--muted); margin:18px 0 8px; letter-spacing:.5px; }
+  .game { background:linear-gradient(160deg,var(--panel-2),var(--panel)); border:1px solid var(--line); border-radius:14px; padding:13px; margin-bottom:10px; }
+  .game.dbl { border-color:rgba(245,197,66,.55); }
+  .game-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .game-code { font-size:11px; font-weight:800; color:var(--muted); letter-spacing:.4px; }
+  .x2-tag { font-size:10px; font-weight:900; color:#0a140f; background:var(--gold); border-radius:5px; padding:2px 6px; letter-spacing:.3px; margin-left:7px; }
+  .game-time { font-size:11px; font-weight:700; }
+  .game-time.open { color:var(--green); }
+  .game-time.locked { color:var(--muted); }
+  .picks { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .pick-btn { background:var(--panel); border:1.5px solid var(--line); border-radius:10px; padding:13px 10px; text-align:center; font-weight:800; font-size:14px; color:var(--text); cursor:pointer; transition:border-color .12s,background .12s; position:relative; }
+  .pick-btn:hover { border-color:rgba(245,197,66,.5); }
+  .pick-btn.sel { border-color:var(--gold); background:rgba(245,197,66,.12); }
+  .pick-btn.locked { cursor:default; }
+  .pick-btn.locked:hover { border-color:var(--line); }
+  .pick-btn.winner { border-color:var(--green); }
+  .pick-btn.sel.correct { border-color:var(--green); background:#143123; color:var(--green); }
+  .pick-btn.sel.wrong { border-color:var(--loss); background:#2a1413; color:var(--loss); }
+  .pick-mark { position:absolute; top:4px; right:7px; font-size:12px; font-weight:900; }
+  .ladder-head { font-family:'Anton',sans-serif; font-size:22px; margin:30px 0 3px; }
+  .ladder-sub { color:var(--muted); font-size:12px; margin-bottom:13px; }
+  .lad-row { display:flex; align-items:center; gap:12px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin-bottom:8px; }
+  .lad-row.me { border-color:var(--gold); background:rgba(245,197,66,.08); }
+  .lad-rank { font-family:'Anton',sans-serif; font-size:18px; color:var(--muted); width:26px; text-align:center; }
+  .lad-h { flex:1; font-weight:700; }
+  .lad-badge { font-size:13px; margin-left:5px; }
+  .lad-h .you { font-size:10px; font-weight:800; color:var(--gold); border:1px solid rgba(245,197,66,.5); border-radius:5px; padding:1px 5px; margin-left:6px; text-transform:uppercase; }
+  .lad-p { font-weight:900; font-size:17px; }
 </style>
 </head>
 <body>
@@ -285,13 +329,13 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   show('<div class="tabs">'
     + '<button class="tab on" data-t="tips" type="button">🎯 Tips</button>'
     + '<button class="tab" data-t="hist" type="button">📂 History</button>'
-    + '<button class="tab" data-t="board" type="button">🏆 Leaderboard</button>'
+    + '<button class="tab" data-t="comp" type="button">🏆 Comp</button>'
     + '<button class="tab" data-t="share" type="button">📤 Share</button>'
     + '<button class="tab" data-t="rewards" type="button">🎁 Rewards</button>'
     + '</div>'
     + '<div class="panel on" id="p-tips"></div>'
     + '<div class="panel" id="p-hist"></div>'
-    + '<div class="panel" id="p-board"></div>'
+    + '<div class="panel" id="p-comp"></div>'
     + '<div class="panel" id="p-share"></div>'
     + '<div class="panel" id="p-rewards"></div>');
   let boardLoaded = false;
@@ -301,7 +345,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     document.getElementById('p-' + t).classList.add('on');
     if (t === 'tips') renderTipsPanel(false);
     if (t === 'hist') renderHistory();
-    if (t === 'board' && !boardLoaded) { boardLoaded = true; loadRank(); }
+    if (t === 'comp') renderComp();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   document.querySelectorAll('.tab').forEach(function (b) { b.addEventListener('click', function () { go(b.dataset.t); }); });
@@ -451,72 +495,136 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   }
   renderTipsPanel();
 
-  // ===== LEADERBOARD TAB =====
-  function profileViewHTML() {
-    if (handle) return '<div class="prof-have">On the board as <b>' + escapeHtml(handle) + '</b> <span class="prof-lock">🔒 locked in</span></div>';
-    return '<div class="prof-set"><input id="handleInput" maxlength="20" placeholder="Pick your leaderboard name" autocomplete="off"></div>'
+  // ===== COMP TAB =====
+  var COMP_DAYS = ['Thu', 'Fri', 'Sat', 'Sun', 'Mon'];
+  var COMP_DLAB = { Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday', Mon: 'Monday' };
+  var compState = { round: null, games: [], picks: {}, ladder: [], myPoints: 0, activeCode: 'NRL', loaded: false };
+
+  function compNameHTML() {
+    if (handle) return '';
+    return '<div class="card gold"><h3>🏆 Get on the ladder</h3><p>Pick your comp name to start tipping and climb the weekly ladder.</p>'
+      + '<div class="prof-set"><input id="handleInput" maxlength="20" placeholder="Pick your comp name" autocomplete="off"></div>'
       + '<div class="prof-set" style="margin-top:8px;"><input id="handleConfirm" maxlength="20" placeholder="Type it again to confirm" autocomplete="off"><button type="button" class="inv-btn" id="handleSave" style="flex:0 0 auto;">Save</button></div>'
-      + '<div class="prof-msg" id="profMsg">⚠️ Choose carefully — your name is permanent and can\'t be changed once saved.</div>';
-  }
-  function spotHTML() {
-    const n = referrals.allTime || 0;
-    return '<div class="yourspot"><div><div class="big gold" id="rankBig">—</div><div class="sub" id="rankSub">your rank</div></div>'
-      + '<div style="text-align:right"><div class="big green">' + n + '</div><div class="sub">mate' + (n === 1 ? '' : 's') + ' brought in</div></div></div>';
-  }
-  function renderBoardPanel() {
-    const html = '<div class="card gold"><h3>🏆 Your spot on the board</h3><div id="profileRow">' + profileViewHTML() + '</div>'
-      + spotHTML()
-      + '<a href="leaderboard.html" class="seeboard">See the full leaderboard →</a></div>'
-      + (refLink ? ('<div class="card"><h3>🎁 Bring your mates</h3><p>Share your link. When a mate joins and their free trial turns into a paid week, you climb the board.</p>'
-        + '<div class="inv-link" id="invLink">' + refLink + '</div>'
-        + '<div class="inv-btns"><button type="button" class="inv-btn" id="invCopy">📋 Copy link</button><button type="button" class="inv-btn alt" id="invShare">📤 Share</button></div></div>') : '');
-    document.getElementById('p-board').innerHTML = html;
-    wireProfile();
-    wireInvite();
-    if (boardLoaded) loadRank();
+      + '<div class="prof-msg" id="profMsg">⚠️ Choose carefully — your name is permanent and can\'t be changed once saved.</div></div>';
   }
   function wireProfile() {
-    const save = document.getElementById('handleSave');
+    var save = document.getElementById('handleSave');
     if (save) save.addEventListener('click', saveHandle);
-    const c = document.getElementById('handleConfirm');
+    var c = document.getElementById('handleConfirm');
     if (c) c.addEventListener('keydown', function (e) { if (e.key === 'Enter') saveHandle(); });
   }
   async function saveHandle() {
-    const input = document.getElementById('handleInput'), confirm = document.getElementById('handleConfirm'), msg = document.getElementById('profMsg'), save = document.getElementById('handleSave');
-    const val = (input && input.value || '').trim();
-    const val2 = (confirm && confirm.value || '').trim();
+    var input = document.getElementById('handleInput'), confirmEl = document.getElementById('handleConfirm'), msg = document.getElementById('profMsg'), save = document.getElementById('handleSave');
+    var val = (input && input.value || '').trim(), val2 = (confirmEl && confirmEl.value || '').trim();
     if (!val) { if (msg) msg.textContent = 'Type a name first.'; return; }
     if (val !== val2) { if (msg) msg.textContent = "Names don't match — check both boxes and try again."; return; }
     if (save) { save.disabled = true; save.textContent = 'Saving…'; }
     try {
-      const res = await fetch('/.netlify/functions/set-profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: key, handle: val }) });
-      const d = await res.json();
-      if (d.ok) { handle = d.handle; document.getElementById('profileRow').innerHTML = profileViewHTML(); wireProfile(); setWelcome(); boardLoaded = false; loadRank(); }
+      var res = await fetch('/.netlify/functions/set-profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: key, handle: val }) });
+      var d = await res.json();
+      if (d.ok) { handle = d.handle; setWelcome(); renderCompBody(); }
       else { if (msg) msg.textContent = d.error || 'Try another name.'; if (save) { save.disabled = false; save.textContent = 'Save'; } }
     } catch (e) { if (msg) msg.textContent = 'Something went wrong — try again.'; if (save) { save.disabled = false; save.textContent = 'Save'; } }
   }
-  function wireInvite() {
-    const c = document.getElementById('invCopy'), sh = document.getElementById('invShare');
-    function done(){ if(!c) return; c.textContent = '✅ Copied!'; setTimeout(function(){ c.textContent = '📋 Copy link'; }, 1800); }
-    function fallbackCopy(){ try { const t=document.getElementById('invLink'), r=document.createRange(); r.selectNode(t); const sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(r); document.execCommand('copy'); sel.removeAllRanges(); } catch(e){} done(); }
-    if (c) c.addEventListener('click', function(){ if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(refLink).then(done).catch(fallbackCopy); else fallbackCopy(); });
-    if (sh) sh.addEventListener('click', function(){ if (navigator.share) navigator.share({ title:'The Punters Den', text:'Get on the Den with me — AI-powered NRL & AFL tips. First week free:', url:refLink }).catch(function(){}); else if (c) c.click(); });
+  function compLocked(g) { return g.locked || new Date(g.kickoff).getTime() <= Date.now(); }
+  function fmtKick(iso) { try { return new Date(iso).toLocaleString('en-AU', { weekday: 'short', hour: 'numeric', minute: '2-digit', timeZone: 'Australia/Brisbane' }); } catch (e) { return ''; } }
+  function compTeamBtn(g, team) {
+    var lk = compLocked(g), mine = compState.picks[g.id] === team, graded = !!g.result, cls = 'pick-btn', mark = '';
+    if (lk) {
+      cls += ' locked';
+      if (graded && g.result === team) cls += ' winner';
+      if (mine) { cls += ' sel'; if (graded) { cls += (g.result === team ? ' correct' : ' wrong'); mark = '<span class="pick-mark">' + (g.result === team ? '✓' : '✗') + '</span>'; } }
+    } else if (mine) { cls += ' sel'; }
+    var attr = lk ? '' : ' data-g="' + g.id + '" data-team="' + escapeHtml(team) + '"';
+    return '<div class="' + cls + '"' + attr + '>' + escapeHtml(team) + mark + '</div>';
   }
-  async function loadRank() {
-    const big = document.getElementById('rankBig'), sub = document.getElementById('rankSub');
-    if (!big) return;
-    if (!handle) { big.textContent = '—'; sub.textContent = 'pick a name to rank'; boardLoaded = false; return; }
-    boardLoaded = true;
+  function compProg(code) {
+    var gs = compState.games.filter(function (g) { return g.code === code; });
+    var p = gs.filter(function (g) { return compState.picks[g.id]; }).length;
+    return p + '/' + gs.length + ' tipped';
+  }
+  function renderCompBody() {
+    var panel = document.getElementById('p-comp');
+    if (!panel) return;
+    if (!compState.round) {
+      panel.innerHTML = compNameHTML() + '<div class="state" style="padding:26px 20px;"><p>No comp running this week just yet — check back when the next round\'s fixtures are up. 🐕</p></div>';
+      wireProfile(); return;
+    }
+    var played = compState.games.filter(function (g) { return g.result; });
+    var h = compNameHTML();
+    h += '<div class="comp-intro"><div class="comp-intro-title">🏆 The Footy Comp</div><p>Pick a winner in every game. Top of the weekly ladder takes the bragging rights — picks lock at each game\'s kickoff.</p></div>';
+    h += '<div class="scoring"><b>Scoring:</b> 🎯 1pt a winner &nbsp;·&nbsp; <span class="x2">⭐ ×2 on the games we tip</span> &nbsp;·&nbsp; 🧹 +3 for sweeping a code &nbsp;·&nbsp; 🥇 most points wins the week</div>';
+    h += '<div class="comp-tally"><span class="lbl">Your points this round</span><span class="val">' + compState.myPoints + ' <span style="font-size:13px;color:var(--muted);font-weight:700;">pts · ' + played.length + ' played</span></span></div>';
+    h += '<div class="code-boxes">';
+    ['NRL', 'AFL'].forEach(function (code) {
+      h += '<div class="code-box' + (compState.activeCode === code ? ' active' : '') + '" data-code="' + code + '"><div class="code-box-name">' + (code === 'NRL' ? '🏉 NRL' : '🏈 AFL') + '</div><div class="code-box-prog">' + compProg(code) + '</div></div>';
+    });
+    h += '</div>';
+    var any = false;
+    COMP_DAYS.forEach(function (day) {
+      var gs = compState.games.filter(function (g) { return g.day === day && g.code === compState.activeCode; });
+      if (!gs.length) return; any = true;
+      h += '<div class="cday">🗓 ' + COMP_DLAB[day] + '</div>';
+      gs.forEach(function (g) {
+        var lk = compLocked(g), tcls = lk ? 'locked' : 'open', tlabel = lk ? (g.result ? '🔒 Final' : '🔒 Locked') : '🟢 Open · locks ' + fmtKick(g.kickoff);
+        var x2 = g.double ? '<span class="x2-tag">⭐ ×2</span>' : '';
+        h += '<div class="game' + (g.double ? ' dbl' : '') + '"><div class="game-top"><span class="game-code">' + (g.code === 'NRL' ? '🏉 NRL' : '🏈 AFL') + x2 + '</span><span class="game-time ' + tcls + '">' + tlabel + '</span></div><div class="picks">' + compTeamBtn(g, g.home) + compTeamBtn(g, g.away) + '</div></div>';
+      });
+    });
+    if (!any) h += '<div class="state" style="padding:20px;"><p>No ' + compState.activeCode + ' games this round.</p></div>';
+    h += '<div class="ladder-head">🏆 This week\'s ladder</div><div class="ladder-sub">Most points across both codes wins the week. Resets every round.</div>';
+    if (!compState.ladder.length) {
+      h += '<div class="state" style="padding:18px;"><p>No one\'s on the board yet — get your tips in! 🐕</p></div>';
+    } else {
+      var lad = compState.ladder.slice().sort(function (a, b) { return b.points - a.points; });
+      lad.forEach(function (r, i) {
+        var badge = '';
+        if (i === 0 && r.points > 0) badge = '🔥';
+        else if (i === lad.length - 1 && lad.length > 1) badge = '🥄';
+        var me = handle && r.handle.toLowerCase() === handle.toLowerCase();
+        h += '<div class="lad-row' + (me ? ' me' : '') + '"><span class="lad-rank">' + (i + 1) + '</span><span class="lad-h">' + escapeHtml(r.handle) + (badge ? '<span class="lad-badge">' + badge + '</span>' : '') + (me ? '<span class="you">you</span>' : '') + '</span><span class="lad-p">' + r.points + '</span></div>';
+      });
+    }
+    panel.innerHTML = h;
+    wireProfile();
+    panel.querySelectorAll('.code-box[data-code]').forEach(function (b) { b.addEventListener('click', function () { compState.activeCode = b.dataset.code; renderCompBody(); window.scrollTo({ top: 0, behavior: 'smooth' }); }); });
+    panel.querySelectorAll('.pick-btn[data-g]').forEach(function (btn) { btn.addEventListener('click', function () { savePick(btn.dataset.g, btn.dataset.team); }); });
+  }
+  async function savePick(gameId, team) {
+    compState.picks[gameId] = team;   // optimistic
+    renderCompBody();
     try {
-      const res = await fetch('/.netlify/functions/leaderboard');
-      const d = await res.json();
-      const list = (d && d.members ? d.members : []).slice().sort(function (a, b) { return (b.allTime || 0) - (a.allTime || 0); });
-      const idx = list.findIndex(function (m) { return (m.handle || '').toLowerCase() === handle.toLowerCase(); });
-      if (idx >= 0) { big.textContent = '#' + (idx + 1); sub.textContent = 'of ' + list.length + ' recruiter' + (list.length === 1 ? '' : 's'); }
-      else { big.textContent = '—'; sub.textContent = 'not ranked yet'; }
-    } catch (e) { big.textContent = '—'; sub.textContent = 'rank unavailable'; }
+      var res = await fetch('/.netlify/functions/save-pick', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: key, gameId: gameId, team: team }) });
+      var d = await res.json();
+      if (d && d.ok && d.picks) { compState.picks = d.picks; renderCompBody(); }
+      else if (d && d.error) { loadComp(); }   // rejected (e.g. locked) — refetch the truth
+    } catch (e) { /* leave optimistic */ }
   }
-  renderBoardPanel();
+  async function loadComp() {
+    try {
+      var res = await fetch('/.netlify/functions/get-comp?key=' + encodeURIComponent(key));
+      var d = await res.json();
+      compState.round = d.round || null;
+      compState.games = d.games || [];
+      compState.picks = d.picks || {};
+      compState.ladder = d.ladder || [];
+      compState.myPoints = d.myPoints || 0;
+      if (d.handle) handle = d.handle;
+      if (!compState.games.some(function (g) { return g.code === compState.activeCode; })) {
+        var first = compState.games[0]; if (first) compState.activeCode = first.code;
+      }
+    } catch (e) { /* keep whatever we have */ }
+    renderCompBody();
+  }
+  function renderComp() {
+    var panel = document.getElementById('p-comp');
+    if (!compState.loaded) {
+      panel.innerHTML = '<div class="state" style="padding:30px 20px;"><div class="spinner"></div><p>Loading the comp…</p></div>';
+      compState.loaded = true;
+    }
+    loadComp();
+  }
+
 
   // ===== REWARDS TAB =====
   (function renderRewards() {
