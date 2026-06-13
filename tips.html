@@ -228,6 +228,64 @@
   .lad-badge { font-size:13px; margin-left:5px; }
   .lad-h .you { font-size:10px; font-weight:800; color:var(--gold); border:1px solid rgba(245,197,66,.5); border-radius:5px; padding:1px 5px; margin-left:6px; text-transform:uppercase; }
   .lad-p { font-weight:900; font-size:17px; }
+
+  /* ===== member hub redesign ===== */
+  .mcard { background:var(--panel); border:1px solid var(--line); border-top:3px solid var(--gold); border-radius:14px; padding:16px; margin-bottom:14px; }
+  .mc-top { display:flex; align-items:center; gap:12px; }
+  .mc-medal { width:44px; height:44px; border-radius:50%; background:var(--panel-2); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+  .mc-name { font-family:'Anton'; font-size:24px; letter-spacing:.3px; line-height:1; }
+  .mc-sub { font-size:12px; color:var(--muted); margin-top:4px; }
+  .mc-sub b { color:var(--gold); font-weight:700; }
+  .mc-notif { display:flex; align-items:center; gap:9px; margin-top:13px; border-radius:10px; padding:11px 13px; cursor:pointer; font-size:13px; font-weight:600; }
+  .mc-notif .ic { font-size:15px; }
+  .mc-notif .msg { flex:1; }
+  .mc-notif .chev { font-weight:800; font-size:16px; }
+  .mc-notif.warn { background:rgba(245,197,66,.12); border:1px solid rgba(245,197,66,.45); color:#f7dd9b; }
+  .mc-notif.warn .chev { color:var(--gold); }
+  .mc-notif.ok { background:rgba(47,210,122,.1); border:1px solid rgba(47,210,122,.4); color:#a7e9c6; }
+  .mc-notif.ok .chev { color:var(--green); }
+  .mc-vals { margin-top:10px; display:flex; flex-direction:column; gap:8px; }
+  .mc-vline { display:flex; align-items:center; gap:9px; background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:13px; }
+  .mc-vline .tx b { color:#fff; }
+  .mc-vline.tips .tx b { color:var(--gold); }
+  .mc-vline.comp .tx b { color:var(--green); }
+  .tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin:14px 0 20px; }
+  .tile { background:var(--panel-2); border:1.5px solid var(--line); border-radius:12px; padding:13px 4px; text-align:center; cursor:pointer; transition:all .12s; -webkit-tap-highlight-color:transparent; }
+  .tile:hover { border-color:rgba(245,197,66,.5); }
+  .tile .t-ic { font-size:23px; display:block; }
+  .tile .t-lb { font-size:11px; font-weight:700; color:var(--muted); margin-top:5px; line-height:1.2; display:block; }
+  .tile.on { background:var(--gold); border-color:var(--gold); }
+  .tile.on .t-lb { color:#0a140f; }
+  .collapsed-hint { text-align:center; font-size:13px; color:var(--muted); padding:14px 0; }
+  .whytip { margin-top:10px; border-top:1px solid var(--line); padding-top:9px; }
+  .whytip summary { cursor:pointer; font-size:12.5px; font-weight:800; color:var(--gold); list-style:none; outline:none; display:flex; align-items:center; gap:6px; }
+  .whytip summary::-webkit-details-marker { display:none; }
+  .whytip .caret { transition:transform .15s; }
+  .whytip[open] .caret { transform:rotate(180deg); }
+  .whytip-body { margin-top:8px; font-size:13px; color:var(--text); line-height:1.55; }
+  .csum { background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:13px 14px; margin-bottom:16px; }
+  .csum-alert { display:flex; align-items:center; gap:9px; background:rgba(245,197,66,.12); border:1px solid rgba(245,197,66,.45); border-radius:10px; padding:10px 12px; margin-bottom:11px; }
+  .csum-alert .ic { font-size:16px; } .csum-alert .tx { font-size:12.5px; color:#f7dd9b; line-height:1.4; } .csum-alert .tx b { color:var(--gold); }
+  .csum-done { display:flex; align-items:center; gap:9px; background:rgba(47,210,122,.1); border:1px solid rgba(47,210,122,.4); border-radius:10px; padding:10px 12px; margin-bottom:11px; }
+  .csum-done .ic { font-size:16px; } .csum-done .tx { font-size:12.5px; color:#a7e9c6; } .csum-done .tx b { color:var(--green); }
+  .csum-row { display:flex; align-items:center; gap:10px; margin:8px 0; }
+  .csum-row .code { font-size:12.5px; font-weight:700; width:42px; }
+  .csum-row .bar { flex:1; height:8px; background:var(--panel); border:1px solid var(--line); border-radius:99px; overflow:hidden; }
+  .csum-row .bar i { display:block; height:100%; background:var(--green); border-radius:99px; }
+  .csum-row .cnt { font-size:12px; font-weight:700; color:var(--muted); width:34px; text-align:right; } .csum-row .cnt b { color:#fff; }
+  .prizelist { list-style:none; }
+  .prizelist li { display:flex; justify-content:space-between; align-items:center; padding:12px 2px; border-bottom:1px solid var(--line); }
+  .prizelist li:last-child { border-bottom:none; }
+  .prizelist .pl { font-weight:800; font-size:15px; display:flex; align-items:center; gap:10px; }
+  .prizelist .pmedal { font-size:17px; width:24px; text-align:center; }
+  .soon { font-size:10px; font-weight:800; color:var(--gold); background:rgba(245,197,66,.12); border:1px solid rgba(245,197,66,.35); padding:3px 10px; border-radius:999px; }
+  .mg-plan { border-left:3px solid var(--gold); }
+  .mg-plan-t { font-family:'Anton'; font-size:19px; }
+  .mg-btn { display:inline-block; margin-top:11px; background:var(--gold); color:#0a140f; border-radius:9px; padding:11px 16px; font-weight:800; font-size:14px; text-decoration:none; }
+  .mg-k { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; }
+  .mg-v { font-size:14px; margin-top:4px; }
+  .mg-lock { color:var(--muted); font-size:11px; }
+  .mg-note { font-size:12px; color:var(--muted); margin-top:9px; }
 </style>
 </head>
 <body>
@@ -243,13 +301,16 @@
 </nav>
 
 <div class="wrap">
-  <div class="head" id="head" style="display:none;">
-    <div class="head-l">
-      <div class="kick">Members</div>
-      <h1>The Den</h1>
-      <div class="welcome" id="welcomeLine"></div>
+  <div class="mcard" id="mcard" style="display:none;">
+    <div class="mc-top">
+      <div class="mc-medal" id="mcMedal"></div>
+      <div class="mc-id">
+        <div class="mc-name" id="mcName"></div>
+        <div class="mc-sub" id="mcSub"></div>
+      </div>
     </div>
-    <span class="tier-badge" id="tierBadge"></span>
+    <div class="mc-notif" id="mcNotif" style="display:none;"></div>
+    <div class="mc-vals" id="mcVals"></div>
   </div>
 
   <div id="content">
@@ -309,53 +370,63 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   const referrals = data.referrals || { allTime: 0, season: 0 };
   let handle = data.handle || null;
 
-  // ── header ──
+  // ── member card ──
+  const memberSince = data.memberSince || null;
   const medal = { bronze:'🥉', silver:'🥈', gold:'🥇' }[tier] || '';
-  document.getElementById('tierBadge').textContent = (medal ? medal + ' ' : '') + (tier.charAt(0).toUpperCase() + tier.slice(1)) + ' member';
-  function setWelcome(){
-    const w = document.getElementById('welcomeLine');
-    if (handle) w.innerHTML = 'Welcome back, <b>' + escapeHtml(handle) + '</b>';
-    else w.innerHTML = '<a id="pickName">Pick your leaderboard name →</a>';
-    const pn = document.getElementById('pickName');
-    if (pn) pn.addEventListener('click', function(){ go('board'); });
+  var compRank = null;
+  function sinceLabel(){ if(!memberSince) return ''; try { return ' · since ' + new Date(memberSince).toLocaleDateString('en-AU',{month:'short',year:'numeric'}); } catch(e){ return ''; } }
+  function renderCard(){
+    document.getElementById('mcMedal').textContent = medal || '🎟️';
+    document.getElementById('mcName').innerHTML = handle ? escapeHtml(handle) : 'G’day';
+    document.getElementById('mcSub').innerHTML = (tier ? (tier.charAt(0).toUpperCase()+tier.slice(1)+' member') : 'Member') + '<b>' + sinceLabel() + '</b>';
+    renderCardVals();
   }
-  document.getElementById('head').style.display = 'flex';
-  setWelcome();
+  function renderCardVals(){
+    var tipsN = (current && current.tips) ? current.tips.length : 0;
+    var rankTxt = compRank ? ('You’re <b>#'+compRank+'</b> in the tipping comp') : 'Get on the tipping comp ladder';
+    document.getElementById('mcVals').innerHTML =
+      '<div class="mc-vline tips"><span class="ic">🎯</span><span class="tx">' + (tipsN ? ('<b>'+tipsN+' tip'+(tipsN===1?'':'s')+'</b> live this week') : 'Tips drop Wednesday') + '</span></div>'
+      + '<div class="mc-vline comp"><span class="ic">🏆</span><span class="tx">' + rankTxt + '</span></div>';
+  }
+  function setWelcome(){ renderCard(); }
+  document.getElementById('mcard').style.display = 'block';
 
   const current = rounds.find(function (r) { return r.live; }) || null;
   const past = current ? rounds.filter(function (r) { return r !== current; }) : rounds.slice();
 
   // ===== TAB SHELL =====
-  show('<div class="tabs">'
-    + '<button class="tab on" data-t="tips" type="button">🎯 Tips</button>'
-    + '<button class="tab" data-t="hist" type="button">📂 History</button>'
-    + '<button class="tab" data-t="comp" type="button">🏆 Comp</button>'
-    + '<button class="tab" data-t="share" type="button">📤 Share</button>'
-    + '<button class="tab" data-t="rewards" type="button">🎁 Rewards</button>'
-    + '</div>'
+  renderCard();
+  var TILES = [['tips','🎯','Tips'],['hist','📂','History'],['comp','🏆','Tipping Comp'],['share','📤','Share'],['rewards','🎁','Rewards'],['manage','⚙️','Manage']];
+  var tilesHtml = '<div class="tiles" id="tiles">';
+  TILES.forEach(function(t){ tilesHtml += '<div class="tile' + (t[0]==='tips'?' on':'') + '" data-t="' + t[0] + '"><span class="t-ic">' + t[1] + '</span><span class="t-lb">' + t[2] + '</span></div>'; });
+  tilesHtml += '</div><div class="collapsed-hint" id="collapsedHint" style="display:none;">Tap a tile to open a section.</div>';
+  show(tilesHtml
     + '<div class="panel on" id="p-tips"></div>'
     + '<div class="panel" id="p-hist"></div>'
     + '<div class="panel" id="p-comp"></div>'
     + '<div class="panel" id="p-share"></div>'
-    + '<div class="panel" id="p-rewards"></div>');
-  let boardLoaded = false;
+    + '<div class="panel" id="p-rewards"></div>'
+    + '<div class="panel" id="p-manage"></div>');
+  var openTab = 'tips';
   window.go = function (t) {
-    document.querySelectorAll('.tab').forEach(function (b) { b.classList.toggle('on', b.dataset.t === t); });
-    document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('on'); });
-    document.getElementById('p-' + t).classList.add('on');
-    if (t === 'tips') renderTipsPanel(false);
-    if (t === 'hist') renderHistory();
-    if (t === 'comp') renderComp();
+    openTab = (t === openTab) ? null : t;
+    document.querySelectorAll('.tile').forEach(function (b) { b.classList.toggle('on', b.dataset.t === openTab); });
+    document.querySelectorAll('.panel').forEach(function (p) { p.classList.toggle('on', p.id === 'p-' + openTab); });
+    document.getElementById('collapsedHint').style.display = openTab ? 'none' : 'block';
+    if (openTab === 'tips') renderTipsPanel(false);
+    if (openTab === 'hist') renderHistory();
+    if (openTab === 'comp') renderComp();
+    if (openTab === 'manage') renderManage();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  document.querySelectorAll('.tab').forEach(function (b) { b.addEventListener('click', function () { go(b.dataset.t); }); });
+  document.querySelectorAll('.tile').forEach(function (b) { b.addEventListener('click', function () { go(b.dataset.t); }); });
 
   // ===== TIPS TAB =====
   const DAY_ORDER = ['Thu','Fri','Sat','Sun','Mon'];
   const DAY_LABEL = { Thu:'Thursday', Fri:'Friday', Sat:'Saturday', Sun:'Sunday', Mon:'Monday' };
   const tierLabel = { bronze:'🥉 Bronze', silver:'🥈 Silver', gold:'🥇 Gold' };
   const CODE_ORDER = ['NRL','AFL'];
-  const CODE_LABEL = { NRL:'🏉 NRL', AFL:'🏈 AFL' };
+  const CODE_LABEL = { NRL:'NRL', AFL:'AFL' };
   function sportIcon(code) { return code === 'NRL' ? '🏉' : code === 'AFL' ? '🏈' : '🔀'; }
   function renderTip(t) {
     const isMulti = t.legs && t.legs.length;
@@ -366,7 +437,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       const rb = rmap[t.result] || rmap.pending;
       h += '<div class="res-badge ' + rb[1] + '">' + rb[0] + '</div>';
     }
-    let line = sportIcon(t.code) + ' ' + (t.code || '') + ' · ' + (t.type || '');
+    let line = (t.code || '') + ' · ' + (t.type || '');
     if (t.tier && tierLabel[t.tier]) line += '<span class="tier-tag ' + t.tier + '">' + tierLabel[t.tier] + '</span>';
     h += '<div class="sport">' + line + '</div>';
     h += '<div class="match">' + (t.match || '') + '</div>';
@@ -390,7 +461,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       var db = t.note || t.reason;
       if (db) h += '<details class="debrief"><summary>📋 Debrief — how it landed</summary><div class="debrief-body">' + db + '</div></details>';
     } else {
-      if (t.reason) h += '<div class="reason">' + t.reason + '</div>';
+      if (t.reason) h += '<details class="whytip"><summary>Why this ' + (isMulti ? 'multi' : 'tip') + ' <span class="caret">▾</span></summary><div class="whytip-body">' + t.reason + '</div></details>';
     }
     h += '</div>';
     return h;
@@ -546,7 +617,22 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   function compProg(code) {
     var gs = compState.games.filter(function (g) { return g.code === code; });
     var p = gs.filter(function (g) { return compState.picks[g.id]; }).length;
-    return p + '/' + gs.length + ' tipped';
+    return p + '/' + gs.length + ' picked';
+  }
+  function compToGo(){ return compState.games.filter(function(g){ return !compLocked(g) && !compState.picks[g.id]; }).length; }
+  function compSummaryHTML(){
+    var left = compToGo();
+    var head = left>0
+      ? '<div class="csum-alert"><span class="ic">⚠️</span><span class="tx"><b>'+left+' game'+(left===1?'':'s')+'</b> still to pick — get them in before kickoff.</span></div>'
+      : '<div class="csum-done"><span class="ic">✅</span><span class="tx"><b>All picks in</b> — you\'re set for the week.</span></div>';
+    var rows = '';
+    ['NRL','AFL'].forEach(function(code){
+      var gs = compState.games.filter(function(g){ return g.code===code; });
+      if(!gs.length) return;
+      var p = gs.filter(function(g){ return compState.picks[g.id]; }).length;
+      rows += '<div class="csum-row"><span class="code">'+code+'</span><span class="bar"><i style="width:'+(p/gs.length*100)+'%"></i></span><span class="cnt"><b>'+p+'</b>/'+gs.length+'</span></div>';
+    });
+    return '<div class="csum">'+head+rows+'</div>';
   }
   function renderCompBody() {
     var panel = document.getElementById('p-comp');
@@ -557,12 +643,12 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     }
     var played = compState.games.filter(function (g) { return g.result; });
     var h = compNameHTML();
-    h += '<div class="comp-intro"><div class="comp-intro-title">🏆 The Footy Comp</div><p>Pick a winner in every game. Top of the weekly ladder takes the bragging rights — picks lock at each game\'s kickoff.</p></div>';
+    h += '<div class="comp-intro"><div class="comp-intro-title">🏆 The Tipping Comp</div><p>Pick a winner in every game. Top of the weekly ladder takes the bragging rights — picks lock at each game\'s kickoff.</p></div>';
     h += '<div class="scoring"><b>Scoring:</b> 🎯 1pt a winner &nbsp;·&nbsp; <span class="x2">⭐ ×2 on the games we tip</span> &nbsp;·&nbsp; 🧹 +3 for sweeping a code &nbsp;·&nbsp; 🥇 most points wins the week</div>';
-    h += '<div class="comp-tally"><span class="lbl">Your points this round</span><span class="val">' + compState.myPoints + ' <span style="font-size:13px;color:var(--muted);font-weight:700;">pts · ' + played.length + ' played</span></span></div>';
+    h += compSummaryHTML();
     h += '<div class="code-boxes">';
     ['NRL', 'AFL'].forEach(function (code) {
-      h += '<div class="code-box' + (compState.activeCode === code ? ' active' : '') + '" data-code="' + code + '"><div class="code-box-name">' + (code === 'NRL' ? '🏉 NRL' : '🏈 AFL') + '</div><div class="code-box-prog">' + compProg(code) + '</div></div>';
+      h += '<div class="code-box' + (compState.activeCode === code ? ' active' : '') + '" data-code="' + code + '"><div class="code-box-name">' + code + '</div><div class="code-box-prog">' + compProg(code) + '</div></div>';
     });
     h += '</div>';
     var any = false;
@@ -573,7 +659,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       gs.forEach(function (g) {
         var lk = compLocked(g), tcls = lk ? 'locked' : 'open', tlabel = lk ? (g.result ? '🔒 Final' : '🔒 Locked') : '🟢 Open · locks ' + fmtKick(g.kickoff);
         var x2 = g.double ? '<span class="x2-tag">⭐ ×2</span>' : '';
-        h += '<div class="game' + (g.double ? ' dbl' : '') + '"><div class="game-top"><span class="game-code">' + (g.code === 'NRL' ? '🏉 NRL' : '🏈 AFL') + x2 + '</span><span class="game-time ' + tcls + '">' + tlabel + '</span></div><div class="picks">' + compTeamBtn(g, g.home) + compTeamBtn(g, g.away) + '</div></div>';
+        h += '<div class="game' + (g.double ? ' dbl' : '') + '"><div class="game-top"><span class="game-code">' + g.code + x2 + '</span><span class="game-time ' + tcls + '">' + tlabel + '</span></div><div class="picks">' + compTeamBtn(g, g.home) + compTeamBtn(g, g.away) + '</div></div>';
       });
     });
     if (!any) h += '<div class="state" style="padding:20px;"><p>No ' + compState.activeCode + ' games this round.</p></div>';
@@ -618,8 +704,11 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       if (!compState.games.some(function (g) { return g.code === compState.activeCode; })) {
         var first = compState.games[0]; if (first) compState.activeCode = first.code;
       }
+      if (handle) { var lad0 = compState.ladder.slice().sort(function(a,b){return b.points-a.points;}); var idx0 = lad0.findIndex(function(r){ return r.handle && r.handle.toLowerCase()===handle.toLowerCase(); }); compRank = idx0>=0 ? idx0+1 : null; } else { compRank = null; }
     } catch (e) { /* keep whatever we have */ }
     renderCompBody();
+    renderNotif();
+    renderCardVals();
   }
   function renderComp() {
     var panel = document.getElementById('p-comp');
@@ -631,9 +720,42 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   }
 
 
+  // ===== MANAGE + NOTIFICATION =====
+  function renderNotif(){
+    var el = document.getElementById('mcNotif'); if(!el) return;
+    if(!compState.round){ el.style.display='none'; return; }
+    var left = compToGo();
+    el.style.display = 'flex';
+    if(left>0){ el.className='mc-notif warn'; el.innerHTML='<span class="ic">⚠️</span><span class="msg"><b>'+left+'</b> pick'+(left===1?'':'s')+' still to make this week</span><span class="chev">→</span>'; }
+    else { el.className='mc-notif ok'; el.innerHTML='<span class="ic">✅</span><span class="msg">All your comp picks are in</span><span class="chev">→</span>'; }
+    el.onclick = function(){ if(openTab!=='comp') go('comp'); };
+  }
+  function renderManage(){
+    var panel = document.getElementById('p-manage'); if(!panel) return;
+    var tierName = tier ? (tier.charAt(0).toUpperCase()+tier.slice(1)) : 'Member';
+    var price = { bronze:'$5', silver:'$10', gold:'$20' }[tier] || '';
+    var myLink = 'https://thepuntersden.com/tips?key=' + encodeURIComponent(key);
+    var portal = 'https://billing.stripe.com/p/login/dRm7sLcfd8MI9c1dxU6oo00';
+    panel.innerHTML =
+      '<div class="hx-intro"><div class="hx-intro-title">⚙️ Manage your membership</div></div>'
+      + '<div class="card mg-plan"><div class="mg-plan-t">' + (medal?medal+' ':'') + tierName + (price?(' — '+price+' / week'):'') + '</div><p style="color:var(--muted);font-size:13px;margin:3px 0 0;">Renews weekly. Change plan, update your card or cancel anytime.</p>'
+      + '<a class="mg-btn" href="' + portal + '" target="_blank" rel="noopener">Manage billing / change plan →</a></div>'
+      + '<div class="card"><div class="mg-k">🔗 Your private link</div><div class="inv-link" id="mgLink">' + myLink + '</div><div class="inv-btns"><button type="button" class="inv-btn" id="mgCopy">📋 Copy link</button></div><div class="mg-note">Keep this safe — it\'s how you get into the Den. No password needed.</div></div>'
+      + '<div class="card"><div class="mg-k">🏷️ Comp name</div><div class="mg-v">' + (handle ? (escapeHtml(handle) + ' <span class="mg-lock">· locked</span>') : '<span style="color:var(--muted);">Not set yet — pick one in the Tipping Comp tab.</span>') + '</div></div>'
+      + '<div class="card"><div class="mg-k">💬 Need a hand?</div><p style="color:var(--muted);font-size:13px;margin:4px 0 0;">Lost your link? Recover it at <a href="/find" style="color:var(--gold);text-decoration:none;font-weight:600;">thepuntersden.com/find</a> — or <a href="mailto:thepuntersdenau@gmail.com" style="color:var(--gold);text-decoration:none;font-weight:600;">email us</a> anytime.</p></div>';
+    var c = document.getElementById('mgCopy');
+    if(c) c.addEventListener('click', function(){ function done(){ c.textContent='✅ Copied!'; setTimeout(function(){ c.textContent='📋 Copy link'; },1800); } if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(myLink).then(done).catch(done); else done(); });
+  }
+
   // ===== REWARDS TAB =====
   (function renderRewards() {
-    document.getElementById('p-rewards').innerHTML = '<div class="between"><div class="b-big">🎁 Rewards — coming soon</div><p>We\'re putting together a rewards program for Den members. Keep an eye on this tab — it\'s on the way. 🐕</p></div>';
+    var ord = ['1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th'];
+    var med = { '1st':'🥇','2nd':'🥈','3rd':'🥉' };
+    var rows = '';
+    ord.forEach(function(o){ rows += '<li><span class="pl"><span class="pmedal">'+(med[o]||'')+'</span> '+o+'</span><span class="soon">Coming soon</span></li>'; });
+    document.getElementById('p-rewards').innerHTML =
+      '<div class="hx-intro"><div class="hx-intro-title">🎁 Footy Tipping Rewards</div><p>Climb the season-long tipping comp ladder — the higher you finish, the bigger the prize.</p></div>'
+      + '<div class="card"><ul class="prizelist">' + rows + '</ul></div>';
   })();
 
   // ===== SHARE TAB =====
@@ -661,6 +783,9 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if (c) c.addEventListener('click', function(){ if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(refLink).then(done).catch(fallbackCopy); else fallbackCopy(); });
     if (sh) sh.addEventListener('click', function(){ if (navigator.share) navigator.share({ title:'The Punters Den', url:refLink }).catch(function(){}); else if (c) c.click(); });
   })();
+
+  // ── load comp on startup so the notification + rank are live ──
+  loadComp();
 
 })();
 </script>
