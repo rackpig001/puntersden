@@ -532,7 +532,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if (isNaN(ms)) ms = new Date(String(g.kickoff).replace(' ', 'T')).getTime();
     return isNaN(ms) ? true : ms <= Date.now();
   }
-  function fmtKick(iso) { try { return new Date(iso).toLocaleString('en-AU', { weekday: 'short', hour: 'numeric', minute: '2-digit', timeZone: 'Australia/Brisbane' }); } catch (e) { return ''; } }
+  function fmtKick(iso) { try { return new Date(iso).toLocaleString('en-AU', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', timeZone: 'Australia/Brisbane' }); } catch (e) { return ''; } }
   function compTeamBtn(g, team) {
     var lk = compLocked(g), mine = compState.picks[g.id] === team, graded = !!g.result, cls = 'pick-btn', mark = '';
     if (lk) {
