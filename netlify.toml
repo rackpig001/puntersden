@@ -5,13 +5,20 @@
   publish = "."
   functions = "netlify/functions"
 
-# Make sure tips.json is bundled with the get-tips function (and the webhook, just in case).
-# Without this, the function can't read the file at runtime.
+# Make sure data files are bundled with the functions that read them.
+# Without this, the functions can't read the file at runtime.
 [functions]
-  included_files = ["netlify/functions/tips.json"]
+  included_files = ["netlify/functions/tips.json", "netlify/functions/comp.json"]
 
 [functions."get-tips"]
   included_files = ["netlify/functions/tips.json"]
+
+# The tipping comp functions read comp.json — bundle it with them too.
+[functions."get-comp"]
+  included_files = ["netlify/functions/comp.json"]
+
+[functions."save-pick"]
+  included_files = ["netlify/functions/comp.json"]
 
 # Pretty URL for the members tips page: /tips → tips.html
 [[redirects]]
@@ -23,6 +30,12 @@
 [[redirects]]
   from = "/checkout-complete"
   to = "/checkout-complete.html"
+  status = 200
+
+# Pretty URL for the "get my tips by phone" recovery page: /find → find.html
+[[redirects]]
+  from = "/find"
+  to = "/find.html"
   status = 200
 
 # Function endpoints (called by the site + Stripe). These are automatic,
