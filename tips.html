@@ -398,16 +398,16 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   renderCard();
   var TILES = [['tips','🎯','Tips'],['hist','📂','History'],['comp','🏆','Tipping Comp'],['share','📤','Share'],['rewards','🎁','Rewards'],['manage','⚙️','Manage']];
   var tilesHtml = '<div class="tiles" id="tiles">';
-  TILES.forEach(function(t){ tilesHtml += '<div class="tile' + (t[0]==='tips'?' on':'') + '" data-t="' + t[0] + '"><span class="t-ic">' + t[1] + '</span><span class="t-lb">' + t[2] + '</span></div>'; });
-  tilesHtml += '</div><div class="collapsed-hint" id="collapsedHint" style="display:none;">Tap a tile to open a section.</div>';
+  TILES.forEach(function(t){ tilesHtml += '<div class="tile" data-t="' + t[0] + '"><span class="t-ic">' + t[1] + '</span><span class="t-lb">' + t[2] + '</span></div>'; });
+  tilesHtml += '</div><div class="collapsed-hint" id="collapsedHint" style="display:block;">Tap a tile to open a section.</div>';
   show(tilesHtml
-    + '<div class="panel on" id="p-tips"></div>'
+    + '<div class="panel" id="p-tips"></div>'
     + '<div class="panel" id="p-hist"></div>'
     + '<div class="panel" id="p-comp"></div>'
     + '<div class="panel" id="p-share"></div>'
     + '<div class="panel" id="p-rewards"></div>'
     + '<div class="panel" id="p-manage"></div>');
-  var openTab = 'tips';
+  var openTab = null;
   window.go = function (t) {
     openTab = (t === openTab) ? null : t;
     document.querySelectorAll('.tile').forEach(function (b) { b.classList.toggle('on', b.dataset.t === openTab); });
@@ -423,6 +423,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
 
   // ===== TIPS TAB =====
   const DAY_ORDER = ['Thu','Fri','Sat','Sun','Mon'];
+  function todayDay(){ try { return new Date().toLocaleDateString('en-AU',{weekday:'short',timeZone:'Australia/Brisbane'}); } catch(e){ return ''; } }
   const DAY_LABEL = { Thu:'Thursday', Fri:'Friday', Sat:'Saturday', Sun:'Sunday', Mon:'Monday' };
   const tierLabel = { bronze:'🥉 Bronze', silver:'🥈 Silver', gold:'🥇 Gold' };
   const CODE_ORDER = ['NRL','AFL'];
@@ -487,21 +488,24 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     const undated = dated.filter(function (t) { return DAY_ORDER.indexOf(t.day) === -1; });
     const presentDays = DAY_ORDER.filter(function (day) { return dated.some(function (t) { return t.day === day; }); });
     const groupCount = presentDays.length + (undated.length ? 1 : 0) + (specials.length ? 1 : 0);
+    var activeFilter = 'all';
+    if (!opts.noFilter && opts.activeDay && presentDays.indexOf(opts.activeDay) !== -1) activeFilter = opts.activeDay;
+    function vis(key){ return (activeFilter === 'all' || activeFilter === key) ? '' : ' style="display:none"'; }
     let html = '<div class="odds-guide">💡 Odds shown are a guide — always confirm the exact price in your own account before betting.</div>';
     if (!opts.noFilter && groupCount > 1) {
-      html += '<div class="day-filter"><button class="day-btn active" data-filter="all">All</button>';
-      presentDays.forEach(function (day) { const n = dated.filter(function (t) { return t.day === day; }).length; html += '<button class="day-btn" data-filter="' + day + '">' + day + '<span class="cnt">' + n + '</span></button>'; });
-      if (undated.length) html += '<button class="day-btn" data-filter="__week">This week<span class="cnt">' + undated.length + '</span></button>';
-      if (specials.length) html += '<button class="day-btn" data-filter="__specials">⭐ Specials<span class="cnt">' + specials.length + '</span></button>';
+      html += '<div class="day-filter"><button class="day-btn' + (activeFilter==='all'?' active':'') + '" data-filter="all">All</button>';
+      presentDays.forEach(function (day) { const n = dated.filter(function (t) { return t.day === day; }).length; html += '<button class="day-btn' + (activeFilter===day?' active':'') + '" data-filter="' + day + '">' + day + '<span class="cnt">' + n + '</span></button>'; });
+      if (undated.length) html += '<button class="day-btn' + (activeFilter==='__week'?' active':'') + '" data-filter="__week">This week<span class="cnt">' + undated.length + '</span></button>';
+      if (specials.length) html += '<button class="day-btn' + (activeFilter==='__specials'?' active':'') + '" data-filter="__specials">⭐ Specials<span class="cnt">' + specials.length + '</span></button>';
       html += '</div>';
     }
     DAY_ORDER.forEach(function (day) {
       const dayTips = dated.filter(function (t) { return t.day === day; });
       if (!dayTips.length) return;
-      html += '<div class="day-group" data-day="' + day + '"><div class="day-head">🗓 ' + DAY_LABEL[day] + '</div>' + renderDayBlock(dayTips) + '</div>';
+      html += '<div class="day-group" data-day="' + day + '"' + vis(day) + '><div class="day-head">🗓 ' + DAY_LABEL[day] + '</div>' + renderDayBlock(dayTips) + '</div>';
     });
-    if (undated.length) html += '<div class="day-group" data-day="__week"><div class="day-head">🗓 This week</div>' + renderDayBlock(undated) + '</div>';
-    if (specials.length) html += '<div class="day-group" data-day="__specials"><div class="specials-head">⭐ Specials</div>' + specials.map(renderTip).join('') + '</div>';
+    if (undated.length) html += '<div class="day-group" data-day="__week"' + vis('__week') + '><div class="day-head">🗓 This week</div>' + renderDayBlock(undated) + '</div>';
+    if (specials.length) html += '<div class="day-group" data-day="__specials"' + vis('__specials') + '><div class="specials-head">⭐ Specials</div>' + specials.map(renderTip).join('') + '</div>';
     return html;
   }
   function wireDayFilter(root) {
@@ -517,7 +521,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   function renderTipsPanel() {
     let html = '';
     if (current && current.tips && current.tips.length) {
-      html += tipsBlock(current.tips);
+      html += tipsBlock(current.tips, { activeDay: todayDay() });
     } else if (current) {
       html += '<div class="signpost">🗓 <b>Next tips drop Wednesday</b> — we\'ll text you the moment they\'re up. Games run Thursday to Sunday.</div>';
     } else {
@@ -740,9 +744,11 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
       '<div class="hx-intro"><div class="hx-intro-title">⚙️ Manage your membership</div></div>'
       + '<div class="card mg-plan"><div class="mg-plan-t">' + (medal?medal+' ':'') + tierName + (price?(' — '+price+' / week'):'') + '</div><p style="color:var(--muted);font-size:13px;margin:3px 0 0;">Renews weekly. Change plan, update your card or cancel anytime.</p>'
       + '<a class="mg-btn" href="' + portal + '" target="_blank" rel="noopener">Manage billing / change plan →</a></div>'
-      + '<div class="card"><div class="mg-k">🔗 Your private link</div><div class="inv-link" id="mgLink">' + myLink + '</div><div class="inv-btns"><button type="button" class="inv-btn" id="mgCopy">📋 Copy link</button></div><div class="mg-note">Keep this safe — it\'s how you get into the Den. No password needed.</div></div>'
+      + '<div class="card"><div class="mg-k">🔗 Your private link</div><button type="button" class="inv-btn" id="mgReveal" style="margin-top:8px;">👁 Show my private link</button><div id="mgLinkWrap" style="display:none;margin-top:10px;"><div class="inv-link" id="mgLink">' + myLink + '</div><div class="inv-btns"><button type="button" class="inv-btn" id="mgCopy">📋 Copy link</button></div></div><div class="mg-note">Keep this safe — it\'s how you get into the Den. No password needed.</div></div>'
       + '<div class="card"><div class="mg-k">🏷️ Comp name</div><div class="mg-v">' + (handle ? (escapeHtml(handle) + ' <span class="mg-lock">· locked</span>') : '<span style="color:var(--muted);">Not set yet — pick one in the Tipping Comp tab.</span>') + '</div></div>'
       + '<div class="card"><div class="mg-k">💬 Need a hand?</div><p style="color:var(--muted);font-size:13px;margin:4px 0 0;">Lost your link? Recover it at <a href="/find" style="color:var(--gold);text-decoration:none;font-weight:600;">thepuntersden.com/find</a> — or <a href="mailto:thepuntersdenau@gmail.com" style="color:var(--gold);text-decoration:none;font-weight:600;">email us</a> anytime.</p></div>';
+    var rv = document.getElementById('mgReveal');
+    if(rv) rv.addEventListener('click', function(){ var w=document.getElementById('mgLinkWrap'); if(w) w.style.display='block'; rv.style.display='none'; });
     var c = document.getElementById('mgCopy');
     if(c) c.addEventListener('click', function(){ function done(){ c.textContent='✅ Copied!'; setTimeout(function(){ c.textContent='📋 Copy link'; },1800); } if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(myLink).then(done).catch(done); else done(); });
   }
