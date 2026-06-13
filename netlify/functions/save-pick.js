@@ -27,6 +27,13 @@ function loadRound() {
   }
 }
 
+function kickoffMs(s) {
+  if (!s) return NaN;
+  let t = new Date(s).getTime();
+  if (isNaN(t)) t = new Date(String(s).replace(' ', 'T')).getTime();
+  return t;
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
 
@@ -50,8 +57,9 @@ exports.handler = async (event) => {
     if (team !== game.home && team !== game.away) {
       return { statusCode: 200, body: JSON.stringify({ ok: false, error: "That team isn't in this game." }) };
     }
-    if (new Date(game.kickoff).getTime() <= Date.now()) {
-      return { statusCode: 200, body: JSON.stringify({ ok: false, error: "This game's locked — kickoff has passed." }) };
+    const ms = kickoffMs(game.kickoff);
+    if (isNaN(ms) || ms <= Date.now()) {
+      return { statusCode: 200, body: JSON.stringify({ ok: false, error: "This game's locked — picks are closed." }) };
     }
 
     const picksStore = store('comp-picks');

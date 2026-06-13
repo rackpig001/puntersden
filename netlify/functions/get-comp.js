@@ -31,6 +31,15 @@ function loadRound() {
   }
 }
 
+// Parse a kickoff timestamp robustly. Returns ms since epoch, or NaN if unreadable.
+// Tolerates a space instead of the 'T'. Callers FAIL CLOSED on NaN (treat as locked).
+function kickoffMs(s) {
+  if (!s) return NaN;
+  let t = new Date(s).getTime();
+  if (isNaN(t)) t = new Date(String(s).replace(' ', 'T')).getTime();
+  return t;
+}
+
 // Points for one member's picks against the graded results in this round.
 function scorePicks(games, picks) {
   picks = picks || {};
@@ -72,11 +81,14 @@ exports.handler = async (event) => {
     }
 
     const now = Date.now();
-    const games = round.games.map(g => ({
-      id: g.id, code: g.code, day: g.day, home: g.home, away: g.away,
-      kickoff: g.kickoff, double: !!g.double, result: g.result || null,
-      locked: new Date(g.kickoff).getTime() <= now,
-    }));
+    const games = round.games.map(g => {
+      const ms = kickoffMs(g.kickoff);
+      return {
+        id: g.id, code: g.code, day: g.day, home: g.home, away: g.away,
+        kickoff: g.kickoff, double: !!g.double, result: g.result || null,
+        locked: isNaN(ms) ? true : ms <= now,    // fail closed: unreadable kickoff = locked
+      };
+    });
 
     const picksStore = store('comp-picks');
     const mineRec = await picksStore.get(token, { type: 'json' }).catch(() => null);
