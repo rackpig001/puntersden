@@ -1,18 +1,21 @@
 {
-  "_note": "WEEKLY TIPPING COMP. Replace 'round' each week. Rules: list EVERY game, both codes. 'kickoff' must be ISO 8601 with the +10:00 (AEST) offset so per-game lockout is exact. Set 'double': true on the games the Den tipped (they pay x2 and show a star to members). Leave 'result' as null until the game's played, then set it to the winning team's exact 'home'/'away' name to grade it. Ladder + bonuses recompute themselves. This starter round is sample data — swap in the real draw before launch.",
+  "_note": "WEEKLY TIPPING COMP. Replace 'round' each week. Rules: list EVERY game, both codes. 'kickoff' must be ISO 8601 with the +10:00 (AEST) offset so per-game lockout is exact. Set 'double': true on the games the Den tipped (they pay x2 and show a star to members). Leave 'result' as null until the game's played, then set it to the winning team's exact 'home'/'away' name to grade it.",
   "round": {
     "id": "r15-afl14",
     "label": "NRL R15 · AFL R14",
     "games": [
-      { "id": "n1", "code": "NRL", "day": "Thu", "home": "Broncos", "away": "Rabbitohs", "kickoff": "2026-06-18T19:50:00+10:00", "double": false, "result": null },
-      { "id": "n2", "code": "NRL", "day": "Fri", "home": "Storm", "away": "Eels", "kickoff": "2026-06-19T20:00:00+10:00", "double": false, "result": null },
-      { "id": "n3", "code": "NRL", "day": "Sat", "home": "Panthers", "away": "Roosters", "kickoff": "2026-06-20T17:30:00+10:00", "double": false, "result": null },
-      { "id": "n4", "code": "NRL", "day": "Sun", "home": "Bulldogs", "away": "Dragons", "kickoff": "2026-06-21T14:00:00+10:00", "double": false, "result": null },
-      { "id": "n5", "code": "NRL", "day": "Sun", "home": "Sharks", "away": "Cowboys", "kickoff": "2026-06-21T16:05:00+10:00", "double": true, "result": null },
-      { "id": "a1", "code": "AFL", "day": "Thu", "home": "Geelong", "away": "Adelaide", "kickoff": "2026-06-18T19:40:00+10:00", "double": false, "result": null },
-      { "id": "a2", "code": "AFL", "day": "Sat", "home": "Brisbane", "away": "Essendon", "kickoff": "2026-06-20T16:35:00+10:00", "double": false, "result": null },
-      { "id": "a3", "code": "AFL", "day": "Sat", "home": "Carlton", "away": "Collingwood", "kickoff": "2026-06-20T19:25:00+10:00", "double": true, "result": null },
-      { "id": "a4", "code": "AFL", "day": "Sun", "home": "Fremantle", "away": "West Coast", "kickoff": "2026-06-21T15:20:00+10:00", "double": false, "result": null }
+      { "id": "n1", "code": "NRL", "day": "Thu", "home": "Rabbitohs", "away": "Broncos", "kickoff": "2026-06-11T19:50:00+10:00", "double": true, "result": null },
+      { "id": "n2", "code": "NRL", "day": "Fri", "home": "Dolphins", "away": "Roosters", "kickoff": "2026-06-12T20:00:00+10:00", "double": true, "result": null },
+      { "id": "n3", "code": "NRL", "day": "Sat", "home": "Warriors", "away": "Sharks", "kickoff": "2026-06-13T17:30:00+10:00", "double": false, "result": null },
+      { "id": "n4", "code": "NRL", "day": "Sat", "home": "Eels", "away": "Raiders", "kickoff": "2026-06-13T19:35:00+10:00", "double": true, "result": null },
+      { "id": "n5", "code": "NRL", "day": "Sun", "home": "Wests Tigers", "away": "Titans", "kickoff": "2026-06-14T16:05:00+10:00", "double": false, "result": null },
+      { "id": "a1", "code": "AFL", "day": "Thu", "home": "Western Bulldogs", "away": "Adelaide", "kickoff": "2026-06-11T19:30:00+10:00", "double": false, "result": null },
+      { "id": "a2", "code": "AFL", "day": "Fri", "home": "Geelong", "away": "Gold Coast Suns", "kickoff": "2026-06-12T19:40:00+10:00", "double": true, "result": null },
+      { "id": "a3", "code": "AFL", "day": "Sat", "home": "Melbourne", "away": "Essendon", "kickoff": "2026-06-13T13:15:00+10:00", "double": false, "result": null },
+      { "id": "a4", "code": "AFL", "day": "Sat", "home": "North Melbourne", "away": "West Coast Eagles", "kickoff": "2026-06-13T16:15:00+10:00", "double": true, "result": null },
+      { "id": "a5", "code": "AFL", "day": "Sat", "home": "Port Adelaide", "away": "Sydney", "kickoff": "2026-06-13T19:35:00+10:00", "double": false, "result": null },
+      { "id": "a6", "code": "AFL", "day": "Sun", "home": "Richmond", "away": "Brisbane", "kickoff": "2026-06-14T13:10:00+10:00", "double": false, "result": null },
+      { "id": "a7", "code": "AFL", "day": "Sun", "home": "St Kilda", "away": "GWS Giants", "kickoff": "2026-06-14T15:15:00+10:00", "double": false, "result": null }
     ]
   }
 }
