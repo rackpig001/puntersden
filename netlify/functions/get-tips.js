@@ -131,6 +131,7 @@ exports.handler = async (event) => {
         referralCode: record.referralCode || null,
         referrals: record.referrals || { allTime: 0, season: 0 },
         handle: record.handle || null,
+        memberSince: record.createdAt || null,
       }),
     };
   } catch (err) {
