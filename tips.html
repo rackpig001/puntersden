@@ -314,6 +314,19 @@
   .hist-g.ok .pk { color:var(--green); }
   .hist-g.miss .pk { color:var(--loss); }
   .hist-g.nopick .pk { color:var(--muted); }
+  .rw-h { font-family:'Anton',sans-serif; font-size:15px; color:#fff; margin:20px 0 10px; display:flex; align-items:center; gap:8px; }
+  .rw-tag { font-size:10px; font-weight:800; color:var(--muted); background:var(--panel-2); border:1px solid var(--line); padding:2px 8px; border-radius:999px; font-family:'Archivo'; letter-spacing:.4px; }
+  .rw-row { display:flex; align-items:center; gap:11px; background:var(--panel); border:1px solid var(--line); border-radius:11px; padding:11px 13px; margin-bottom:7px; }
+  .rw-row.me { border-color:var(--gold); background:rgba(245,197,66,.08); }
+  .rw-md { font-size:18px; width:24px; text-align:center; }
+  .rw-rk { font-family:'Anton',sans-serif; font-size:16px; color:var(--muted); width:24px; text-align:center; }
+  .rw-nm { flex:1; font-weight:700; font-size:14px; }
+  .rw-row.me .rw-nm { color:var(--gold); }
+  .rw-you { font-size:9px; font-weight:800; color:#0a140f; background:var(--gold); padding:1px 6px; border-radius:5px; margin-left:7px; }
+  .rw-pts { font-family:'Anton',sans-serif; font-size:16px; color:#fff; }
+  .rw-pts span { font-size:10px; color:var(--muted); font-weight:400; font-family:'Archivo'; }
+  .rw-note { font-size:11.5px; color:var(--muted); background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:11px 13px; margin-top:14px; line-height:1.55; }
+  .rw-note b { color:var(--gold); }
 </style>
 </head>
 <body>
@@ -402,6 +415,8 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   const memberSince = data.memberSince || null;
   const medal = { bronze:'🥉', silver:'🥈', gold:'🥇' }[tier] || '';
   var compRank = null;
+  var seasonPoints = 0, seasonRank = null, rewardsData = null;
+  function ordinal(n){ var sfx = ['th','st','nd','rd'], v = n % 100; return n + (sfx[(v - 20) % 10] || sfx[v] || sfx[0]); }
   function sinceLabel(){ if(!memberSince) return ''; try { return ' · since ' + new Date(memberSince).toLocaleDateString('en-AU',{month:'short',year:'numeric'}); } catch(e){ return ''; } }
   function renderCard(){
     document.getElementById('mcMedal').textContent = medal || '🎟️';
@@ -411,10 +426,10 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   }
   function renderCardVals(){
     var tipsN = (current && current.tips) ? current.tips.length : 0;
-    var rankTxt = compRank ? ('You’re <b>#'+compRank+'</b> in the tipping comp') : 'Get on the tipping comp ladder';
+    var compTxt = (seasonPoints > 0) ? ('<b>' + seasonPoints + ' season point' + (seasonPoints===1?'':'s') + '</b>' + (seasonRank ? ' · ' + ordinal(seasonRank) + ' overall' : '')) : 'Get on the tipping comp ladder';
     document.getElementById('mcVals').innerHTML =
       '<div class="mc-vline tips"><span class="ic">🎯</span><span class="tx">' + (tipsN ? ('<b>'+tipsN+' tip'+(tipsN===1?'':'s')+'</b> live this week') : 'Tips drop Wednesday') + '</span></div>'
-      + '<div class="mc-vline comp"><span class="ic">🏆</span><span class="tx">' + rankTxt + '</span></div>';
+      + '<div class="mc-vline comp"><span class="ic">🏆</span><span class="tx">' + compTxt + '</span></div>';
   }
   function setWelcome(){ renderCard(); }
   document.getElementById('mcard').style.display = 'block';
@@ -445,6 +460,7 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if (openTab === 'hist') renderHistory();
     if (openTab === 'comp') renderComp();
     if (openTab === 'manage') renderManage();
+    if (openTab === 'rewards') renderRewards();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   document.querySelectorAll('.tile').forEach(function (b) { b.addEventListener('click', function () { go(b.dataset.t); }); });
@@ -836,15 +852,46 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
   }
 
   // ===== REWARDS TAB =====
-  (function renderRewards() {
-    var ord = ['1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th'];
-    var med = { '1st':'🥇','2nd':'🥈','3rd':'🥉' };
-    var rows = '';
-    ord.forEach(function(o){ rows += '<li><span class="pl"><span class="pmedal">'+(med[o]||'')+'</span> '+o+'</span><span class="soon">Coming soon</span></li>'; });
-    document.getElementById('p-rewards').innerHTML =
-      '<div class="hx-intro"><div class="hx-intro-title">🎁 Footy Tipping Rewards</div><p>Climb the season-long tipping comp ladder — the higher you finish, the bigger the prize.</p></div>'
-      + '<div class="card"><ul class="prizelist">' + rows + '</ul></div>';
-  })();
+  function renderRewards() {
+    var panel = document.getElementById('p-rewards'); if (!panel) return;
+    var head = '<div class="hx-intro"><div class="hx-intro-title">🎁 Footy Tipping Rewards</div><p>Win the round for bragging rights, and stack season points all year toward the end-of-season raffle.</p></div>';
+    if (!rewardsData) { panel.innerHTML = head + '<div class="state" style="padding:24px;"><div class="spinner"></div><p>Loading the standings…</p></div>'; return; }
+    var med = ['🥇','🥈','🥉'];
+    var h = head;
+    var lr = rewardsData.lastRound;
+    if (lr && lr.winners && lr.winners.length) {
+      h += '<div class="rw-h">🏆 Last round — top 3 <span class="rw-tag">' + escapeHtml(lr.label || '') + '</span></div>';
+      lr.winners.forEach(function (w, i) {
+        h += '<div class="rw-row"><span class="rw-md">' + (med[i] || '') + '</span><span class="rw-nm">' + escapeHtml(w.handle) + '</span><span class="rw-pts">' + w.points + '<span> pts</span></span></div>';
+      });
+    }
+    var sea = rewardsData.season || [];
+    h += '<div class="rw-h">📊 Season leaderboard <span class="rw-tag">TOP 10</span></div>';
+    if (!sea.length) {
+      h += '<div class="state" style="padding:16px;"><p>No points on the board yet — get your picks in! 🐕</p></div>';
+    } else {
+      sea.forEach(function (r, i) {
+        var me = handle && r.handle && r.handle.toLowerCase() === handle.toLowerCase();
+        h += '<div class="rw-row' + (me ? ' me' : '') + '"><span class="rw-rk">' + (i + 1) + '</span><span class="rw-nm">' + escapeHtml(r.handle) + (me ? '<span class="rw-you">you</span>' : '') + '</span><span class="rw-pts">' + r.points + '<span> pts</span></span></div>';
+      });
+      var meR = rewardsData.me;
+      if (meR && meR.seasonRank && meR.seasonRank > sea.length) {
+        h += '<div class="rw-row me" style="margin-top:9px;"><span class="rw-rk">' + meR.seasonRank + '</span><span class="rw-nm">' + escapeHtml(meR.handle) + '<span class="rw-you">you</span></span><span class="rw-pts">' + meR.seasonPoints + '<span> pts</span></span></div>';
+      }
+    }
+    h += '<div class="rw-note">🎟️ Season points double as your <b>raffle tickets</b> — every point is one entry in the end-of-season draw. Weekly + season prizes coming soon.</div>';
+    panel.innerHTML = h;
+  }
+  async function loadRewards() {
+    try {
+      var res = await fetch('/.netlify/functions/get-rewards?key=' + encodeURIComponent(key));
+      var d = await res.json();
+      rewardsData = d || null;
+      if (d && d.me) { seasonPoints = d.me.seasonPoints || 0; seasonRank = d.me.seasonRank || null; }
+    } catch (e) { /* keep defaults */ }
+    renderCardVals();
+    if (document.getElementById('p-rewards')) renderRewards();
+  }
 
   // ===== SHARE TAB =====
   (function renderShare() {
@@ -872,8 +919,9 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     if (sh) sh.addEventListener('click', function(){ if (navigator.share) navigator.share({ title:'The Punters Den', url:refLink }).catch(function(){}); else if (c) c.click(); });
   })();
 
-  // ── load comp on startup so the notification + rank are live ──
+  // ── load comp + rewards on startup so the notification, season points + standings are live ──
   loadComp();
+  loadRewards();
 
 })();
 </script>
