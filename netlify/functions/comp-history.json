@@ -1,0 +1,23 @@
+{
+  "_note": "Settled comp rounds, NEWEST FIRST. At each round settle, PREPEND the finished round here (its games with 'double' + 'result'), then roll comp.json to the new round. Read by get-comp-history.js — the final ladder + each member's score are computed live from preserved picks, so only games+double+result need to live here.",
+  "rounds": [
+    {
+      "id": "r15-afl14",
+      "label": "NRL R15 · AFL R14",
+      "games": [
+        { "id": "n1", "code": "NRL", "day": "Thu", "home": "Rabbitohs", "away": "Broncos", "double": true, "result": "Rabbitohs" },
+        { "id": "n2", "code": "NRL", "day": "Fri", "home": "Dolphins", "away": "Roosters", "double": true, "result": "Dolphins" },
+        { "id": "n3", "code": "NRL", "day": "Sat", "home": "Warriors", "away": "Sharks", "double": false, "result": "Sharks" },
+        { "id": "n4", "code": "NRL", "day": "Sat", "home": "Eels", "away": "Raiders", "double": true, "result": "Eels" },
+        { "id": "n5", "code": "NRL", "day": "Sun", "home": "Wests Tigers", "away": "Titans", "double": false, "result": "Wests Tigers" },
+        { "id": "a1", "code": "AFL", "day": "Thu", "home": "Western Bulldogs", "away": "Adelaide", "double": false, "result": "Adelaide" },
+        { "id": "a2", "code": "AFL", "day": "Fri", "home": "Geelong", "away": "Gold Coast Suns", "double": true, "result": "Geelong" },
+        { "id": "a3", "code": "AFL", "day": "Sat", "home": "Melbourne", "away": "Essendon", "double": false, "result": "Melbourne" },
+        { "id": "a4", "code": "AFL", "day": "Sat", "home": "North Melbourne", "away": "West Coast Eagles", "double": true, "result": "North Melbourne" },
+        { "id": "a5", "code": "AFL", "day": "Sat", "home": "Port Adelaide", "away": "Sydney", "double": false, "result": "Sydney" },
+        { "id": "a6", "code": "AFL", "day": "Sun", "home": "Richmond", "away": "Brisbane", "double": false, "result": "Brisbane" },
+        { "id": "a7", "code": "AFL", "day": "Sun", "home": "St Kilda", "away": "GWS Giants", "double": false, "result": "St Kilda" }
+      ]
+    }
+  ]
+}

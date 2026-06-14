@@ -1,10 +1,12 @@
 // netlify/functions/save-pick.js
 // Members page POSTs { key, gameId, team }. Validates the token, confirms the game is in
-// the current comp round and its kickoff HASN'T passed (server-side lockout — so nobody can
-// sneak a late pick in via the API or by fiddling their device clock), then saves the pick.
+// the current comp round and its kickoff HASN'T passed (server-side lockout), then saves the pick.
 //
-// Picks live in the 'comp-picks' Blobs store, keyed by token: { round, picks:{gameId:team} }.
-// Changing rounds resets a member's picks automatically (weekly ladder).
+// Picks live in the 'comp-picks' Blobs store, keyed by token, in a MULTI-ROUND shape:
+//   { rounds: { [roundId]: { picks: { gameId: team } } } }
+// Old rounds are NEVER overwritten — every round's picks are kept so the weekly winner and
+// the season raffle can always be settled. Legacy single-round records { round, picks } are
+// migrated forward on first write (see normalizePicks).
 
 const { getStore } = require('@netlify/blobs');
 const fs = require('fs');
@@ -32,6 +34,16 @@ function kickoffMs(s) {
   let t = new Date(s).getTime();
   if (isNaN(t)) t = new Date(String(s).replace(' ', 'T')).getTime();
   return t;
+}
+
+// Migrate a legacy single-round record { round, picks } into the multi-round shape
+// { rounds: { [roundId]: { picks } } }. New-shape records pass through untouched. This is
+// what guarantees old rounds survive when a new round goes live.
+function normalizePicks(rec) {
+  if (!rec) return { rounds: {} };
+  if (rec.rounds && typeof rec.rounds === 'object') return rec;
+  if (rec.round) return { rounds: { [rec.round]: { picks: rec.picks || {} } } };
+  return { rounds: {} };
 }
 
 exports.handler = async (event) => {
@@ -63,15 +75,15 @@ exports.handler = async (event) => {
     }
 
     const picksStore = store('comp-picks');
-    let mine = await picksStore.get(token, { type: 'json' }).catch(() => null);
-    if (!mine || mine.round !== round.id) mine = { round: round.id, picks: {} };
-    mine.picks[gameId] = team;
+    const mine = normalizePicks(await picksStore.get(token, { type: 'json' }).catch(() => null));
+    if (!mine.rounds[round.id]) mine.rounds[round.id] = { picks: {} };
+    mine.rounds[round.id].picks[gameId] = team;
     await picksStore.setJSON(token, mine);
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ok: true, picks: mine.picks }),
+      body: JSON.stringify({ ok: true, picks: mine.rounds[round.id].picks }),
     };
   } catch (err) {
     console.error('save-pick error:', err);

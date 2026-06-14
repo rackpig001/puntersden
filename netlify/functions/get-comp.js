@@ -4,7 +4,9 @@
 // saved picks, their points, and the weekly ladder (handle + points only).
 //
 // Fixtures live in comp.json (committed to GitHub, bundled with the function).
-// Picks live in the 'comp-picks' Blobs store, keyed by token: { round, picks:{gameId:team} }.
+// Picks live in the 'comp-picks' Blobs store, keyed by token, in the MULTI-ROUND shape
+//   { rounds: { [roundId]: { picks: { gameId: team } } } }
+// so past rounds are preserved (legacy { round, picks } records are read transparently).
 // Scoring: 1pt per correct winner, x2 on games flagged "double", +3 per code clean-swept.
 
 const Stripe = require('stripe');
@@ -31,8 +33,6 @@ function loadRound() {
   }
 }
 
-// Parse a kickoff timestamp robustly. Returns ms since epoch, or NaN if unreadable.
-// Tolerates a space instead of the 'T'. Callers FAIL CLOSED on NaN (treat as locked).
 function kickoffMs(s) {
   if (!s) return NaN;
   let t = new Date(s).getTime();
@@ -40,7 +40,16 @@ function kickoffMs(s) {
   return t;
 }
 
-// Points for one member's picks against the graded results in this round.
+// Read picks for ONE round out of either the multi-round shape or a legacy single-round record.
+function picksForRound(rec, roundId) {
+  if (!rec) return null;
+  if (rec.rounds && typeof rec.rounds === 'object') {
+    return (rec.rounds[roundId] && rec.rounds[roundId].picks) ? rec.rounds[roundId].picks : null;
+  }
+  if (rec.round === roundId && rec.picks) return rec.picks;   // legacy
+  return null;
+}
+
 function scorePicks(games, picks) {
   picks = picks || {};
   let pts = 0;
@@ -49,7 +58,6 @@ function scorePicks(games, picks) {
     (byCode[g.code] = byCode[g.code] || []).push(g);
     if (g.result && picks[g.id] === g.result) pts += (g.double ? 2 : 1);
   }
-  // Clean-sweep bonus: +3 per code where every game is graded AND every pick was right.
   for (const code of Object.keys(byCode)) {
     const cg = byCode[code];
     const allGraded = cg.length > 0 && cg.every(g => g.result);
@@ -86,26 +94,23 @@ exports.handler = async (event) => {
       return {
         id: g.id, code: g.code, day: g.day, home: g.home, away: g.away,
         kickoff: g.kickoff, double: !!g.double, result: g.result || null,
-        locked: isNaN(ms) ? true : ms <= now,    // fail closed: unreadable kickoff = locked
+        locked: isNaN(ms) ? true : ms <= now,
       };
     });
 
     const picksStore = store('comp-picks');
-    const mineRec = await picksStore.get(token, { type: 'json' }).catch(() => null);
-    const myPicks = (mineRec && mineRec.round === round.id && mineRec.picks) ? mineRec.picks : {};
+    const myPicks = picksForRound(await picksStore.get(token, { type: 'json' }).catch(() => null), round.id) || {};
 
-    // Build the weekly ladder from everyone's picks for this round.
-    // Launch scale (tens of members) is fine to list on each call, like leaderboard.js.
     const ladder = [];
     try {
       const listed = await picksStore.list();
       const keys = (listed && listed.blobs ? listed.blobs : []).map(b => b.key);
       for (const k of keys) {
-        const rec = await picksStore.get(k, { type: 'json' }).catch(() => null);
-        if (!rec || rec.round !== round.id || !rec.picks) continue;
+        const rp = picksForRound(await picksStore.get(k, { type: 'json' }).catch(() => null), round.id);
+        if (!rp) continue;
         const m = await members.get(k, { type: 'json' }).catch(() => null);
-        if (!m || !m.handle) continue;            // only members who've set a comp name show
-        ladder.push({ handle: m.handle, points: scorePicks(round.games, rec.picks) });
+        if (!m || !m.handle) continue;
+        ladder.push({ handle: m.handle, points: scorePicks(round.games, rp) });
       }
     } catch (e) {
       console.error('comp ladder build failed (non-blocking):', e.message);
