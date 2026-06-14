@@ -286,6 +286,34 @@
   .mg-v { font-size:14px; margin-top:4px; }
   .mg-lock { color:var(--muted); font-size:11px; }
   .mg-note { font-size:12px; color:var(--muted); margin-top:9px; }
+  .comp-hist { margin-top:26px; border-top:1px solid var(--line); padding-top:14px; }
+  .comp-hist > summary { cursor:pointer; font-family:'Anton',sans-serif; font-size:18px; color:#fff; list-style:none; display:flex; align-items:center; gap:8px; }
+  .comp-hist > summary::-webkit-details-marker { display:none; }
+  .comp-hist .caret { transition:transform .15s; font-size:14px; }
+  .comp-hist[open] > summary .caret { transform:rotate(180deg); }
+  .comp-hist-body { margin-top:12px; }
+  .hist-r { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:12px; }
+  .hist-r-h { font-family:'Anton',sans-serif; font-size:16px; color:#fff; }
+  .hist-you { font-size:12.5px; color:var(--muted); margin:3px 0 11px; } .hist-you b { color:var(--gold); }
+  .hist-lad-row { display:flex; align-items:center; gap:10px; background:var(--panel-2); border:1px solid var(--line); border-radius:9px; padding:8px 11px; margin-bottom:6px; font-size:13px; }
+  .hist-lad-row.me { border-color:var(--gold); background:rgba(245,197,66,.08); }
+  .hist-lad-row .r { font-family:'Anton',sans-serif; color:var(--muted); width:18px; text-align:center; }
+  .hist-lad-row .h { flex:1; font-weight:600; }
+  .hist-lad-row .p { font-family:'Anton',sans-serif; color:#fff; }
+  .hist-empty { font-size:12.5px; color:var(--muted); padding:6px 0; }
+  .hist-mine-d { margin-top:10px; }
+  .hist-mine-d > summary { cursor:pointer; font-size:12.5px; font-weight:800; color:var(--gold); list-style:none; display:flex; align-items:center; gap:6px; }
+  .hist-mine-d > summary::-webkit-details-marker { display:none; }
+  .hist-mine-d .caret { transition:transform .15s; }
+  .hist-mine-d[open] .caret { transform:rotate(180deg); }
+  .hist-mine { margin-top:8px; }
+  .hist-g { display:flex; justify-content:space-between; gap:10px; font-size:12.5px; padding:6px 0; border-bottom:1px solid var(--line); }
+  .hist-g:last-child { border-bottom:none; }
+  .hist-g .gm { color:var(--text); }
+  .hist-g .pk { font-weight:700; white-space:nowrap; }
+  .hist-g.ok .pk { color:var(--green); }
+  .hist-g.miss .pk { color:var(--loss); }
+  .hist-g.nopick .pk { color:var(--muted); }
 </style>
 </head>
 <body>
@@ -680,10 +708,12 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
         h += '<div class="lad-row' + (me ? ' me' : '') + '"><span class="lad-rank">' + (i + 1) + '</span><span class="lad-h">' + escapeHtml(r.handle) + (badge ? '<span class="lad-badge">' + badge + '</span>' : '') + (me ? '<span class="you">you</span>' : '') + '</span><span class="lad-p">' + r.points + '</span></div>';
       });
     }
+    h += '<div id="compHistMount"></div>';
     panel.innerHTML = h;
     wireProfile();
     panel.querySelectorAll('.code-box[data-code]').forEach(function (b) { b.addEventListener('click', function () { compState.activeCode = b.dataset.code; renderCompBody(); window.scrollTo({ top: 0, behavior: 'smooth' }); }); });
     panel.querySelectorAll('.pick-btn[data-g]').forEach(function (btn) { btn.addEventListener('click', function () { savePick(btn.dataset.g, btn.dataset.team); }); });
+    mountCompHistory();
   }
   async function savePick(gameId, team) {
     compState.picks[gameId] = team;   // optimistic
@@ -713,6 +743,58 @@ var qrcode=(function(){var P=function(x,w){var g=236,l=17,n=x,s=O[w],t=null,r=0,
     renderCompBody();
     renderNotif();
     renderCardVals();
+  }
+  var compHistHTML = null;
+  function mountCompHistory(){
+    var mt = document.getElementById('compHistMount'); if(!mt) return;
+    mt.innerHTML = '<details class="comp-hist"><summary>📂 Past rounds <span class="caret">▾</span></summary><div class="comp-hist-body" id="compHistBody">' + (compHistHTML || '') + '</div></details>';
+    var dt = mt.querySelector('.comp-hist');
+    if (dt) dt.addEventListener('toggle', function(){ if (dt.open && !compHistHTML) loadCompHistory(); });
+  }
+  async function loadCompHistory(){
+    var body = document.getElementById('compHistBody');
+    if (body && !compHistHTML) body.innerHTML = '<div class="state" style="padding:14px;"><p>Loading past rounds…</p></div>';
+    try {
+      var res = await fetch('/.netlify/functions/get-comp-history?key=' + encodeURIComponent(key));
+      var d = await res.json();
+      compHistHTML = compHistoryHTML((d && d.rounds) || []);
+    } catch(e){ compHistHTML = '<div class="state" style="padding:14px;"><p>Could not load past rounds — try again shortly.</p></div>'; }
+    body = document.getElementById('compHistBody'); if (body) body.innerHTML = compHistHTML;
+  }
+  function compHistoryHTML(rounds){
+    if (!rounds.length) return '<div class="state" style="padding:14px;"><p>No finished rounds yet — they show up here once a round wraps.</p></div>';
+    var out = '';
+    rounds.forEach(function(r){
+      var lad = (r.ladder || []).slice();
+      var meIdx = -1;
+      lad.forEach(function(x,i){ if (handle && x.handle && x.handle.toLowerCase()===handle.toLowerCase()) meIdx = i; });
+      var show = lad.slice(0,3);
+      if (meIdx >= 3) show.push(lad[meIdx]);
+      var ladHtml = '';
+      show.forEach(function(x){
+        var realRank = lad.indexOf(x) + 1;
+        var me = handle && x.handle && x.handle.toLowerCase()===handle.toLowerCase();
+        var crown = (realRank===1 && x.points>0) ? '🔥 ' : '';
+        ladHtml += '<div class="hist-lad-row' + (me?' me':'') + '"><span class="r">' + realRank + '</span><span class="h">' + crown + escapeHtml(x.handle) + (me?' (you)':'') + '</span><span class="p">' + x.points + '</span></div>';
+      });
+      if (!lad.length) ladHtml = '<div class="hist-empty">No comp entries that round.</div>';
+      var games = r.games || [];
+      var made = 0, mineHtml = '';
+      games.forEach(function(g){
+        var pick = r.myPicks ? r.myPicks[g.id] : null;
+        var cls, tag;
+        if (!pick) { cls='nopick'; tag='no pick'; }
+        else { made++; if (pick===g.result){ cls='ok'; tag=escapeHtml(pick)+' ✓'; } else { cls='miss'; tag=escapeHtml(pick)+' ✗'; } }
+        mineHtml += '<div class="hist-g ' + cls + '"><span class="gm">' + escapeHtml(g.home) + ' v ' + escapeHtml(g.away) + '</span><span class="pk">' + tag + '</span></div>';
+      });
+      var youLine = made ? ('You scored <b>' + (r.myPoints||0) + ' pt' + ((r.myPoints===1)?'':'s') + '</b> this round') : 'No picks from you this round';
+      out += '<div class="hist-r"><div class="hist-r-h">' + escapeHtml(r.label||r.id) + '</div>'
+        + '<div class="hist-you">' + youLine + '</div>'
+        + '<div class="hist-lad">' + ladHtml + '</div>'
+        + '<details class="hist-mine-d"><summary>Your picks <span class="caret">▾</span></summary><div class="hist-mine">' + (mineHtml||'<div class="hist-empty">No games.</div>') + '</div></details>'
+        + '</div>';
+    });
+    return out;
   }
   function renderComp() {
     var panel = document.getElementById('p-comp');
