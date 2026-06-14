@@ -5,7 +5,7 @@
       "id": "r15-afl14",
       "label": "NRL R15 · AFL R14",
       "week": "Round 15 NRL / Round 14 AFL",
-      "live": true,
+      "live": false,
       "bronze": [
         {
           "day": "Sat",
@@ -15,7 +15,9 @@
           "sel": "Canberra Raiders to Win",
           "tag": "STRONG",
           "avg": "1.65",
-          "reason": "The Eels are without both recognised halves — Mitch Moses (confirmed out) and Jonah Pezet — running a makeshift spine against a Raiders side chasing the eight. Parramatta were already the comp's leakiest defence. Saturday 7:35pm AEST at CommBank Stadium."
+          "reason": "The Eels are without both recognised halves — Mitch Moses (confirmed out) and Jonah Pezet — running a makeshift spine against a Raiders side chasing the eight. Parramatta were already the comp's leakiest defence. Saturday 7:35pm AEST at CommBank Stadium.",
+          "result": "loss",
+          "note": "Eels pinched it 15–12 — Parramatta's patched-up spine held on. Didn't go our way."
         },
         {
           "day": "Sat",
@@ -25,7 +27,9 @@
           "sel": "North Melbourne to Win",
           "tag": "VALUE",
           "avg": "1.59",
-          "reason": "Value on the road against a West Coast side missing Reuben Ginbey, with the Eagles short on run. ⚠️ Indicative price — confirm both teams at the Thursday drop and check your bookie. Saturday 4:15pm AEST, Optus Stadium."
+          "reason": "Value on the road against a West Coast side missing Reuben Ginbey, with the Eagles short on run. ⚠️ Indicative price — confirm both teams at the Thursday drop and check your bookie. Saturday 4:15pm AEST, Optus Stadium.",
+          "result": "win",
+          "note": "Nailbiter at Optus — North held on 74–73 (10.14 to 10.13). Got there by a point."
         }
       ],
       "silver": [
@@ -41,7 +45,9 @@
             "Jamayne Isaako Anytime Try ($1.65)",
             "Herbie Farnworth Anytime Try ($1.90)"
           ],
-          "reason": "The Roosters lose their entire spine to Origin — Tedesco, Walker, Robson and Radley all out — while the Dolphins keep their attack intact at home. Isaako and Farnworth both confirmed named. Friday 8:00pm AEST at Suncorp Stadium."
+          "reason": "The Roosters lose their entire spine to Origin — Tedesco, Walker, Robson and Radley all out — while the Dolphins keep their attack intact at home. Isaako and Farnworth both confirmed named. Friday 8:00pm AEST at Suncorp Stadium.",
+          "result": "loss",
+          "note": "Dolphins romped it 48–10 and Farnworth crossed, but Isaako didn't get a try (kicked seven goals instead) — one leg short."
         },
         {
           "day": "Fri",
@@ -55,7 +61,9 @@
             "Jack Martin Anytime Goal",
             "Shaun Mannagh Anytime Goal"
           ],
-          "reason": "Geelong are short favourites at home with Gold Coast among the worst in the comp at stopping small forwards. Martin has kicked a goal in 8 straight at GMHBA; Mannagh has had bags of 3, 4, 3 and 5. ⚠️ Tom Stewart out (concussion). Build it in your bookie app to confirm the price. Friday 7:40pm AEST, GMHBA Stadium."
+          "reason": "Geelong are short favourites at home with Gold Coast among the worst in the comp at stopping small forwards. Martin has kicked a goal in 8 straight at GMHBA; Mannagh has had bags of 3, 4, 3 and 5. ⚠️ Tom Stewart out (concussion). Build it in your bookie app to confirm the price. Friday 7:40pm AEST, GMHBA Stadium.",
+          "result": "loss",
+          "note": "Geelong won big, 105–60, but the multi needed both Martin and Mannagh to goal and neither did — leg down."
         }
       ],
       "gold": [
@@ -71,7 +79,9 @@
             "Alex Johnston Anytime Try ($1.55)",
             "David Fifita Anytime Try ($2.50)"
           ],
-          "reason": "Gold exclusive. Broncos have dropped five straight and are without Walsh, Haas, Staggs and Carrigan. Johnston is the greatest tryscorer the game has seen and Souths are home and desperate for the points. ⚠️ Origin outs both ways — confirm the teams before backing. Thursday 7:50pm AEST at Accor Stadium."
+          "reason": "Gold exclusive. Broncos have dropped five straight and are without Walsh, Haas, Staggs and Carrigan. Johnston is the greatest tryscorer the game has seen and Souths are home and desperate for the points. ⚠️ Origin outs both ways — confirm the teams before backing. Thursday 7:50pm AEST at Accor Stadium.",
+          "result": "win",
+          "note": "Clean sweep — Souths 48–6, Johnston bagged four and Fifita crossed. Every leg home."
         },
         {
           "special": true,
@@ -85,7 +95,10 @@
             "NRL · Canberra Raiders to Win ($1.65)",
             "AFL · GWS Giants to Win (~$2.00)"
           ],
-          "reason": "Gold exclusive. Three win plays across both codes, three different games Friday through Sunday — no correlation, no Thursday rush. Dolphins and Raiders are confirmed; GWS is indicative until teams drop. Build it in your bookie app to confirm the combined."
+          "reason": "Gold exclusive. Three win plays across both codes, three different games Friday through Sunday — no correlation, no Thursday rush. Dolphins and Raiders are confirmed; GWS is indicative until teams drop. Build it in your bookie app to confirm the combined.",
+          "result": "loss",
+          "odds": "4.50",
+          "note": "Dolphins saluted, but the Raiders went down to the Eels (15–12) and GWS lost to St Kilda — multi gone."
         },
         {
           "special": true,
@@ -99,9 +112,12 @@
             "NRL · Isaako + Farnworth Try Double (Same Game Multi) — Dolphins v Roosters ($3.00)",
             "NRL · Johnston 2+ Tries + Fifita Try (Same Game Multi) — Souths v Broncos ($7.50)"
           ],
-          "reason": "Gold exclusive. Five in-form scorers stacked across three games, with the 2+ try legs for the kick. All NRL, all confirmed players. It almost certainly won't land — that's the point. Small stake only, one unit max."
+          "reason": "Gold exclusive. Five in-form scorers stacked across three games, with the 2+ try legs for the kick. All NRL, all confirmed players. It almost certainly won't land — that's the point. Small stake only, one unit max.",
+          "result": "loss",
+          "note": "The Johnston-and-Fifita leg landed, but Khan-Pereira didn't bag two and the Isaako double missed. Long-shot, as billed."
         }
-      ]
+      ],
+      "summary": "2W–4L · -0.41u"
     },
     {
       "id": "r14-afl13",
