@@ -5,20 +5,23 @@
   publish = "."
   functions = "netlify/functions"
 
-# Make sure data files are bundled with the functions that read them.
-# Without this, the functions can't read the file at runtime.
+# Bundle the data files with the functions that read them at runtime.
+# One global list so EVERY function has them — the files are tiny, and this avoids
+# the per-function override gotcha (a function-specific included_files list can
+# replace this one instead of adding to it, which is what was hiding comp-history.json).
 [functions]
-  included_files = ["netlify/functions/tips.json", "netlify/functions/comp.json"]
+  included_files = [
+    "netlify/functions/tips.json",
+    "netlify/functions/comp.json",
+    "netlify/functions/comp-history.json"
+  ]
 
-[functions."get-tips"]
-  included_files = ["netlify/functions/tips.json"]
-
-# The tipping comp functions read comp.json — bundle it with them too.
-[functions."get-comp"]
-  included_files = ["netlify/functions/comp.json"]
-
-[functions."save-pick"]
-  included_files = ["netlify/functions/comp.json"]
+# Always revalidate the Scoreboard data file so a fresh commit shows immediately
+# instead of the browser/CDN serving a stale cached copy.
+[[headers]]
+  for = "/track-record.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 # Pretty URL for the members tips page: /tips → tips.html
 [[redirects]]
@@ -37,9 +40,3 @@
   from = "/find"
   to = "/find.html"
   status = 200
-
-# Function endpoints (called by the site + Stripe). These are automatic,
-# but listed here for clarity:
-#   /.netlify/functions/create-checkout-session   → starts embedded checkout
-#   /.netlify/functions/stripe-webhook            → Stripe calls this on payment/cancel
-#   /.netlify/functions/get-tips                  → members page fetches their tips
