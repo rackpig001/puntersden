@@ -1,0 +1,27 @@
+name: NRL Draft
+# Fires Wed 08:00 AEST (after Tue 4pm team lists). Drafts the NRL slate into a PR you approve.
+on:
+  schedule:
+    - cron: '0 22 * * 2'   # Tue 22:00 UTC = Wed 08:00 AEST
+  workflow_dispatch: {}     # lets you run it on demand from the Actions tab
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Run the NRL cycle for the upcoming round.
+            1. Read CLAUDE.md, PUNTERS-DEN-BRIEF.md and config.json.
+            2. Follow agents/scout.md      -> write scout_board.json
+            3. Follow agents/gatekeeper.md -> write verified_board.json
+            4. Follow agents/analyst.md    -> write slate_draft.json
+            5. Run: node validators/validate-slate.js slate_draft.json config.json
+               If it fails, fix the slate and re-run until it PASSES.
+            6. Open a pull request titled "slate: NRL <round>" containing slate_draft.json
+               plus a short plain-English summary of the tips for the operator to approve.
