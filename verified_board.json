@@ -1,0 +1,191 @@
+{
+  "round": { "id": "r19-afl18", "label": "NRL R19 · AFL R18", "code_cycle": "NRL" },
+  "verified_at": "2026-07-08T10:52:00+10:00",
+  "round_status": "pass",
+  "games": [
+    {
+      "game_id": "n1", "code": "NRL", "day": "Fri", "kickoff": "2026-07-10T18:00:00+10:00",
+      "home": "Broncos", "away": "Rabbitohs", "venue": "Suncorp Stadium",
+      "lineup_confirmed": true, "lineup_source": "NRL.com team lists — Tue 4:00pm",
+      "odds": {
+        "home_win": { "best": 1.62, "bookie": "TAB", "all": { "TAB": 1.62, "Sportsbet": 1.60, "Ladbrokes": 1.61 } },
+        "away_win": { "best": 2.35, "bookie": "Ladbrokes", "all": { "Ladbrokes": 2.35, "Sportsbet": 2.30, "TAB": 2.28 } },
+        "opened": { "home_win": 1.68 }
+      },
+      "model_prob": { "home": 0.61, "away": 0.39 },
+      "players": [
+        { "name": "Reece Walsh", "team": "home", "position": "fullback", "market": "anytime_try", "prob": 0.40, "confirmed": true, "source": "statsinsider" },
+        { "name": "Selwyn Cobbo", "team": "home", "position": "wing", "market": "anytime_try", "prob": 0.47, "confirmed": true, "source": "statsinsider" }
+      ],
+      "form_notes": ["Broncos won 4 of last 5 at Suncorp", "Rabbitohs missing Latrell Mitchell (hamstring)"],
+      "injuries_outs": ["Latrell Mitchell (Rabbitohs) — out (hamstring)"],
+      "sources": ["nrl.com", "statsinsider"], "gaps": [],
+      "verification": {
+        "status": "pass",
+        "checks": { "two_source_agreement": true, "kickoff_in_future": true, "all_named_players_confirmed": true, "freshness_minutes": 22 },
+        "rejected": []
+      }
+    },
+    {
+      "game_id": "n2", "code": "NRL", "day": "Fri", "kickoff": "2026-07-10T20:00:00+10:00",
+      "home": "Wests Tigers", "away": "Warriors", "venue": "Campbelltown Stadium",
+      "lineup_confirmed": true, "lineup_source": "NRL.com team lists — Tue 4:00pm",
+      "odds": {
+        "home_win": { "best": 1.52, "bookie": "Sportsbet", "all": { "Sportsbet": 1.52, "TAB": 1.50, "Ladbrokes": 1.53 } },
+        "away_win": { "best": 2.55, "bookie": "Ladbrokes", "all": { "Ladbrokes": 2.55, "Sportsbet": 2.50, "TAB": 2.48 } },
+        "opened": { "home_win": 1.60 }
+      },
+      "model_prob": { "home": 0.62, "away": 0.38 },
+      "players": [
+        { "name": "Jarome Luai", "team": "home", "position": "five-eighth", "market": "anytime_try", "prob": 0.28, "confirmed": true, "source": "statsinsider" }
+      ],
+      "form_notes": ["Warriors travelling on a short turnaround", "Tigers pushed the Storm last week"],
+      "injuries_outs": ["Api Koroisau (Tigers) — named, cleared to play"],
+      "sources": ["nrl.com", "statsinsider"], "gaps": [],
+      "verification": {
+        "status": "pass",
+        "checks": { "two_source_agreement": true, "kickoff_in_future": true, "all_named_players_confirmed": true, "freshness_minutes": 22 },
+        "rejected": []
+      }
+    },
+    {
+      "game_id": "n3", "code": "NRL", "day": "Sat", "kickoff": "2026-07-11T15:00:00+10:00",
+      "home": "Cowboys", "away": "Knights", "venue": "Queensland Country Bank Stadium",
+      "lineup_confirmed": true, "lineup_source": "NRL.com team lists — Tue 4:00pm",
+      "odds": {
+        "home_win": { "best": 1.75, "bookie": "Sportsbet", "all": { "Sportsbet": 1.75, "TAB": 1.72, "Ladbrokes": 1.73 } },
+        "away_win": { "best": 2.10, "bookie": "TAB", "all": { "TAB": 2.10, "Sportsbet": 2.05, "Ladbrokes": 2.08 } },
+        "opened": { "home_win": 1.80 }
+      },
+      "model_prob": { "home": 0.58, "away": 0.42 },
+      "players": [
+        { "name": "Valentine Holmes", "team": "home", "position": "wing", "market": "anytime_try", "prob": 0.46, "confirmed": true, "source": "statsinsider" }
+      ],
+      "form_notes": ["Cowboys unbeaten at home in last 4", "Knights leaking points on the road"],
+      "injuries_outs": ["Kalyn Ponga (Knights) — named"],
+      "sources": ["nrl.com", "statsinsider"], "gaps": [],
+      "verification": {
+        "status": "pass",
+        "checks": { "two_source_agreement": true, "kickoff_in_future": true, "all_named_players_confirmed": true, "freshness_minutes": 22 },
+        "rejected": []
+      }
+    },
+    {
+      "game_id": "n4", "code": "NRL", "day": "Sat", "kickoff": "2026-07-11T17:30:00+10:00",
+      "home": "Sea Eagles", "away": "Dolphins", "venue": "4 Pines Park",
+      "lineup_confirmed": true, "lineup_source": "NRL.com team lists — Tue 4:00pm",
+      "odds": {
+        "home_win": { "best": 2.15, "bookie": "Ladbrokes", "all": { "Ladbrokes": 2.15, "Sportsbet": 2.10, "TAB": 2.12 } },
+        "away_win": { "best": 1.70, "bookie": "Sportsbet", "all": { "Sportsbet": 1.70, "TAB": 1.68, "Ladbrokes": 1.69 } },
+        "opened": { "away_win": 1.75 }
+      },
+      "model_prob": { "home": 0.42, "away": 0.58 },
+      "players": [
+        { "name": "Herbie Farnworth", "team": "away", "position": "centre", "market": "anytime_try", "prob": 0.49, "confirmed": true, "source": "statsinsider" },
+        { "name": "Jamayne Isaako", "team": "away", "position": "fullback", "market": "anytime_try", "prob": 0.38, "confirmed": true, "source": "statsinsider" }
+      ],
+      "form_notes": ["Dolphins back to full strength", "Manly patchy at home this year"],
+      "injuries_outs": ["Tom Trbojevic (Sea Eagles) — named"],
+      "sources": ["nrl.com", "statsinsider"], "gaps": [],
+      "verification": {
+        "status": "pass",
+        "checks": { "two_source_agreement": true, "kickoff_in_future": true, "all_named_players_confirmed": true, "freshness_minutes": 22 },
+        "rejected": []
+      }
+    },
+    {
+      "game_id": "n5", "code": "NRL", "day": "Sat", "kickoff": "2026-07-11T19:35:00+10:00",
+      "home": "Panthers", "away": "Roosters", "venue": "BlueBet Stadium",
+      "lineup_confirmed": true, "lineup_source": "NRL.com team lists — Tue 4:00pm",
+      "odds": {
+        "home_win": { "best": 1.42, "bookie": "TAB", "all": { "TAB": 1.42, "Sportsbet": 1.40, "Ladbrokes": 1.41 } },
+        "away_win": { "best": 3.00, "bookie": "Sportsbet", "all": { "Sportsbet": 3.00, "TAB": 2.90, "Ladbrokes": 2.95 } },
+        "opened": { "home_win": 1.45 }
+      },
+      "model_prob": { "home": 0.71, "away": 0.29 },
+      "players": [
+        { "name": "Brian To'o", "team": "home", "position": "wing", "market": "anytime_try", "prob": 0.55, "confirmed": true, "source": "statsinsider" },
+        { "name": "Nathan Cleary", "team": "home", "position": "halfback", "market": "anytime_try", "prob": 0.30, "confirmed": true, "source": "statsinsider" }
+      ],
+      "form_notes": ["Panthers back at full strength at home", "Roosters missing Robson (calf)"],
+      "injuries_outs": ["Sam Walker (Roosters) — named", "Connor Watson (Roosters) — out"],
+      "sources": ["nrl.com", "statsinsider"], "gaps": [],
+      "verification": {
+        "status": "pass",
+        "checks": { "two_source_agreement": true, "kickoff_in_future": true, "all_named_players_confirmed": true, "freshness_minutes": 22 },
+        "rejected": []
+      }
+    },
+    {
+      "game_id": "n6", "code": "NRL", "day": "Sun", "kickoff": "2026-07-12T14:00:00+10:00",
+      "home": "Dragons", "away": "Titans", "venue": "WIN Stadium",
+      "lineup_confirmed": true, "lineup_source": "NRL.com team lists — Tue 4:00pm",
+      "odds": {
+        "home_win": { "best": 1.90, "bookie": "Sportsbet", "all": { "Sportsbet": 1.90, "TAB": 1.88, "Ladbrokes": 1.87 } },
+        "away_win": { "best": 1.95, "bookie": "TAB", "all": { "TAB": 1.95, "Sportsbet": 1.92, "Ladbrokes": 1.93 } },
+        "opened": { "home_win": 1.85 }
+      },
+      "model_prob": { "home": 0.51, "away": 0.49 },
+      "players": [],
+      "form_notes": ["Even contest — both sides inconsistent", "Dragons slightly better at home"],
+      "injuries_outs": [],
+      "sources": ["nrl.com", "statsinsider"],
+      "gaps": ["No high-confidence player try prob available for either side — no player legs carried"],
+      "verification": {
+        "status": "pass",
+        "checks": { "two_source_agreement": true, "kickoff_in_future": true, "all_named_players_confirmed": true, "freshness_minutes": 22 },
+        "rejected": [],
+        "note": "Game verified for H2H only. Unresolved player-data gap — cannot carry player-dependent legs."
+      }
+    },
+    {
+      "game_id": "n7", "code": "NRL", "day": "Sun", "kickoff": "2026-07-12T16:05:00+10:00",
+      "home": "Raiders", "away": "Bulldogs", "venue": "GIO Stadium",
+      "lineup_confirmed": true, "lineup_source": "NRL.com team lists — Tue 4:00pm",
+      "odds": {
+        "home_win": { "best": 2.20, "bookie": "Ladbrokes", "all": { "Ladbrokes": 2.20, "Sportsbet": 2.15, "TAB": 2.18 } },
+        "away_win": { "best": 1.68, "bookie": "Sportsbet", "all": { "Sportsbet": 1.68, "TAB": 1.66, "Ladbrokes": 1.67 } },
+        "opened": { "away_win": 1.72 }
+      },
+      "model_prob": { "home": 0.44, "away": 0.56 },
+      "players": [
+        { "name": "Josh Addo-Carr", "team": "away", "position": "wing", "market": "anytime_try", "prob": 0.44, "confirmed": true, "source": "statsinsider" }
+      ],
+      "form_notes": ["Bulldogs top-four form", "Raiders inconsistent at home"],
+      "injuries_outs": ["Matt Burton (Bulldogs) — named"],
+      "sources": ["nrl.com", "statsinsider"], "gaps": [],
+      "verification": {
+        "status": "pass",
+        "checks": { "two_source_agreement": true, "kickoff_in_future": true, "all_named_players_confirmed": true, "freshness_minutes": 22 },
+        "rejected": []
+      }
+    },
+    {
+      "game_id": "n8", "code": "NRL", "day": "Sun", "kickoff": "2026-07-12T18:15:00+10:00",
+      "home": "Storm", "away": "Sharks", "venue": "AAMI Park",
+      "lineup_confirmed": true, "lineup_source": "NRL.com team lists — Tue 4:00pm",
+      "odds": {
+        "home_win": { "best": 1.50, "bookie": "Sportsbet", "all": { "Sportsbet": 1.50, "TAB": 1.48, "Ladbrokes": 1.49 } },
+        "away_win": { "best": 2.60, "bookie": "Ladbrokes", "all": { "Ladbrokes": 2.60, "Sportsbet": 2.55, "TAB": 2.52 } },
+        "opened": { "home_win": 1.68 }
+      },
+      "model_prob": { "home": 0.66, "away": 0.34 },
+      "players": [
+        { "name": "Ryan Papenhuyzen", "team": "home", "position": "fullback", "market": "anytime_try", "prob": 0.42, "confirmed": true, "source": "statsinsider" },
+        { "name": "Harry Grant", "team": "home", "position": "hooker", "market": "anytime_try", "prob": 0.33, "confirmed": true, "source": "statsinsider" },
+        { "name": "Cameron Munster", "team": "home", "position": "five-eighth", "market": "anytime_try", "prob": 0.31, "confirmed": true, "source": "statsinsider" }
+      ],
+      "form_notes": ["Storm strong at AAMI Park (won last 6 at home)", "Sharks missing Nicho Hynes (ankle)", "Heavy money for the Storm — line has shortened sharply"],
+      "injuries_outs": ["Nicho Hynes (Sharks) — out (ankle)"],
+      "sources": ["nrl.com", "statsinsider"], "gaps": [],
+      "verification": {
+        "status": "pass",
+        "checks": { "two_source_agreement": true, "kickoff_in_future": true, "all_named_players_confirmed": true, "freshness_minutes": 22 },
+        "rejected": [],
+        "note": "Line move home_win 1.68 → 1.50 (-10.7%) confirmed across all books — flag to Analyst."
+      }
+    }
+  ],
+  "dropped_games": [],
+  "dropped_reasons": []
+}

@@ -1,0 +1,75 @@
+{
+  "round": { "id": "r19-afl18", "label": "NRL R19 · AFL R18", "code_cycle": "NRL" },
+  "drafted_at": "2026-07-08T11:20:00+10:00",
+  "tiers": {
+    "bronze": [
+      {
+        "type": "h2h_single", "code": "NRL", "game_id": "n1", "day": "Fri",
+        "selection": "Broncos", "odds": 1.62, "bookie": "TAB",
+        "confidence_stars": 3, "flags": ["strong"],
+        "rationale": "Broncos have won 4 of their last 5 at Suncorp and the Rabbitohs are without Latrell Mitchell (hamstring). Model has Brisbane at 61% — right on the market. Friday 6:00pm AEST, Suncorp Stadium."
+      },
+      {
+        "type": "h2h_single", "code": "NRL", "game_id": "n3", "day": "Sat",
+        "selection": "Cowboys", "odds": 1.75, "bookie": "Sportsbet",
+        "confidence_stars": 3, "flags": ["value"],
+        "rationale": "Cowboys unbeaten in their last 4 at home against a Knights side leaking points on the road. Model 58% vs a market implying 57% — a touch of value at $1.75. Saturday 3:00pm AEST, Townsville."
+      },
+      {
+        "type": "h2h_single", "code": "NRL", "game_id": "n8", "day": "Sun",
+        "selection": "Storm", "odds": 1.50, "bookie": "Sportsbet",
+        "confidence_stars": 3, "flags": ["strong", "line-move"],
+        "rationale": "Storm have won their last 6 at AAMI Park and the Sharks are missing Nicho Hynes (ankle). Model 66%. Note the price has been steamed from $1.68 to $1.50 (-10.7%) — the value has largely gone, but it remains the strongest home play of the round. Sunday 6:15pm AEST."
+      }
+    ],
+    "silver": [
+      {
+        "type": "sgm", "code": "NRL", "game_id": "n5", "day": "Sat", "confidence_stars": 4,
+        "legs": [
+          { "market": "team_win", "selection": "Panthers" },
+          { "market": "anytime_try", "player": "Brian To'o", "confirmed": true },
+          { "market": "total_points", "selection": "Over 40.5" }
+        ],
+        "target_odds_band": [3.0, 8.0], "est_odds": 4.40,
+        "rationale": "Panthers are back at full strength at home (model 71%) against a Roosters side missing Robson and Watson. To'o is the round's highest-probability tryscorer (55%) and a comfortable Penrith win points the total over. Built around the win + total with a single scorer leg — anytime-try legs down-weighted after R18. Saturday 7:35pm AEST, BlueBet Stadium."
+      }
+    ],
+    "gold": [
+      {
+        "type": "sgm", "code": "NRL", "game_id": "n8", "day": "Sun", "confidence_stars": 4,
+        "legs": [
+          { "market": "team_win", "selection": "Storm" },
+          { "market": "anytime_try", "player": "Ryan Papenhuyzen", "confirmed": true },
+          { "market": "total_points", "selection": "Over 39.5" }
+        ],
+        "target_odds_band": [3.0, 8.0], "est_odds": 4.80,
+        "rationale": "Gold exclusive. Storm at their AAMI Park fortress (model 66%) with the Sharks missing Hynes. Papenhuyzen is the primary tryscorer from fullback in a side expected to win well; the total leans over in a home blowout. Single scorer leg only. Sunday 6:15pm AEST."
+      },
+      {
+        "type": "hero", "code": "NRL", "special": true,
+        "legs": [
+          { "market": "2+_tries", "player": "Brian To'o", "confirmed": true, "note": "Panthers v Roosters" },
+          { "market": "anytime_try", "player": "Selwyn Cobbo", "confirmed": true, "note": "Broncos v Rabbitohs" },
+          { "market": "anytime_try", "player": "Valentine Holmes", "confirmed": true, "note": "Cowboys v Knights" },
+          { "market": "anytime_try", "player": "Herbie Farnworth", "confirmed": true, "note": "Sea Eagles v Dolphins" }
+        ],
+        "range": "30-45",
+        "note": "Gold exclusive — the weekly long-shot. Four in-form scorers stacked across four games, all confirmed named. It almost certainly won't land — that's the point. Small stake only, one unit max."
+      }
+    ]
+  },
+  "line_moves": [
+    { "game_id": "n8", "market": "home_win", "open": 1.68, "now": 1.50, "pct": -10.7, "flagged": true },
+    { "game_id": "n2", "market": "home_win", "open": 1.60, "now": 1.52, "pct": -5.0, "flagged": false },
+    { "game_id": "n1", "market": "home_win", "open": 1.68, "now": 1.62, "pct": -3.6, "flagged": false }
+  ],
+  "applied_feedback": [
+    "Tightened the 4-star bar (R18: 4-star hit 58% vs the 85% claim) — reserved 4 stars for the two clearest model edges only, the Panthers (71%) and Storm (66%) SGM anchors, and held the thinner H2H edges at 3 stars.",
+    "Down-weighted anytime-try legs (R18: anytime-try strike 41%) — capped each SGM at a single tryscorer leg, building around team_win + totals rather than stacking multiple scorer legs."
+  ],
+  "validator_report": { "status": "pass", "failures": [] },
+  "notes": [
+    "NRL cycle only (one code per run). AFL R18 team lists drop Thursday ~6:20pm, so the Gold cross-sport multi is deferred to the Thursday AFL cycle rather than built on unverified AFL legs.",
+    "All odds are indicative — the operator confirms final builder prices before publishing."
+  ]
+}
