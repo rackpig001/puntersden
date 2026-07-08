@@ -1,0 +1,8 @@
+{
+  "round": "NRL R18 · AFL R17",
+  "summary": "5W-3L +2.1u",
+  "by_confidence": { "3star": { "w": 20, "l": 9, "strike": 0.69 }, "4star": { "w": 14, "l": 10, "strike": 0.58 } },
+  "by_market": { "h2h": { "strike": 0.71 }, "sgm": { "strike": 0.44 }, "anytime_try": { "strike": 0.41 } },
+  "by_sport": { "NRL": { "strike": 0.63 }, "AFL": { "strike": 0.60 } },
+  "flags": ["4-star hitting 58% vs 85% claim — tighten the bar", "anytime-try legs underperforming — down-weight"]
+}
