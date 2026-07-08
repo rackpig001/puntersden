@@ -1,0 +1,23 @@
+name: Publish (on approval)
+# Fires when you MERGE a "slate:" PR. Turns the approved slate into the live files.
+on:
+  pull_request:
+    types: [closed]
+permissions:
+  contents: write
+jobs:
+  publish:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.title, 'slate:')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            The operator approved this slate by merging the PR. Follow agents/publisher.md:
+            1. Run: node validators/validate-slate.js slate_draft.json config.json  (if fail, STOP)
+            2. Generate netlify/functions/tips.json, the comp.json doubles patch, sms.txt and posts.md.
+            3. Commit them to main. Respect the comp commit order (archive before roll).
+            Do NOT send SMS automatically — leave sms.txt for the operator to send by hand.
