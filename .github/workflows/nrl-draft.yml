@@ -16,13 +16,15 @@ jobs:
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_args: '--allowedTools "Read,Write,Edit,Bash,WebSearch,WebFetch" --permission-mode acceptEdits'
           prompt: |
-            Run the NRL cycle for the upcoming round.
+            Run the NRL cycle for the upcoming round. Work autonomously to completion.
             1. Read CLAUDE.md, PUNTERS-DEN-BRIEF.md and config.json.
             2. Follow agents/scout.md      -> write scout_board.json
             3. Follow agents/gatekeeper.md -> write verified_board.json
             4. Follow agents/analyst.md    -> write slate_draft.json
             5. Run: node validators/validate-slate.js slate_draft.json config.json
                If it fails, fix the slate and re-run until it PASSES.
-            6. Open a pull request titled "slate: NRL <round>" containing slate_draft.json
-               plus a short plain-English summary of the tips for the operator to approve.
+            6. Create a new branch, commit the files, and open a pull request titled
+               "slate: NRL <round>" with slate_draft.json plus a short plain-English
+               summary of the tips. Use the gh CLI or git as needed.
