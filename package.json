@@ -1,9 +1,13 @@
 {
-  "name": "punters-den-pipeline",
+  "name": "punters-den",
   "version": "1.0.0",
+  "description": "The Punters Den — AI NRL & AFL tipping service",
   "private": true,
-  "description": "The Punters Den automated tipping pipeline — agents, validators, config.",
   "scripts": {
     "validate": "node validators/validate-slate.js validators/slate_draft.example.json config.json"
+  },
+  "dependencies": {
+    "stripe": "^17.0.0",
+    "@netlify/blobs": "^8.1.0"
   }
 }
