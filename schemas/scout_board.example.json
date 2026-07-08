@@ -1,0 +1,19 @@
+{
+  "round": { "id": "r19-afl18", "label": "NRL R19 · AFL R18", "code_cycle": "NRL" },
+  "generated_at": "2026-07-07T16:35:00+10:00",
+  "games": [
+    {
+      "game_id": "n1", "code": "NRL", "day": "Fri",
+      "kickoff": "2026-07-10T20:00:00+10:00",
+      "home": "Wests Tigers", "away": "Warriors", "venue": "Campbelltown Stadium",
+      "lineup_confirmed": true, "lineup_source": "NRL.com team lists — Tue 4:00pm",
+      "odds": { "home_win": { "best": 1.52, "bookie": "Sportsbet", "all": { "Sportsbet": 1.52, "TAB": 1.50 } },
+                "away_win": { "best": 2.55, "bookie": "Ladbrokes" }, "opened": { "home_win": 1.60 } },
+      "model_prob": { "home": 0.63, "away": 0.37 },
+      "players": [ { "name": "Jason Saab", "team": "away", "position": "wing", "market": "anytime_try", "prob": 0.486, "confirmed": true, "source": "statsinsider" } ],
+      "form_notes": ["Warriors 3 wins on the bounce"], "injuries_outs": ["Api Koroisau (Tigers) out"],
+      "sources": ["url1", "url2"], "gaps": []
+    }
+  ],
+  "unresolved_gaps": []
+}
