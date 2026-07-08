@@ -4,7 +4,7 @@ on:
     - cron: '0 22 * * 2'   # Wed 08:00 AEST
   workflow_dispatch: {}
 permissions:
-  contents: write
+  contents: read
   id-token: write
 jobs:
   draft:
@@ -21,6 +21,8 @@ jobs:
             2. Follow agents/scout.md, agents/gatekeeper.md, agents/analyst.md in order,
                writing scout_board.json, verified_board.json, slate_draft.json.
             3. Run: node validators/validate-slate.js slate_draft.json config.json
-               If it fails, fix slate_draft.json and re-run until it PASSES.
-            4. Write a plain-English summary of the tips to DRAFT_SUMMARY.md.
-            5. Commit all of these to the main branch with message "NRL draft <round>".
+               Fix and re-run until it PASSES.
+            4. FINALLY, print the full contents of slate_draft.json to the terminal by
+               running:  cat slate_draft.json
+               Then print a plain-English summary of the tips. This log output is the
+               deliverable — make sure the full slate JSON is visible in the output.
