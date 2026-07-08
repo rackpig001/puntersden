@@ -1,0 +1,22 @@
+name: AFL Draft
+# Fires Thu 19:00 AEST (after ~6:20pm team selection). Drafts the AFL slate into a PR you approve.
+on:
+  schedule:
+    - cron: '0 9 * * 4'    # Thu 09:00 UTC = Thu 19:00 AEST
+  workflow_dispatch: {}
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Run the AFL cycle for the upcoming round.
+            Same steps as the NRL cycle, but for AFL, and honour config.json
+            "skip_thursday_afl_game". Follow scout -> gatekeeper -> analyst,
+            validate the slate until it passes, then open a PR titled "slate: AFL <round>".
