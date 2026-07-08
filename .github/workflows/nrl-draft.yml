@@ -1,9 +1,8 @@
 name: NRL Draft
-# Fires Wed 08:00 AEST (after Tue 4pm team lists). Drafts the NRL slate into a PR you approve.
 on:
   schedule:
-    - cron: '0 22 * * 2'   # Tue 22:00 UTC = Wed 08:00 AEST
-  workflow_dispatch: {}     # lets you run it on demand from the Actions tab
+    - cron: '0 22 * * 2'   # Wed 08:00 AEST
+  workflow_dispatch: {}
 permissions:
   contents: write
   pull-requests: write
@@ -20,11 +19,20 @@ jobs:
           prompt: |
             Run the NRL cycle for the upcoming round. Work autonomously to completion.
             1. Read CLAUDE.md, PUNTERS-DEN-BRIEF.md and config.json.
-            2. Follow agents/scout.md      -> write scout_board.json
-            3. Follow agents/gatekeeper.md -> write verified_board.json
-            4. Follow agents/analyst.md    -> write slate_draft.json
-            5. Run: node validators/validate-slate.js slate_draft.json config.json
-               If it fails, fix the slate and re-run until it PASSES.
-            6. Create a new branch, commit the files, and open a pull request titled
-               "slate: NRL <round>" with slate_draft.json plus a short plain-English
-               summary of the tips. Use the gh CLI or git as needed.
+            2. Follow agents/scout.md, agents/gatekeeper.md, agents/analyst.md in order,
+               writing scout_board.json, verified_board.json, slate_draft.json.
+            3. Run: node validators/validate-slate.js slate_draft.json config.json
+               If it fails, fix slate_draft.json and re-run until it PASSES.
+            4. Write a short plain-English summary of the tips to PR_BODY.md.
+            Do NOT commit, push, branch, or open a PR yourself — the workflow does that.
+      - name: Open PR with the draft
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: slate/nrl-auto
+          title: "slate: NRL draft"
+          body-path: PR_BODY.md
+          add-paths: |
+            slate_draft.json
+            scout_board.json
+            verified_board.json
+            PR_BODY.md
