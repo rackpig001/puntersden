@@ -5,15 +5,12 @@ on:
   workflow_dispatch: {}
 permissions:
   contents: write
-  pull-requests: write
   id-token: write
 jobs:
   draft:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Seed a default PR body
-        run: echo "Automated NRL slate draft. Review the tips in slate_draft.json, then merge to approve." > PR_BODY.md
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -25,16 +22,5 @@ jobs:
                writing scout_board.json, verified_board.json, slate_draft.json.
             3. Run: node validators/validate-slate.js slate_draft.json config.json
                If it fails, fix slate_draft.json and re-run until it PASSES.
-            4. Overwrite PR_BODY.md with a short plain-English summary of the tips.
-            Do NOT commit, push, branch, or open a PR yourself — the workflow does that.
-      - name: Open PR with the draft
-        uses: peter-evans/create-pull-request@v6
-        with:
-          branch: slate/nrl-auto
-          title: "slate: NRL draft"
-          body-path: PR_BODY.md
-          add-paths: |
-            slate_draft.json
-            scout_board.json
-            verified_board.json
-            PR_BODY.md
+            4. Write a plain-English summary of the tips to DRAFT_SUMMARY.md.
+            5. Commit all of these to the main branch with message "NRL draft <round>".
