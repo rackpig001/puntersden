@@ -1,0 +1,23 @@
+name: Grade & Settle
+# Fires Mon 10:00 AEST. Grades the weekend, settles the comp, feeds the learning loop.
+on:
+  schedule:
+    - cron: '0 0 * * 1'    # Mon 00:00 UTC = Mon 10:00 AEST
+  workflow_dispatch: {}
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Follow agents/scorecard.md to grade the round that just finished.
+            Get results from the results feed (or the operator-provided results file).
+            Update track-record.js (newest on top), settle + archive the comp
+            (archive into comp-history.json BEFORE rolling comp.json), write feedback.json,
+            then open a PR titled "grade: <round>" for the operator to review.
