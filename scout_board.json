@@ -1,0 +1,186 @@
+{
+  "round": { "id": "r19-afl18", "label": "NRL R19 · AFL R18", "code_cycle": "NRL" },
+  "generated_at": "2026-07-08T08:05:00+10:00",
+  "_scout_note": "Web-sourced run (no paid odds/results feeds wired). Round 19 is a post-Origin weekend: State of Origin Game 3 is played Wed 8 Jul 8:05pm AEST at Suncorp, AFTER this Wednesday-morning draft. Team lists were named Tue 7 Jul 4pm, so Origin players are NAMED but clubs will decide post-game whether stars back up or are rested — real lineup risk. Anytime-tryscorer probabilities could not be cross-sourced to standard and are recorded in gaps, not guessed. Odds are indicative market prices, not locked builder prices.",
+  "games": [
+    {
+      "game_id": "n1",
+      "code": "NRL",
+      "day": "Fri",
+      "kickoff": "2026-07-10T20:00:00+10:00",
+      "home": "Wests Tigers",
+      "away": "Warriors",
+      "venue": "Campbelltown Sports Stadium",
+      "lineup_confirmed": true,
+      "lineup_source": "NRL.com team lists — Tue 7 Jul 4:00pm (pre-Origin)",
+      "odds": {
+        "home_win": { "best": 3.20, "bookie": "Sportsbet", "all": {} },
+        "away_win": { "best": 1.36, "bookie": "Sportsbet", "all": {} },
+        "opened": {}
+      },
+      "model_prob": { "home": 0.22, "away": 0.78 },
+      "players": [],
+      "form_notes": ["Warriors strong favourites and tipped for a 13+ margin", "Tigers named Jarome Luai, Heath Mason, Jared Haywood, Samuela Fainu in"],
+      "injuries_outs": ["Apisai Koroisau (Tigers) — out"],
+      "sources": [
+        "https://www.theroar.com.au/rugby-league/nrl-fixtures/",
+        "https://www.zerotackle.com/nrl/fixtures-results/",
+        "https://www.statsinsider.com.au/news/nrl-tips-for-this-weekend-round-19-2026"
+      ],
+      "gaps": ["No cross-sourced anytime-tryscorer probabilities", "Warriors away price ($1.36) below $1.50 H2H floor — not a single candidate"]
+    },
+    {
+      "game_id": "n2",
+      "code": "NRL",
+      "day": "Sat",
+      "kickoff": "2026-07-11T15:00:00+10:00",
+      "home": "Dolphins",
+      "away": "Sharks",
+      "venue": "Kayo Stadium, Redcliffe",
+      "lineup_confirmed": true,
+      "lineup_source": "NRL.com team lists — Tue 7 Jul 4:00pm (pre-Origin)",
+      "odds": {
+        "home_win": { "best": 1.52, "bookie": "Sportsbet", "all": {} },
+        "away_win": { "best": 2.55, "bookie": "Ladbrokes", "all": {} },
+        "opened": {}
+      },
+      "model_prob": { "home": 0.63, "away": 0.37 },
+      "form_notes": ["Dolphins model favourite at home", "Close-game tip (1–12 margin)"],
+      "injuries_outs": [],
+      "sources": [
+        "https://www.statsinsider.com.au/news/nrl-tips-for-this-weekend-round-19-2026",
+        "https://www.zerotackle.com/nrl/fixtures-results/",
+        "https://www.gobet.com.au/nrl-tips/nrl-round-19-2026/"
+      ],
+      "gaps": ["No cross-sourced anytime-tryscorer probabilities for a Dolphins/Sharks SGM anchor", "Sharks carry Origin-representative backup risk"]
+    },
+    {
+      "game_id": "n3",
+      "code": "NRL",
+      "day": "Sat",
+      "kickoff": "2026-07-11T19:35:00+10:00",
+      "home": "Bulldogs",
+      "away": "Raiders",
+      "venue": "Accor Stadium",
+      "lineup_confirmed": true,
+      "lineup_source": "NRL.com team lists — Tue 7 Jul 4:00pm (pre-Origin)",
+      "odds": {
+        "home_win": { "best": 1.56, "bookie": "Sportsbet", "all": {} },
+        "away_win": { "best": 2.45, "bookie": "Ladbrokes", "all": {} },
+        "opened": {}
+      },
+      "model_prob": { "home": 0.67, "away": 0.33 },
+      "form_notes": ["Raiders named Ethan Strange & Hudson Young backing up from Origin; Josh Papalii back from calf injury"],
+      "injuries_outs": [],
+      "sources": [
+        "https://www.statsinsider.com.au/news/nrl-tips-for-this-weekend-round-19-2026",
+        "https://www.zerotackle.com/nrl/fixtures-results/"
+      ],
+      "gaps": ["Source conflict on winner: model/odds favour Bulldogs (67%, $1.56) but a margin-tip source tipped Raiders — not a clean single", "Venue disputed across sources (Accor vs Allianz)", "Raiders carry Origin backup fatigue risk", "No cross-sourced anytime-tryscorer probabilities"]
+    },
+    {
+      "game_id": "n4",
+      "code": "NRL",
+      "day": "Sat",
+      "kickoff": "2026-07-11T21:35:00+10:00",
+      "home": "Roosters",
+      "away": "Eels",
+      "venue": "Allianz Stadium",
+      "lineup_confirmed": true,
+      "lineup_source": "NRL.com team lists — Tue 7 Jul 4:00pm (pre-Origin)",
+      "odds": {
+        "home_win": { "best": 1.20, "bookie": "Sportsbet", "all": {} },
+        "away_win": { "best": 4.50, "bookie": "Ladbrokes", "all": {} },
+        "opened": {}
+      },
+      "model_prob": { "home": 0.82, "away": 0.18 },
+      "form_notes": ["Roosters heaviest favourite of the round; tipped for a 13+ margin"],
+      "injuries_outs": [],
+      "sources": [
+        "https://www.statsinsider.com.au/news/nrl-tips-for-this-weekend-round-19-2026",
+        "https://www.zerotackle.com/nrl/fixtures-results/"
+      ],
+      "gaps": ["Day disputed across sources (Sat vs Sun)", "Roosters price ($1.20) well below $1.50 H2H floor — not a single candidate", "Roosters are Origin-heavy — backup risk", "No cross-sourced anytime-tryscorer probabilities"]
+    },
+    {
+      "game_id": "n5",
+      "code": "NRL",
+      "day": "Sun",
+      "kickoff": "2026-07-12T14:00:00+10:00",
+      "home": "Rabbitohs",
+      "away": "Knights",
+      "venue": "Accor Stadium",
+      "lineup_confirmed": true,
+      "lineup_source": "NRL.com team lists — Tue 7 Jul 4:00pm (pre-Origin)",
+      "odds": {
+        "home_win": { "best": 1.91, "bookie": "Sportsbet", "all": {} },
+        "away_win": { "best": 1.91, "bookie": "Sportsbet", "all": {} },
+        "opened": {}
+      },
+      "model_prob": { "home": 0.46, "away": 0.54 },
+      "form_notes": ["Essentially a coin-flip; Knights marginal model edge and tipped for a comfortable margin — sources conflict on strength"],
+      "injuries_outs": [],
+      "sources": [
+        "https://www.statsinsider.com.au/news/nrl-tips-for-this-weekend-round-19-2026",
+        "https://www.zerotackle.com/nrl/fixtures-results/"
+      ],
+      "gaps": ["Toss-up (both $1.91, 46/54 model) — no confident edge", "Venue disputed (Accor vs 4 Pines)", "No cross-sourced anytime-tryscorer probabilities"]
+    },
+    {
+      "game_id": "n6",
+      "code": "NRL",
+      "day": "Sun",
+      "kickoff": "2026-07-12T16:05:00+10:00",
+      "home": "Sea Eagles",
+      "away": "Cowboys",
+      "venue": "4 Pines Park",
+      "lineup_confirmed": true,
+      "lineup_source": "NRL.com team lists — Tue 7 Jul 4:00pm (pre-Origin)",
+      "odds": {
+        "home_win": { "best": 1.56, "bookie": "Sportsbet", "all": {} },
+        "away_win": { "best": 2.45, "bookie": "Ladbrokes", "all": {} },
+        "opened": {}
+      },
+      "model_prob": { "home": 0.71, "away": 0.29 },
+      "form_notes": ["Sea Eagles model favourite at home (71%)", "Close-game margin tip (1–12)"],
+      "injuries_outs": [],
+      "sources": [
+        "https://www.statsinsider.com.au/news/nrl-tips-for-this-weekend-round-19-2026",
+        "https://www.zerotackle.com/nrl/fixtures-results/",
+        "https://www.gobet.com.au/nrl-tips/nrl-round-19-2026/"
+      ],
+      "gaps": ["Manly carry Origin-representative backup risk (Trbojevic/Cherry-Evans-type reps)", "No cross-sourced anytime-tryscorer probabilities"]
+    },
+    {
+      "game_id": "n7",
+      "code": "NRL",
+      "day": "Sun",
+      "kickoff": "2026-07-12T18:15:00+10:00",
+      "home": "Storm",
+      "away": "Titans",
+      "venue": "AAMI Park",
+      "lineup_confirmed": true,
+      "lineup_source": "NRL.com team lists — Tue 7 Jul 4:00pm (pre-Origin)",
+      "odds": {
+        "home_win": { "best": 1.36, "bookie": "Sportsbet", "all": {} },
+        "away_win": { "best": 3.20, "bookie": "Ladbrokes", "all": {} },
+        "opened": {}
+      },
+      "model_prob": { "home": 0.79, "away": 0.21 },
+      "form_notes": ["Storm strong favourites at home coming off a loss; tipster line Storm -8.5", "Storm named many Origin players (Hughes, Meaney, Howarth) — may rotate post-Origin"],
+      "injuries_outs": [],
+      "sources": [
+        "https://www.statsinsider.com.au/news/nrl-tips-for-this-weekend-round-19-2026",
+        "https://www.gobet.com.au/nrl-tips/nrl-round-19-2026/",
+        "https://www.zerotackle.com/nrl/fixtures-results/"
+      ],
+      "gaps": ["Storm price ($1.36) below $1.50 H2H floor — not a single candidate", "Storm are Origin-heavy — backup/rotation risk", "No cross-sourced anytime-tryscorer probabilities"]
+    }
+  ],
+  "unresolved_gaps": [
+    "Anytime-tryscorer probabilities could not be cross-sourced to config standard (min_sources=2, freshness<60min) for ANY game — no player-leg SGM anchors are verifiable this run.",
+    "State of Origin Game 3 (Wed 8 Jul night) is played AFTER this Wed-morning draft; post-Origin rest/backup decisions for Origin players are unknown, so player-dependent legs cannot be treated as confirmed.",
+    "No cross-sourced opening lines retrieved — line-movement (≥10%) cannot be assessed this run.",
+    "Per-bookie odds breakdowns not retrieved; prices recorded are indicative market prices to be confirmed by the operator."
+  ]
+}
