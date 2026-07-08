@@ -1,0 +1,25 @@
+{
+  "round": { "id": "r18-afl17", "label": "NRL R18 · AFL R17", "code_cycle": "NRL" },
+  "tiers": {
+    "bronze": [
+      { "type": "h2h_single", "game_id": "n1", "day": "Sat", "selection": "Wests Tigers", "odds": 1.52, "bookie": "Sportsbet", "confidence_stars": 3, "flags": ["strong"], "rationale": "Dragons worst attack+defence." }
+    ],
+    "silver": [
+      { "type": "sgm", "code": "NRL", "game_id": "n2", "day": "Sat", "confidence_stars": 4, "est_odds": 4.60,
+        "legs": [ { "market": "team_win", "selection": "Sharks" }, { "market": "anytime_try", "player": "Sione Katoa", "confirmed": true }, { "market": "total_points", "selection": "Over 42.5" } ] },
+      { "type": "sgm", "code": "AFL", "game_id": "a1", "day": "Sat", "confidence_stars": 4, "est_odds": 4.20,
+        "legs": [ { "market": "team_win", "selection": "Carlton" }, { "market": "anytime_goal", "player": "Charlie Curnow", "confirmed": true }, { "market": "disposals_20plus", "player": "Patrick Cripps", "confirmed": true } ] }
+    ],
+    "gold": [
+      { "type": "sgm", "code": "NRL", "game_id": "n3", "day": "Sun", "confidence_stars": 4, "est_odds": 5.00,
+        "legs": [ { "market": "team_win", "selection": "Sea Eagles" }, { "market": "anytime_try", "player": "Jason Saab", "confirmed": true }, { "market": "team_total_under", "selection": "Eels Under 20.5" } ] },
+      { "type": "sgm", "code": "AFL", "game_id": "a2", "day": "Sun", "confidence_stars": 4, "est_odds": 3.80,
+        "legs": [ { "market": "team_win", "selection": "St Kilda" }, { "market": "anytime_goal", "player": "Jack Higgins", "confirmed": true }, { "market": "disposals_25plus", "player": "Nasiah Wanganeen-Milera", "confirmed": true } ] },
+      { "type": "cross_sport", "special": true, "confidence_stars": 4, "est_odds": 4.00,
+        "legs": [ { "selection": "Sharks win" }, { "selection": "Sea Eagles win" }, { "selection": "St Kilda win" }, { "selection": "Carlton win" } ] },
+      { "type": "hero", "special": true, "confidence_stars": 2, "note": "small-stake lottery",
+        "legs": [ { "selection": "Sharks win" }, { "selection": "Sea Eagles win" }, { "selection": "St Kilda win" }, { "selection": "Carlton win" }, { "market": "anytime_try", "player": "Jason Saab", "confirmed": true }, { "market": "anytime_goal", "player": "Charlie Curnow", "confirmed": true } ] }
+    ]
+  },
+  "line_moves": [ { "game_id": "n2", "market": "home_win", "open": 1.60, "now": 1.45, "pct": -9.4, "flagged": false } ]
+}
