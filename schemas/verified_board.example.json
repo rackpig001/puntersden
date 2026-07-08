@@ -1,0 +1,15 @@
+{
+  "round": { "id": "r19-afl18", "label": "NRL R19 · AFL R18", "code_cycle": "NRL" },
+  "verified_at": "2026-07-07T16:50:00+10:00",
+  "round_status": "pass",
+  "games": [
+    {
+      "game_id": "n1", "code": "NRL", "day": "Fri", "kickoff": "2026-07-10T20:00:00+10:00",
+      "home": "Wests Tigers", "away": "Warriors",
+      "verification": { "status": "pass",
+        "checks": { "two_source_agreement": true, "kickoff_in_future": true, "all_named_players_confirmed": true, "freshness_minutes": 12 },
+        "rejected": [] }
+    }
+  ],
+  "dropped_games": [], "dropped_reasons": []
+}
