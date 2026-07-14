@@ -1,0 +1,40 @@
+{
+  "round": { "id": "r19-afl18", "label": "NRL R19 · AFL R18", "code_cycle": "NRL" },
+  "drafted_at": "2026-07-08T08:45:00+10:00",
+  "tiers": {
+    "bronze": [
+      {
+        "type": "h2h_single",
+        "game_id": "n6",
+        "day": "Sun",
+        "selection": "Sea Eagles",
+        "odds": 1.56,
+        "bookie": "Sportsbet",
+        "confidence_stars": 3,
+        "flags": ["value"],
+        "rationale": "Manly rate a 71% chance on the model but the market only prices them at ~64% ($1.56) — a genuine overlay. At home at 4 Pines against a Cowboys side tipped to lose, they're the round's clearest above-floor value. Risk: Manly's Origin reps back up after Wednesday's decider, so confirm the team holds before kickoff. Sun 4:05pm AEST. ⚠️ Indicative price — confirm at your book."
+      },
+      {
+        "type": "h2h_single",
+        "game_id": "n2",
+        "day": "Sat",
+        "selection": "Dolphins",
+        "odds": 1.52,
+        "bookie": "Sportsbet",
+        "confidence_stars": 3,
+        "flags": ["strong"],
+        "rationale": "Dolphins are a solid 63% home favourite at Kayo Stadium in a game the model tips inside 12 points. Price is around fair rather than an overlay, so it's a confidence play, not a value one. Sat 3:00pm AEST. ⚠️ Indicative price — confirm at your book."
+      }
+    ],
+    "silver": [],
+    "gold": []
+  },
+  "line_moves": [],
+  "applied_feedback": [
+    "No feedback.json on file yet (first structured run), so recalibrated off the live track record: anytime-try SGM legs have repeatedly cost multis (Isaako, Amiss, Martin/Mannagh, Khan-Pereira all missed recently). Combined with pre-Origin lineup uncertainty and NO cross-sourced tryscorer data this round, ALL player-dependent SGM/Hero legs were withheld.",
+    "Held to the $1.50 H2H floor: the round's strongest sides (Warriors $1.36, Storm $1.36, Roosters $1.20) were left out despite model edges because the price is cramped — no padding to fill a tier.",
+    "Silver/Gold add no new tips this NRL cycle: no game reaches the 85% (4-star) bar for a high-confidence SGM, no verifiable player legs exist, and cross-sport/Hero span AFL which lands on Thursday's cycle. A lean week is correct."
+  ],
+  "validator_report": { "status": "pass", "failures": [] },
+  "_analyst_note": "Bronze: 2 H2H singles (Sea Eagles value, Dolphins strong), both 3-star, both above the $1.50 floor and cleanly cross-sourced. Silver/Gold intentionally empty — see applied_feedback. Odds are indicative; the operator confirms final builder prices."
+}
